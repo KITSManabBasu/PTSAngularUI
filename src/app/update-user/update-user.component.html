@@ -1,0 +1,222 @@
+	<a routerLink='/user'>View User</a>
+	<h2>
+		<span *ngIf="(this.userInternalid===undefined)">
+			Add User
+		</span>
+		<span *ngIf="(this.userInternalid!==undefined)">
+			Update User
+		</span>
+		
+	</h2>
+	<form id="formNewUser" name="formNewUser" #userData="ngForm" (ngSubmit)="addNewUser(userData.value)" ngNativeValidate>
+		<table>
+			<!--<tr>
+				<td colspan="4">
+					{{myModel | json}}
+					<select [(ngModel)]="myModel" name="test1">
+					      <option *ngFor="let i of items" [ngValue]="i">{{i.value}}</option>
+					</select>
+
+					<br /><br />
+
+					{{mySimpleModel}}
+					<select [(ngModel)]="mySimpleModel" name="test2">
+					      <option *ngFor="let i of simpleItems" [value]="i">{{i}}</option>
+					</select>
+				</td>
+			</tr>-->
+			<tr>
+				<td><label class="required">User ID :</label></td>
+				<td>
+					<!--<input type="text" name="userid" id="userid" placeholder="User ID" required minlength="5" maxlength="10" [(ngModel)]="userid" ngModel (change)="userIsExist()">-->
+
+					<span *ngIf="(this.userInternalid===undefined)">
+						<input type="text" name="userid" id="userid" placeholder="User ID" required minlength="5" maxlength="10" [(ngModel)]="userid" ngModel (change)="userIsExist()">
+					</span>
+					<span *ngIf="(this.userInternalid!==undefined)">
+						<input type="text" name="userid" id="userid" placeholder="User ID" required minlength="5" maxlength="10" [(ngModel)]="userid" ngModel disabled="">
+					</span>
+
+				</td>
+				
+				<td><label class="required">Password :</label></td>
+				<td>
+					<input type="text" name="password" id="password" placeholder="Password" [(ngModel)]="password" required ngModel>
+				</td>
+				
+			</tr>
+			<tr>
+				<td><label class="required">Employee ID :</label></td>
+				<td>
+					<input type="text" name="employeeid" id="employeeid" placeholder="Employee ID" [(ngModel)]="employeeid" required ngModel>
+				</td>
+				<td><label class="required">Roles :</label></td>
+				<td>
+				<span *ngIf="userprop.roles != null">
+			            <select name="role" (change)="selectRoleHandler($event)" [(ngModel)]="role" required ngModel >
+			            	<option value="" selected disabled>Select</option>
+			                <option *ngFor="let x of userprop.roles" value={{x.ROLE_ID}} >{{x.ROLE_DESC}}</option>			               
+			            </select>
+			    </span>	
+			    				
+				</td>
+			</tr>
+			<tr>
+				<td><label class="required">Title :</label>	</td>
+				<td>
+					<span *ngIf="userprop.usertitle != null">
+		            <select name="title" (change)="selectTitleHandler($event)" [(ngModel)]="title" required ngModel>
+		                <option value="" selected disabled>Select</option>
+		                <option *ngFor="let x of userprop.usertitle" value={{x.name}} >{{x.name}}</option>
+		            </select>
+		            </span>		        	
+				</td>
+				<td><label class="required">Team/CC :</label></td>
+				<td>
+					<span *ngIf="userprop.teams != null">
+			            <select name="teams" (change)="selectTeamHandler($event)" [(ngModel)]="team" required ngModel>
+			            	<option value="" selected disabled>Select</option>
+			                <option *ngFor="let x of userprop.teams" value={{x.TEAM_ID}} >{{x.TEAM_NAME}}</option>
+			            </select>
+			         </span>   
+			        </td>
+			</tr>
+			<tr>
+				<td><label class="required">First Name :</label>	</td>
+				<td><input type="text" name="firstname" id="firstname" placeholder="First Name" [(ngModel)]="firstname" required ngModel >
+
+				</td>
+				<td><label>Middle Name :</label>	</td>
+				<td><input type="text" name="middlename" id="middlename" placeholder="Middle Name" [(ngModel)]="middlename" ngModel></td>
+			</tr>
+			<tr>
+				<td><label class="required">Last Name :</label>	</td>
+				<td><input type="text" name="lastname" id="lastname" placeholder="Last Name" [(ngModel)]="lastname" required ngModel></td>
+				<td><label class="required">Billing Type :</label>	</td>
+				<td>
+					<span *ngIf="userprop.billingtypes != null">
+			            <select name="billingtypes" [(ngModel)]="billingtypes" required ngModel (change)="selectBillingTypeHandler($event)">
+			            	<option value="" selected disabled>Select</option>
+			                <option *ngFor="let x of userprop.billingtypes" value={{x.BILL_TYPE_ID}} >{{x.BILL_TYPE_DESC}}</option>
+			        </select>
+			    </span>		        	
+				</td>
+			</tr>
+			<tr>
+				<td><label class="required">Team Lead :</label></td>
+				<td>
+					<span *ngIf="userprop.teamleads != null">
+			            <select name="teamleads" [(ngModel)]="teamleads" required ngModel (change)="selectTeamLeadHandler($event)">
+			            	<option value="" selected disabled>Select</option>
+			                <option *ngFor="let x of userprop.teamleads" value={{x._id}} >{{x.firstname}} {{x.lastname}}</option>
+			            </select>
+			        </span>	
+				</td>
+				<td><label class="required">Location :</label>	</td>
+				<td>
+					<span *ngIf="userprop.locs != null">
+			            <select name="locs" (change)="selectLocsHandler($event)" [(ngModel)]="locs" required ngModel>
+			            	<option value="" selected disabled>Select</option>
+			                <option *ngFor="let x of userprop.locs" value={{x.LOC_ID}} >
+			                		{{x.LOCATION}}
+			            	</option>
+			            </select>
+			        </span>		        	
+				</td>
+			</tr>
+			<tr>
+				<td><label class="required">Designation :</label>	</td>
+				<td>
+					<span *ngIf="userprop.desigs != null">
+			            <select name="desigs" [(ngModel)]="desigs" required ngModel (change)="selectDesigHandler($event)">
+			            	<option value="" selected disabled>Select</option>
+			                <option *ngFor="let x of userprop.desigs" value={{x.DESGN_ID}}  >{{x.DESGN_DESC}}</option>
+			            </select>
+			    </span>		        	
+				</td>
+				<td><label class="required">ISU :</label>	</td>
+				<td><input type="text" name="isu" id="isu" placeholder="ISU" [(ngModel)]="isu" required ngModel></td>
+			</tr>
+			<tr>
+				<td><label class="required">User Type :</label>	</td>
+				<td>
+					<span *ngIf="userprop.usertypes != null">
+			            <select name="usertypes" [(ngModel)]="usertypes" required ngModel (change)="selectUserTypeHandler($event)">
+			                <option value="" selected disabled>Select</option>
+			                <option *ngFor="let x of userprop.usertypes" value={{x.USER_TYPE_ID}} >{{x.USER_TYPE_DESC}}</option>
+			            </select>
+			    </span>		        	
+				</td>
+				<td><label class="required">Company :</label>	</td>
+				<td>
+					<span *ngIf="userprop.companies != null">
+			            <select name="companies" [(ngModel)]="companies" required ngModel (change)="selectCompanyHandler($event)">
+			            	<option value="" selected disabled>Select</option>
+			                <option *ngFor="let x of userprop.companies" value={{x.COMPANY_ID}} >{{x.COMPANY_NAME}}</option>
+			            </select>
+			        </span>		        	
+				</td>
+			</tr>
+
+			<tr>
+				<td><label>Mobile No :</label></td>
+				<td>
+					<input type="text" name="mobileno" id="mobileno" placeholder="Mobile No" [(ngModel)]="mobileno" required ngModel>
+				</td>
+				<td><label>Desk Ph No :</label></td>
+				<td>
+					<input type="text" name="deskphno" id="deskphno" placeholder="Desk Ph No" [(ngModel)]="deskphno" required ngModel>
+				</td>
+			</tr>
+			<tr>
+				<td><label class="required">Geography :</label></td>
+				<td>
+					<span *ngIf="userprop.geos != null">
+			            <select name="geos" [(ngModel)]="geos" required ngModel (change)="selectGeoHandler($event)">
+			            	<option value="" selected disabled>Select</option>
+			                <option *ngFor="let x of userprop.geos" value={{x.LOC_ID}} >{{x.LOCATION}}</option>
+			            </select>
+			        </span>
+				</td>
+				<td></td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<fieldset>
+						<legend>Access Roles</legend>
+					<input [(ngModel)]="chkProjectUser" (change)="newFunction()" type="checkbox" name="chkProjectUser"  id="chkProjectUser" checked>
+					<label>Project User</label>
+
+					<input [(ngModel)]="chkTimeSheetUser" (change)="newFunction()" type="checkbox" name="chkTimeSheetUser"  id="chkTimeSheetUser" checked>
+					<label>Time Sheet User</label>
+
+					<input [(ngModel)]="chkProjectReportUser" (change)="newFunction()" type="checkbox" name="chkProjectReportUser"  id="chkProjectReportUser" checked>
+					<label>Project Report User</label>
+
+					<input [(ngModel)]="chkTimeSheetReportUser" (change)="newFunction()" type="checkbox" name="chkTimeSheetReportUser"  id="chkTimeSheetReportUser" checked>
+					<label>TimeSheet Report User</label>
+
+					<input [(ngModel)]="chkTimeSheetUserAllocation" (change)="newFunction()" type="checkbox" name="chkTimeSheetUserAllocation"  id="chkTimeSheetUserAllocation" checked>
+					<label>TimeSheet User Allocation</label>
+
+					</fieldset>
+				</td>
+			</tr>	
+		</table>
+		<h3 *ngIf= "isAdded" >{{confirmationString}}</h3>
+	<input type="submit" value="Save">
+	
+
+<span *ngIf="(this.userInternalid===undefined)">
+	<button (click)="clearFields()">Clear</button>
+</span>
+	<!--<button (click)="
+	userid='';
+	password='';
+	employeeid=''
+	">Clear</button>-->
+	</form>
+

@@ -1,0 +1,19 @@
+<!--<a routerLink="/"> < back </a>-->
+<p>
+  update-product works!
+</p>
+<h2>
+	Update Product
+</h2>
+
+<p *ngIf="!exist">
+	Product doesn't exist
+</p>
+
+<form id="formNewProduct" name="formNewProduct" #productData="ngForm" (ngSubmit)="updateProduct(productData.value)">
+	<label>Name :</label><input type="text" name="name" id="name" [(ngModel)]="data.name" placeholder="name" ngModel><br>
+<label>Color :</label><input type="text" name="color" id="color" placeholder="color" [(ngModel)]="data.color" ngModel><br>
+<input type="submit" value="Update Product">
+</form>
+<!--<br>
+<h3 *ngIf= "isAdded" >{{confirmationString}}</h3>-->

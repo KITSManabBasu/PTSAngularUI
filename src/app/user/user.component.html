@@ -1,0 +1,68 @@
+<p>
+  <a routerLink='/updateUser'>+ User</a>
+</p>
+<h1>
+	Users
+</h1>
+<table>
+	<th style="display: none;">ID</th>
+	<th>User ID</th>
+	<th>Employee ID</th>
+	<th>Title</th>
+	<th>First Name</th>
+	<th>Middle Name</th>
+	<th>Last Name</th>
+	
+	<!--<th>Role</th>
+	<th>Team</th>
+	<th>Billing Type</th>
+	<th>Location</th>
+	<th>Designation</th>
+	<th>ISU</th>
+	<th>User Type</th>
+
+	<th>Company</th>
+	<th>Geography</th>
+	<th>IsProject User</th>
+	<th>IsTimeSheet User</th>
+	<th>IsProjectReport User</th>
+	<th>IsTimeSheetReport User</th>
+	<th>isTimeSheetUser Allocation</th>-->
+	<th></th>
+	<th></th>
+
+	<tr *ngFor="let user of users">
+		<td style="display: none;">{{user._id}}</td>
+		<td>{{user.userid}}</td>
+		<td>{{user.employeeid}}</td>
+		<td>{{user.title}}</td>
+		<td>{{user.firstname}}</td>
+		<td>{{user.middlename}}</td>
+		<td>{{user.lastname}}</td>
+
+		<!--<td>{{user.roleText}}</td>
+		<td>{{user.teamText}}</td>
+		<td>{{user.billingtypeText}}</td>
+		<td>{{user.locText}}</td>
+		<td>{{user.desigText}}</td>
+		<td>{{user.isu}}</td>
+		<td>{{user.usertypeText}}</td>
+
+		<td>{{user.companyText}}</td>
+		<td>{{user.geoText}}</td>
+		<td>{{user.isProjectUser}}</td>
+		<td>{{user.isTimeSheetUser}}</td>
+		<td>{{user.isProjectReportUser}}</td>
+		<td>{{user.isTimeSheetReportUser}}</td>
+		<td>{{user.isTimeSheetUserAllocation}}</td>-->
+		<td (click)="deleteUser(user._id)"><a>DELETE</a></td>
+		
+		<td [routerLink]="['/updateUser',user._id]" ><a>UPDATE</a></td>
+		
+		<!--<td (click)="deleteProduct(user._id)"><a>DELETE</a></td>
+		<td [routerLink]="['/updateProduct',product.id]" ><a>UPDATE</a></td>
+		<td [routerLink]="['/updateUser',user._id]" ><a>UPDATE</a></td>
+	-->
+	</tr>
+
+</table>
