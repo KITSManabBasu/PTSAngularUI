@@ -1,3 +1,71 @@
-<p>
-  update-project works!
-</p>
+<a routerLink='/project'>View Project</a>
+<span *ngIf="(this.internalid!==undefined)">
+			<a routerLink='/updateProject'>Add Project</a>
+</span>
+
+	<h2>
+		<span *ngIf="(this.internalid===undefined)">
+			Add Project
+		</span>
+		<span *ngIf="(this.internalid!==undefined)">
+			Update Project
+		</span>		
+	</h2>
+	<form id="formWon" name="formProject" #data="ngForm" (ngSubmit)="addRecords(data.value)" ngNativeValidate>
+		<table>
+			<tr>
+				<td><label class="required">Project Code :</label></td>
+				<td>
+					<span *ngIf="(this.internalid===undefined)">
+						<input type="text" name="PROJECT_CODE" id="PROJECT_CODE" placeholder="Project Code" required minlength="5" maxlength="10" [(ngModel)]="PROJECT_CODE" ngModel (change)="isExist()">
+					</span>
+					<span *ngIf="(this.internalid!==undefined)">
+						<input type="text" name="PROJECT_CODE" id="PROJECT_CODE" placeholder="Project Code" required minlength="5" maxlength="10" [(ngModel)]="PROJECT_CODE" ngModel disabled="">
+					</span>
+				</td>
+			</tr>
+			<tr>			
+				<td><label class="required">Project Name:</label></td>
+				<td><input type="text" name="PROJECT_NAME" id="PROJECT_NAME" placeholder="Project Name" [(ngModel)]="PROJECT_NAME" required ngModel></td>
+			</tr>				
+			<tr>
+				<td><label class="required">Portfolio:</label></td>
+				<td>
+					<span *ngIf="projectProp.BUSINESS_AREA_ID != null">
+		            <select name="BUSINESS_AREA_ID" (change)="selectBusinessAreaHandler($event)" [(ngModel)]="BUSINESS_AREA_ID" required ngModel>
+		                <option value="" selected disabled>Select</option>
+		                <option *ngFor="let x of projectProp.BUSINESS_AREA_ID" value={{x.BUSINESS_AREA_ID}} >{{x.BUSINESS_AREA_DESC}}</option>
+		            </select>
+		            </span>		        	
+				</td>
+			</tr>
+			<tr>
+				<td><label class="required">Project Owner:</label></td>
+				<td>
+					<span *ngIf="projectProp.PROJECT_TYPE_ID != null">
+		            <select name="PROJECT_TYPE_ID" (change)="selectProjectTypeHandler($event)" [(ngModel)]="PROJECT_TYPE_ID" required ngModel>
+		                <option value="" selected disabled>Select</option>
+		                <option *ngFor="let x of projectProp.PROJECT_TYPE_ID" value={{x.PROJECT_TYPE_ID}} >{{x.PROJECT_TYPE_DESC}}</option>
+		            </select>
+		            </span>		        	
+				</td>
+			</tr>
+			<tr>
+				<td><label class="required">Active</label></td>
+				<td>
+					<span *ngIf="projectProp.ACTIVE != null">
+		            <select name="OFF_ON" (change)="selectActiveHandler($event)" [(ngModel)]="ACTIVE" required ngModel>
+		                <option value="" selected disabled>Select</option>
+		                <option *ngFor="let x of projectProp.ACTIVE" value={{x.name}} >{{x.name}}</option>
+		            </select>
+		            </span>		        	
+				</td>
+			</tr>			
+		</table>
+		<h3 *ngIf= "isAdded" >{{confirmationString}}</h3>
+	<input type="submit" value="Save">
+	<span *ngIf="(this.internalid===undefined)">
+		<button (click)="clearFields()">Clear</button>
+	</span>
+	</form>	
+

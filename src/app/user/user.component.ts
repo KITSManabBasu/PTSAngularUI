@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-	import { environment } from '../../environments/environment';
-
-	import {Http, Response, Headers} from '@angular/http'
-    import 'rxjs/add/operator/toPromise';
-    import { Observable } from 'rxjs/Rx'; 
+import { environment } from '../../environments/environment';
+import {Http, Response, Headers} from '@angular/http'
+import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs/Rx'; 
 
 @Component({
   selector: 'app-user',

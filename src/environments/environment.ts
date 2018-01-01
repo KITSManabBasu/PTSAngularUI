@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  apiJsonServer:'http://ptsnodeservice.herokuapp.com/',
-  apiBaseUrl:'http://ptsnodeservice.herokuapp.com/'
+  apiJsonServer:'http://localhost:5555/',
+  apiBaseUrl:'http://localhost:8080/'
 };
 

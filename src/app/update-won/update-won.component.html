@@ -1,3 +1,94 @@
-<p>
-  update-won works!
-</p>
+<a routerLink='/won'>View Won</a>
+<span *ngIf="(this.internalid!==undefined)">
+			<a routerLink='/updateWon'>Add Won</a>
+</span>
+
+	<h2>
+		<span *ngIf="(this.internalid===undefined)">
+			Add Won
+		</span>
+		<span *ngIf="(this.internalid!==undefined)">
+			Update Won
+		</span>		
+	</h2>
+	<form id="formWon" name="formWon" #data="ngForm" (ngSubmit)="addRecords(data.value)" ngNativeValidate>
+		<table>
+			<tr>
+				<td><label class="required">WON :</label></td>
+				<td>
+					<span *ngIf="(this.internalid===undefined)">
+						<input type="text" name="WON" id="WON" placeholder="Won Number" required minlength="5" maxlength="10" [(ngModel)]="WON" ngModel (change)="isExist()">
+					</span>
+					<span *ngIf="(this.internalid!==undefined)">
+						<input type="text" name="WON" id="WON" placeholder="Won Number" required minlength="5" maxlength="10" [(ngModel)]="WON" ngModel disabled="">
+					</span>
+				</td>
+			</tr>
+			<tr>			
+				<td><label class="required">Description:</label></td>
+				<td><input type="text" name="WON_DESC" id="WON_DESC" placeholder="WON Description" [(ngModel)]="WON_DESC" required ngModel></td>
+			</tr>
+			<tr>
+				<td><label class="required">Start Date:</label></td>
+				<td>
+					<!--<input type="text" name="START_DATE" id="START_DATE" placeholder="WON Start Date" [(ngModel)]="START_DATE" required ngModel>-->
+				<input type="date" name="START_DATE" id="START_DATE" placeholder="WON Start Date" [(ngModel)]="START_DATE" required ngModel>
+				</td>
+			</tr>
+			<tr>
+				<td><label class="required">End Date:</label></td>
+				<td>
+					<input type="date" name="END_DATE" id="END_DATE" placeholder="WON End Date" [(ngModel)]="END_DATE" required ngModel>
+				</td>
+			</tr>	
+			<tr>
+				<td><label class="required">WON Type:</label></td>
+				<td>
+					<span *ngIf="wonProp.WON_TYPE != null">
+		            <select name="WON_TYPE" (change)="selectWonHandler($event)" [(ngModel)]="WON_TYPE" required ngModel>
+		                <option value="" selected disabled>Select</option>
+		                <option *ngFor="let x of wonProp.WON_TYPE" value={{x.name}} >{{x.name}}</option>
+		            </select>
+		            </span>		        	
+				</td>
+			</tr>
+			<tr>
+				<td><label class="required">On Site/Offshore</label></td>
+				<td>
+					<span *ngIf="wonProp.OFF_ON != null">
+		            <select name="OFF_ON" (change)="selectOffOnHandler($event)" [(ngModel)]="OFF_ON" required ngModel>
+		                <option value="" selected disabled>Select</option>
+		                <option *ngFor="let x of wonProp.OFF_ON" value={{x.name}} >{{x.name}}</option>
+		            </select>
+		            </span>		        	
+				</td>
+			</tr>
+			<tr>
+				<td><label class="required">Geography :</label></td>
+				<td>
+					<span *ngIf="wonProp.GEO_ID != null">
+			            <select name="GEO_ID" [(ngModel)]="GEO_ID" required ngModel (change)="selectGeoHandler($event)">
+			            	<option value="" selected disabled>Select</option>
+			                <option *ngFor="let x of wonProp.GEO_ID" value={{x.LOC_ID}} >{{x.LOCATION}}</option>
+			            </select>
+			        </span>
+				</td>				
+			</tr>
+			<tr>
+				<td><label class="required">Active</label></td>
+				<td>
+					<span *ngIf="wonProp.IS_ACTIVE != null">
+		            <select name="IS_ACTIVE" (change)="selectIsActiveHandler($event)" [(ngModel)]="IS_ACTIVE" required ngModel>
+		                <option value="" selected disabled>Select</option>
+		                <option *ngFor="let x of wonProp.IS_ACTIVE" value={{x.name}} >{{x.name}}</option>
+		            </select>
+		            </span>		        	
+				</td>
+			</tr>
+		</table>
+		<h3 *ngIf= "isAdded" >{{confirmationString}}</h3>
+	<input type="submit" value="Save">
+	<span *ngIf="(this.internalid===undefined)">
+		<button (click)="clearFields()">Clear</button>
+	</span>
+	</form>	

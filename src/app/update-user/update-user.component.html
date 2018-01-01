@@ -1,4 +1,8 @@
 	<a routerLink='/user'>View User</a>
+	<span *ngIf="(this.userInternalid!==undefined)">
+			<a routerLink='/updateUser'>Add User</a>
+	</span>
+	
 	<h2>
 		<span *ngIf="(this.userInternalid===undefined)">
 			Add User
@@ -28,15 +32,12 @@
 			<tr>
 				<td><label class="required">User ID :</label></td>
 				<td>
-					<!--<input type="text" name="userid" id="userid" placeholder="User ID" required minlength="5" maxlength="10" [(ngModel)]="userid" ngModel (change)="userIsExist()">-->
-
 					<span *ngIf="(this.userInternalid===undefined)">
 						<input type="text" name="userid" id="userid" placeholder="User ID" required minlength="5" maxlength="10" [(ngModel)]="userid" ngModel (change)="userIsExist()">
 					</span>
 					<span *ngIf="(this.userInternalid!==undefined)">
 						<input type="text" name="userid" id="userid" placeholder="User ID" required minlength="5" maxlength="10" [(ngModel)]="userid" ngModel disabled="">
 					</span>
-
 				</td>
 				
 				<td><label class="required">Password :</label></td>
@@ -161,11 +162,11 @@
 			<tr>
 				<td><label>Mobile No :</label></td>
 				<td>
-					<input type="text" name="mobileno" id="mobileno" placeholder="Mobile No" [(ngModel)]="mobileno" required ngModel>
+					<input type="text" name="mobileno" id="mobileno" placeholder="Mobile No" [(ngModel)]="mobileno" ngModel>
 				</td>
 				<td><label>Desk Ph No :</label></td>
 				<td>
-					<input type="text" name="deskphno" id="deskphno" placeholder="Desk Ph No" [(ngModel)]="deskphno" required ngModel>
+					<input type="text" name="deskphno" id="deskphno" placeholder="Desk Ph No" [(ngModel)]="deskphno" ngModel>
 				</td>
 			</tr>
 			<tr>

@@ -1,3 +1,33 @@
 <p>
-  won works!
+  <a routerLink='/updateWon'>Add Won</a>
 </p>
+<h1>
+	Won Details
+</h1>
+<table>
+  <tr>	
+	<th style="display: none;">ID</th>
+	<th>WON</th>
+	<th>WON Description</th>
+	<th>WON Type</th>
+	<th>Offshore/Onsite</th>
+	<th>Active</th>
+	<th>End Date</th>
+	<th></th>
+	<th></th>
+  </tr>
+  
+  	<tr *ngFor="let won of wons">
+		<td style="display: none;">{{wons._id}}</td>
+		<td>{{won.WON}}</td>
+		<td>{{won.WON_DESC}}</td>
+		<td>{{won.WON_TYPE}}</td>
+		<td>{{won.OFF_ON}}</td>
+		<td>{{won.IS_ACTIVE}}</td>
+		<td>{{won.END_DATE}}</td>
+		<td (click)="deleteWon(won._id)"><a>DELETE</a></td>
+		<td [routerLink]="['/updateWon',won._id]" ><a>UPDATE</a></td>
+		
+	</tr>
+  	
+</table>

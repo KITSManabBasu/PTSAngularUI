@@ -107,6 +107,7 @@ ol li
 select{width: 200px;}
 
 input[type=text]{width: 200px;}
+input[type=date]{width: 200px;}
 
 label.required::after {
     content: "*";

@@ -1,11 +1,10 @@
-	import { Component, OnInit } from '@angular/core';
-	import { environment } from '../../environments/environment';
-
-	import {Http, Response, Headers} from '@angular/http'
-    import 'rxjs/add/operator/toPromise';
-    import { Observable } from 'rxjs/Rx';
-    import {ActivatedRoute} from '@angular/router';
-	import {Router} from '@angular/router'; 
+import { Component, OnInit } from '@angular/core';
+import { environment } from '../../environments/environment';
+import {Http, Response, Headers} from '@angular/http'
+import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs/Rx';
+import {ActivatedRoute} from '@angular/router';
+import {Router} from '@angular/router'; 
 
 	@Component({
 	  selector: 'app-update-user',
@@ -13,12 +12,12 @@
 	  styleUrls: ['./update-user.component.css']
 	})
 	export class UpdateUserComponent implements OnInit {
-	
+/*	
 items: any[] = [{id: 1, value: 'item1'}, {id: 2, value: 'item2'}, {id: 3, value: 'item3'}];
 myModel: any = {id: this.items[1].id , value: this.items[1].value};
 
 simpleItems: string[] = ['item1', 'item2', 'item3'];
-mySimpleModel: string =this.simpleItems[1]; 
+mySimpleModel: string =this.simpleItems[1]; */
 
 	userInternalid:String='';
 	userexistingdata:object={};
@@ -48,13 +47,12 @@ mySimpleModel: string =this.simpleItems[1];
 	deskphno:string;
 	geos:number;
 
-	  //constructor(private http:Http) { }
+
 	  constructor(private router:Router, private route:ActivatedRoute, private http:Http) { }
 
 	  ngOnInit() {
 	  this.route.params.subscribe(params=>{
   		this.userInternalid= params['id'];
-  		//alert(this.userInternalid);
   		if(this.userInternalid!==undefined)
   		  this.populateUser(this.userInternalid);
   		
@@ -135,7 +133,7 @@ mySimpleModel: string =this.simpleItems[1];
 		this.usertitle = Array<UserTitle>();
 		this.usertitle.push(new UserTitle(1, 'Mr'));
 		this.usertitle.push(new UserTitle(2, 'Mrs'));
-		this.usertitle.push(new UserTitle(2, 'Ms'));
+		this.usertitle.push(new UserTitle(3, 'Ms'));
 
 		this.userprop.usertitle = this.usertitle; 
 	  }
@@ -297,7 +295,7 @@ mySimpleModel: string =this.simpleItems[1];
 			{
 				console.log(res);				
 				this.isAdded=true;	
-				this.clearFields();			
+				//this.clearFields();			
 			})
   		}	
 		else
@@ -375,7 +373,7 @@ mySimpleModel: string =this.simpleItems[1];
 
 export class UserProp  
 {
-		Usertitle:UserTitle;
+		usertitle:UserTitle;
 		roles: Object[];
 		//roles: tbl_role[]; 
 		teams: Object[]; 

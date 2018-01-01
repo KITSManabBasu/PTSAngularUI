@@ -1,3 +1,27 @@
 <p>
-  project works!
+  <a routerLink='/updateProject'>Add Won</a>
 </p>
+<h1>
+	Project Details
+</h1>
+<table>
+  <tr>	
+	<th style="display: none;">ID</th>
+	<th>Project Code</th>
+	<th>Project Name</th>	
+	<th>Active</th>	
+	<th></th>
+	<th></th>
+  </tr>
+  
+  	<tr *ngFor="let proj of projectdetails">
+		<td style="display: none;">{{proj._id}}</td>
+		<td>{{proj.PROJECT_CODE}}</td>
+		<td>{{proj.PROJECT_NAME}}</td>		
+		<td>{{proj.ACTIVE}}</td>
+		<td (click)="deleteProjectdetails(proj._id)"><a>DELETE</a></td>
+		<td [routerLink]="['/updateProject',proj._id]" ><a>UPDATE</a></td>
+		
+	</tr>
+  	
+</table>

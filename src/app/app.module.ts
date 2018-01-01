@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { SlideMenuModule } from 'cuppa-ng2-slidemenu/cuppa-ng2-slidemenu';
+//import { MyDatePickerModule } from 'node_modules/angular4-datepicker/src/my-date-picker';
 
 
 import { AppComponent } from './app.component';
@@ -25,6 +26,7 @@ import { BillingdescriptionComponent } from './billingdescription/billingdescrip
 import { UpdateBillingdescriptionComponent } from './update-billingdescription/update-billingdescription.component';
 import { FreezeComponent } from './freeze/freeze.component';
 import { BillingextractComponent } from './billingextract/billingextract.component';
+
 
 
 @NgModule({
@@ -53,6 +55,7 @@ import { BillingextractComponent } from './billingextract/billingextract.compone
     FormsModule,
     HttpModule,
     SlideMenuModule,// Import SlideMenu module variable here 
+    //MyDatePickerModule,
     RouterModule.forRoot([
     
     {path:"user",component: UserComponent},    
