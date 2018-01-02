@@ -4,6 +4,7 @@ import {Http, Response, Headers} from '@angular/http'
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx'; 
 import {UserService} from '../user.service';
+import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-user',
@@ -12,18 +13,22 @@ import {UserService} from '../user.service';
 })
 export class UserComponent implements OnInit {
 	users=[];
-  constructor(private user: UserService,private http:Http) { }
+  constructor(private user: UserService,private http:Http,private ng4LoadingSpinnerService: Ng4LoadingSpinnerService) { }
   private headers=new Headers({'Content-Type':'application/json'});
 
   ngOnInit() {
+  
   this.fetchUsers();
+ 
   }
 
 
   fetchUsers= function(){
+  this.ng4LoadingSpinnerService.show();
   	this.http.get(environment.apiBaseUrl + 'api/users').subscribe(
   		(res: Response)=>{
   			this.users=res.json();
+         this.ng4LoadingSpinnerService.hide();
   			//alert(JSON.stringify(res));
   		}
   		)

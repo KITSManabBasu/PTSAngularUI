@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { SlideMenuModule } from 'cuppa-ng2-slidemenu/cuppa-ng2-slidemenu';
-
+import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
 
 import { AuthguardGuard } from './authguard.guard';
 import { UserService } from './user.service';
@@ -59,7 +59,7 @@ import { LoginFormComponent } from './login-form/login-form.component';
     FormsModule,
     HttpModule,
     SlideMenuModule,// Import SlideMenu module variable here 
-    //MyDatePickerModule,
+    Ng4LoadingSpinnerModule,
     RouterModule.forRoot([
     
     {path:"user",canActivate: [AuthguardGuard],component: UserComponent},    

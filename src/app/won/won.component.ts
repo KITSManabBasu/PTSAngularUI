@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import {Http, Response, Headers} from '@angular/http'
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx'; 
+import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-won',
@@ -11,16 +12,18 @@ import { Observable } from 'rxjs/Rx';
 })
 export class WonComponent implements OnInit {
   wons=[];	
-  constructor(private http:Http) { }
+  constructor(private http:Http,private ng4LoadingSpinnerService: Ng4LoadingSpinnerService) { }
   private headers=new Headers({'Content-Type':'application/json'});
 
   ngOnInit() {
   this.fetchWons();
   }
   fetchWons= function(){
+  this.ng4LoadingSpinnerService.show();
   	this.http.get(environment.apiBaseUrl + 'api/wons').subscribe(
   		(res: Response)=>{
   			this.wons=res.json();
+        this.ng4LoadingSpinnerService.hide();
   			//alert(JSON.stringify(res));
   		}
   		)
