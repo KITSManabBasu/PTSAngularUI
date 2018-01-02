@@ -17,7 +17,6 @@ export class UpdateFpbillingComponent implements OnInit {
     datafindbyid:object={};
     fpbillingProp:FpbillingProp;
 
-    //WON: Array<DropdownValue>;
   	confirmationString:string="Values Saved";
     isAdded: boolean=false;
     existingData:object={};
@@ -78,7 +77,7 @@ export class UpdateFpbillingComponent implements OnInit {
   		}
   		)
     }
-    selectedWON: string='';
+  selectedWON: string='';
 	selectWONHandler(event:any){
 	  this.selectedWON=event.target.value;
 	  //alert(this.selectedBusinessArea);
@@ -86,7 +85,7 @@ export class UpdateFpbillingComponent implements OnInit {
  addRecords=function(data){
 	
 	this.dataObj={
-		"WON":(data.WON===undefined)? this.WON :data.WON,
+		"WON":(this.selectedWON==='')? this.WON :this.selectedWON,
 		"bill_amount":data.bill_amount,
 		"billing_date":data.billing_date,
 		"bil_desc_id":data.bil_desc_id,

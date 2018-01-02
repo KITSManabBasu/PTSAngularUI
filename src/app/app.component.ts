@@ -39,7 +39,6 @@
                    {"title":"Resource Allocation","link":"/resourceallocation"},
                    //{"title":"Add Resource Allocation","link":"/updateResourceallocation"},
                    {"title":"Billing Description","link":"/billingdescription"},
-                   //{"title":"Add Billing Description","link":"/updateBillingdescription"},   
                    {"title":"Freeze","link":"/freeze"},                
                   ]
        },

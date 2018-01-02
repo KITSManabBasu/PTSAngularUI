@@ -1,3 +1,59 @@
-<p>
-  update-billingdescription works!
-</p>
+ <ng4-loading-spinner></ng4-loading-spinner>
+<a routerLink='/billingdescription'>View Billing Description</a>
+<span *ngIf="(this.internalid!==undefined)">
+			<a routerLink='/updateBillingdescription'>Add FP Billing</a>
+</span>
+
+	<h2>
+		<span *ngIf="(this.internalid===undefined)">
+			Add Billing Description
+		</span>
+		<span *ngIf="(this.internalid!==undefined)">
+			Update Billing Description
+		</span>		
+	</h2>
+	<form id="formBilldescrips" name="formBilldescrips" #data="ngForm" (ngSubmit)="addRecords(data.value)" ngNativeValidate>
+		<table>
+			<tr>
+				<td><label class="required">Type :</label></td>
+				<td>
+					<span *ngIf="(this.internalid===undefined)">						
+						<span *ngIf="billdescripsProp.BillingType != null">
+				            <select name="TYPE" (change)="selectTYPEHandler($event)" [(ngModel)]="TYPE" required ngModel>
+				                <option value="" selected disabled>Select</option>
+				                <option *ngFor="let x of billdescripsProp.BillingType" value={{x.name}} >{{x.name}}</option>
+				            </select>
+				        </span>	
+					</span>
+					<span *ngIf="(this.internalid!==undefined)">						
+						<span *ngIf="billdescripsProp.BillingType != null">
+				            <select name="TYPE" (change)="selectTYPEHandler($event)" [(ngModel)]="TYPE" required ngModel disabled>
+				                <option value="" selected disabled>Select</option>
+				                <option *ngFor="let x of billdescripsProp.BillingType" value={{x.name}} >{{x.name}}</option>
+				            </select>
+				        </span>
+					</span>
+				</td>
+			</tr>
+			<tr>			
+				<td><label class="required">Billing Description:</label></td>
+				<td><input type="text" name="DESCRIPTION" id="DESCRIPTION" placeholder="Description" [(ngModel)]="DESCRIPTION" required ngModel></td>
+			</tr>				
+			
+			<tr>
+				<td>
+					<input type="text" name="CREATED_BY" id="CREATED_BY" placeholder="CREATED_BY" [(ngModel)]="CREATED_BY" style="display: none;" ngModel>
+				</td>
+				<td>
+					<input type="text" name="UPDATED_BY" id="UPDATED_BY" placeholder="UPDATED_BY" [(ngModel)]="UPDATED_BY" style="display: none;" ngModel>
+			    </td>
+			</tr>
+					
+		</table>
+		<h3 *ngIf= "isAdded" >{{confirmationString}}</h3>
+	<input type="submit" value="Save">
+	<span *ngIf="(this.internalid===undefined)">
+		<button (click)="clearFields()">Clear</button>
+	</span>
+	</form>	
+
