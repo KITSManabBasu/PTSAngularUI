@@ -5,8 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { SlideMenuModule } from 'cuppa-ng2-slidemenu/cuppa-ng2-slidemenu';
-//import { MyDatePickerModule } from 'node_modules/angular4-datepicker/src/my-date-picker';
 
+
+import { AuthguardGuard } from './authguard.guard';
+import { UserService } from './user.service';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -26,6 +28,7 @@ import { BillingdescriptionComponent } from './billingdescription/billingdescrip
 import { UpdateBillingdescriptionComponent } from './update-billingdescription/update-billingdescription.component';
 import { FreezeComponent } from './freeze/freeze.component';
 import { BillingextractComponent } from './billingextract/billingextract.component';
+import { LoginFormComponent } from './login-form/login-form.component';
 
 
 
@@ -48,7 +51,8 @@ import { BillingextractComponent } from './billingextract/billingextract.compone
     BillingdescriptionComponent,
     UpdateBillingdescriptionComponent,
     FreezeComponent,
-    BillingextractComponent
+    BillingextractComponent,
+    LoginFormComponent
   ],
   imports: [
     BrowserModule,
@@ -58,40 +62,41 @@ import { BillingextractComponent } from './billingextract/billingextract.compone
     //MyDatePickerModule,
     RouterModule.forRoot([
     
-    {path:"user",component: UserComponent},    
-    {path:"updateUser/:id",component: UpdateUserComponent},
-    {path:"updateUser",component: UpdateUserComponent},
+    {path:"user",canActivate: [AuthguardGuard],component: UserComponent},    
+    {path:"updateUser/:id",canActivate: [AuthguardGuard],component: UpdateUserComponent},
+    {path:"updateUser",canActivate: [AuthguardGuard],component: UpdateUserComponent},
 
-    {path:"won",component: WonComponent},
-    {path:"updateWon/:id",component: UpdateWonComponent},
-    {path:"updateWon",component: UpdateWonComponent}, 
+    {path:"won",canActivate: [AuthguardGuard],component: WonComponent},
+    {path:"updateWon/:id",canActivate: [AuthguardGuard],component: UpdateWonComponent},
+    {path:"updateWon",canActivate: [AuthguardGuard],component: UpdateWonComponent}, 
 
-    {path:"project",component: ProjectComponent},
-    {path:"updateProject/:id",component: UpdateProjectComponent},
-    {path:"updateProject",component: UpdateProjectComponent}, 
+    {path:"project",canActivate: [AuthguardGuard],component: ProjectComponent},
+    {path:"updateProject/:id",canActivate: [AuthguardGuard],component: UpdateProjectComponent},
+    {path:"updateProject",canActivate: [AuthguardGuard],component: UpdateProjectComponent}, 
 
-    {path:"fpbilling",component: FpbillingComponent},
-    {path:"updateFpbilling/:id",component: UpdateFpbillingComponent},
-    {path:"updateFpbilling",component: UpdateFpbillingComponent}, 
+    {path:"fpbilling",canActivate: [AuthguardGuard],component: FpbillingComponent},
+    {path:"updateFpbilling/:id",canActivate: [AuthguardGuard],component: UpdateFpbillingComponent},
+    {path:"updateFpbilling",canActivate: [AuthguardGuard],component: UpdateFpbillingComponent}, 
 
-    {path:"resourceallocation",component: ResourceallocationComponent},
-    {path:"updateResourceallocation/:id",component: UpdateResourceallocationComponent},
-    {path:"updateResourceallocation",component: UpdateResourceallocationComponent}, 
+    {path:"resourceallocation",canActivate: [AuthguardGuard],component: ResourceallocationComponent},
+    {path:"updateResourceallocation/:id",canActivate: [AuthguardGuard],component: UpdateResourceallocationComponent},
+    {path:"updateResourceallocation",canActivate: [AuthguardGuard],component: UpdateResourceallocationComponent}, 
 
-    {path:"billingdescription",component: BillingdescriptionComponent},
-    {path:"updateBillingdescription/:id",component: UpdateBillingdescriptionComponent},
-    {path:"updateBillingdescription",component: UpdateBillingdescriptionComponent}, 
+    {path:"billingdescription",canActivate: [AuthguardGuard],component: BillingdescriptionComponent},
+    {path:"updateBillingdescription/:id",canActivate: [AuthguardGuard],component: UpdateBillingdescriptionComponent},
+    {path:"updateBillingdescription",canActivate: [AuthguardGuard],component: UpdateBillingdescriptionComponent}, 
 
-    {path:"freeze",component: FreezeComponent},
+    {path:"freeze",canActivate: [AuthguardGuard],component: FreezeComponent},
 
-    {path:"billingextract",component: BillingextractComponent},
+    {path:"billingextract",canActivate: [AuthguardGuard],component: BillingextractComponent},
 
     {path:"product",component: ProductComponent},
     {path:"updateProduct/:id",component: UpdateProductComponent},
-    {path:"",component: HomeComponent}
+    {path:"home",canActivate: [AuthguardGuard],component: HomeComponent},
+    {path:"",component: LoginFormComponent}
     ])
   ],
-  providers: [],
+  providers: [UserService,AuthguardGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

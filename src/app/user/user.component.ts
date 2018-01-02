@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import {Http, Response, Headers} from '@angular/http'
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx'; 
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-user',
@@ -11,7 +12,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class UserComponent implements OnInit {
 	users=[];
-  constructor(private http:Http) { }
+  constructor(private user: UserService,private http:Http) { }
   private headers=new Headers({'Content-Type':'application/json'});
 
   ngOnInit() {

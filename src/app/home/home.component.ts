@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
 import {Http, Response, Headers} from '@angular/http'
 import 'rxjs/add/operator/toPromise';
-
 import { environment } from '../../environments/environment';
+import {UserService} from '../user.service';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +11,7 @@ import { environment } from '../../environments/environment';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private http:Http) {}
+  constructor(private user: UserService,private http:Http) {}
   //id:number;
   private headers=new Headers({'Content-Type':'application/json'});
 

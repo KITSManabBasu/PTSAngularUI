@@ -5,6 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import {ActivatedRoute} from '@angular/router';
 import {Router} from '@angular/router'; 
+import {UserService} from '../user.service';
 
 	@Component({
 	  selector: 'app-update-user',
@@ -48,7 +49,7 @@ mySimpleModel: string =this.simpleItems[1]; */
 	geos:number;
 
 
-	  constructor(private router:Router, private route:ActivatedRoute, private http:Http) { }
+	  constructor(private user: UserService,private router:Router, private route:ActivatedRoute, private http:Http) { }
 
 	  ngOnInit() {
 	  this.route.params.subscribe(params=>{

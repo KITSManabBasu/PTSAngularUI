@@ -1,5 +1,6 @@
 	import { Component } from '@angular/core';
-  
+  import { AuthguardGuard } from './authguard.guard';
+  import { UserService } from './user.service'; 
 
 	@Component({
 	  selector: 'app-root',
@@ -12,8 +13,9 @@
 
 	export class AppComponent {
 	  title = 'app works!';
+   
 
-public menuItemsArray: any[] = [ 
+  public menuItemsArray: any[] = [ 
 
        {"title":"User","link":"/user",
        "subItems":[
@@ -47,6 +49,12 @@ public menuItemsArray: any[] = [
                                   
                   ]
        },
+       {"title":"Account","link":"/billingextract",
+       "subItems":[
+                   {"title":"Log out","link":""},
+                                  
+                  ]
+       },
        
  ];
 
@@ -54,7 +62,7 @@ public menuItemsArray: any[] = [
     console.log("menu closed");
   }
   public onMenuOpen(){
-    console.log("menu Opened");
+    console.log("menu Opened");   
   }
   public onItemSelect(item:any){
     //console.log(item);
