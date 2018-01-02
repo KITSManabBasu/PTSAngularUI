@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import {ActivatedRoute} from '@angular/router';
 import {Router} from '@angular/router'; 
 import {UserService} from '../user.service';
+import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
 
 	@Component({
 	  selector: 'app-update-user',
@@ -49,7 +50,7 @@ mySimpleModel: string =this.simpleItems[1]; */
 	geos:number;
 
 
-	  constructor(private user: UserService,private router:Router, private route:ActivatedRoute, private http:Http) { }
+	  constructor(private user: UserService,private router:Router, private route:ActivatedRoute, private http:Http,private ng4LoadingSpinnerService: Ng4LoadingSpinnerService) { }
 
 	  ngOnInit() {
 	  this.route.params.subscribe(params=>{
@@ -59,6 +60,7 @@ mySimpleModel: string =this.simpleItems[1]; */
   		
 	  });
 	    this.userprop = new UserProp();
+	    
 		this.getTitle();
 		this.fetchRoles();
 		this.fetchTeams();
@@ -69,6 +71,7 @@ mySimpleModel: string =this.simpleItems[1]; */
 		this.fetchcompanies();
 		this.fetchlocs();
 		this.fetchgeos();
+		
 	  }
 	userIsExist=function()
 	{
@@ -171,9 +174,11 @@ mySimpleModel: string =this.simpleItems[1]; */
   		)
      }
      fetchteamleads= function(){
+     this.ng4LoadingSpinnerService.show();
       this.http.get(environment.apiBaseUrl + 'api/users').subscribe(
   		(res: Response)=>{
   			this.userprop.teamleads=res.json();
+  			this.ng4LoadingSpinnerService.hide();
   		}
   		)
      }

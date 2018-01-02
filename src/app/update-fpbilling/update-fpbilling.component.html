@@ -1,3 +1,68 @@
-<p>
-  update-fpbilling works!
-</p>
+<ng4-loading-spinner></ng4-loading-spinner>
+<a routerLink='/fpbilling'>View FP Billing</a>
+<span *ngIf="(this.internalid!==undefined)">
+			<a routerLink='/fpbilling'>Add FP Billing</a>
+</span>
+
+	<h2>
+		<span *ngIf="(this.internalid===undefined)">
+			Add FP Billing
+		</span>
+		<span *ngIf="(this.internalid!==undefined)">
+			Update FP Billing
+		</span>		
+	</h2>
+	<form id="formFpbilling" name="formFpbilling" #data="ngForm" (ngSubmit)="addRecords(data.value)" ngNativeValidate>
+		<table>
+			<tr>
+				<td><label class="required">FP/SLR WON :</label></td>
+				<td>
+					<span *ngIf="(this.internalid===undefined)">						
+						<span *ngIf="fpbillingProp.WON != null">
+				            <select name="WON" (change)="selectWONHandler($event)" [(ngModel)]="WON" required ngModel>
+				                <option value="" selected disabled>Select</option>
+				                <option *ngFor="let x of fpbillingProp.WON" value={{x.WON}} >{{x.WON + '-' +x.WON_DESC}}</option>
+				            </select>
+				        </span>	
+					</span>
+					<span *ngIf="(this.internalid!==undefined)">						
+						<span *ngIf="fpbillingProp.WON != null">
+				            <select name="WON" (change)="selectWONHandler($event)" [(ngModel)]="WON" required ngModel disabled>
+				                <option value="" selected disabled>Select</option>
+				                <option *ngFor="let x of fpbillingProp.WON" value={{x.WON}} >{{x.WON + '-' +x.WON_DESC}}</option>
+				            </select>
+				        </span>	
+					</span>
+				</td>
+			</tr>
+			<tr>			
+				<td><label class="required">Billing Description:</label></td>
+				<td><input type="text" name="bil_desc_id" id="bil_desc_id" placeholder="Billing Description" [(ngModel)]="bil_desc_id" required ngModel></td>
+			</tr>				
+			<tr>			
+				<td><label class="required">Billing Amount:</label></td>
+				<td><input type="number" name="bill_amount" id="bill_amount" placeholder="Billing Amount" [(ngModel)]="bill_amount" required ngModel></td>
+			</tr>
+			<tr>			
+				<td><label class="required">Billing Date:</label></td>
+				<td>
+					<input type="date" name="billing_date" id="billing_date" placeholder="Billing Date" [(ngModel)]="billing_date" required ngModel>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="text" name="CREATED_BY" id="CREATED_BY" placeholder="CREATED_BY" [(ngModel)]="CREATED_BY" style="display: none;" ngModel>
+				</td>
+				<td>
+					<input type="text" name="UPDATED_BY" id="UPDATED_BY" placeholder="UPDATED_BY" [(ngModel)]="UPDATED_BY" style="display: none;" ngModel>
+			    </td>
+			</tr>
+					
+		</table>
+		<h3 *ngIf= "isAdded" >{{confirmationString}}</h3>
+	<input type="submit" value="Save">
+	<span *ngIf="(this.internalid===undefined)">
+		<button (click)="clearFields()">Clear</button>
+	</span>
+	</form>	
+
