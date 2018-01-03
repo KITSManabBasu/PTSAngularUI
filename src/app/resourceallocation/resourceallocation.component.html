@@ -8,22 +8,31 @@
 <table>
   <tr>	
 	<th style="display: none;">ID</th>
-	<th>USER ID</th>
-	<th>Project Code</th>	
-	<th>WON</th>	
+	
+	<th>User Name</th>
+	<th>Employee ID</th>	
+	<th>Project Name</th>	
+	<th>WON</th>
+	<th>Billing Description</th>	
 	<th>Start Date</th>	
 	<th>End Date</th>	
+	<th>Daily Rate</th>	
 	<th></th>
 	<th></th>
   </tr>
   
   	<tr *ngFor="let allocation of allocations">
 		<td style="display: none;">{{allocation._id}}</td>
-		<td style="width: 5%">{{allocation.userid}}</td>
-		<td style="width: 20%">{{allocation.PROJECT_CODE}}</td>
-		<td style="width: 5%">{{allocation.WON}}</td>	
-		<td style="width: 5%">{{allocation.START_DATE}}</td>	
-		<td style="width: 5%">{{allocation.END_DATE}}</td>			
+		
+		<td style="width: 5%">{{allocation.username}}</td>
+		<td style="width: 5%">{{allocation.useremployeeid}}</td>
+		
+		<td style="width: 20%">{{allocation.PROJECT_NAME}}</td>
+		<td style="width: 5%">{{allocation.WON}} '-' {{allocation.WONDESC}}</td>		
+		<td style="width: 5%">{{allocation.BIL_DESC}} - {{allocation.BILLTYPE}}</td>	
+		<td style="width: 5%">{{allocation.START_DATE}}</td>
+		<td style="width: 5%">{{allocation.END_DATE}}</td>	
+		<td style="width: 5%">{{allocation.DAILY_RATE}}</td>			
 		<td style="width: 2%" (click)="deleteAllocations(allocation._id)"><a>DELETE</a></td>
 		<td style="width: 2%" [routerLink]="['/updateResourceallocation',allocation._id]" ><a>UPDATE</a></td>
 		

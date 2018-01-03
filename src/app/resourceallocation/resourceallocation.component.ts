@@ -22,7 +22,7 @@ export class ResourceallocationComponent implements OnInit {
 
   fetchAllocations= function(){
   this.ng4LoadingSpinnerService.show();
-  	this.http.get(environment.apiBaseUrl + 'api/allocations').subscribe(
+  	this.http.get(environment.apiBaseUrl + 'api/allocationdetails').subscribe(
   		(res: Response)=>{
   			this.allocations=res.json();
         	this.ng4LoadingSpinnerService.hide();
