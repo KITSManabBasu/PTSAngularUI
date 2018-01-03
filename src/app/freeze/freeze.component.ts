@@ -46,7 +46,7 @@ export class FreezeComponent implements OnInit {
   			this.UpdatedBy=this.existingData[0].UpdatedBy;
   			this.UpdatedOn=this.existingData[0].UpdatedOn;
   			
-  			alert(JSON.stringify(this.existingData));
+  			//alert(JSON.stringify(this.existingData));
   						
   		}
   		)
@@ -61,7 +61,7 @@ export class FreezeComponent implements OnInit {
 		"UpdatedBy":data.UpdatedBy,
 		"UpdatedOn":data.UpdatedOn,			
 		}
-		alert(JSON.stringify(this.dataObj));
+		//alert(JSON.stringify(this.dataObj));
   			console.log('Update Called');
   			this.http.post(environment.apiBaseUrl + 'api/freezes/1',this.dataObj).subscribe((res:Response)=>
 			{
