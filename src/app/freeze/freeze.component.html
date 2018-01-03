@@ -1,3 +1,19 @@
-<h2>
-  Under Construction!
-</h2>
+<ng4-loading-spinner></ng4-loading-spinner>
+<form id="formFreeze" name="formFreeze" #data="ngForm" (ngSubmit)="addRecords(data.value)" ngNativeValidate>
+	<table>
+		<tr>
+				<td><label class="required">Start Date :</label></td>
+				<td><input type="date" name="StartDate" id="StartDate" data-date-format="DD-MM-YYYY" placeholder="Start Date" [(ngModel)]="StartDate" required ngModel></td>
+		</tr>		
+		<tr>
+				<td><label class="required">End Date :</label></td>
+				<td><input type="Date" name="EndDate" id="EndDate" placeholder="End Date" [(ngModel)]="EndDate" required ngModel></td>
+		</tr>
+		<tr>
+				<td><label>Freeze :</label></td>
+				<td><input [(ngModel)]="Freeze" type="checkbox" name="Freeze"  id="Freeze"></td>
+		</tr>
+	</table>	
+	<h3 *ngIf= "isAdded" >{{confirmationString}}</h3>
+	<input type="submit" value="Save">
+</form>	
