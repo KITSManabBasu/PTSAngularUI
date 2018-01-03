@@ -1,4 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from '../../environments/environment';
+import {Http, Response, Headers} from '@angular/http'
+import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs/Rx';
+import {ActivatedRoute} from '@angular/router';
+import {Router} from '@angular/router';
+import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-update-resourceallocation',
@@ -7,9 +14,188 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UpdateResourceallocationComponent implements OnInit {
 
-  constructor() { }
+    internalid:String='';
+    datafindbyid:object={};
+    resourceAllocationProp:ResourceAllocationProp;
+
+  	confirmationString:string="Values Saved";
+    isAdded: boolean=false;
+    existingData:object={};
+
+   
+    userid:string;
+    PROJECT_CODE:string;
+    WON: number;
+    BIL_DESC_ID: string;
+    START_DATE:string;
+    END_DATE:string;
+    DAILY_RATE:number;
+    
+
+  constructor(private router:Router, private route:ActivatedRoute, private http:Http,private ng4LoadingSpinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
+  var usersessionID = sessionStorage.getItem("userID"); 
+    this.resourceAllocationProp=new ResourceAllocationProp();
+  	
+  	this.fetchProjectID();
+  	this.fetchUserID();
+  	this.fetchWons();
+  	this.fetchBillingDesc();
+  	this.route.params.subscribe(params=>{
+  		this.internalid= params['id'];
+  		if(this.internalid!==undefined)
+  		{
+  		 this.populateAllocationdetails(this.internalid);
+  		}
+  		else
+  		{
+  			//this.CREATED_BY=usersessionID;  			
+  		}
+  		//this.UPDATED_BY=usersessionID;
+	  });
   }
+  populateAllocationdetails=function(targetInternalID: String)
+  {
+  	this.http.get(environment.apiBaseUrl + 'api/allocations/' + targetInternalID +'/'+new Date().getTime()).subscribe(
+  		(res: Response)=>{
+  			this.existingData=res.json();
 
+  			this.PROJECT_CODE=this.existingData[0].PROJECT_CODE;
+  			this.userid=this.existingData[0].userid;
+  			this.WON=this.existingData[0].WON;
+  			this.BIL_DESC_ID=this.existingData[0].BIL_DESC_ID;
+  			this.START_DATE=this.existingData[0].START_DATE;
+  			this.END_DATE=this.existingData[0].END_DATE;
+  			this.DAILY_RATE=this.existingData[0].DAILY_RATE;
+
+  			//alert(JSON.stringify(this.existingData));
+  						
+  		}
+  		)
+  }
+  fetchProjectID= function(){
+  	this.ng4LoadingSpinnerService.show();
+      this.http.get(environment.apiBaseUrl + 'api/projectdetails').subscribe(
+  		(res: Response)=>{
+  			this.resourceAllocationProp.PROJECT_CODE=res.json();
+  			this.ng4LoadingSpinnerService.hide();
+  		}
+  		)
+    }
+
+  fetchUserID= function(){
+  	this.ng4LoadingSpinnerService.show();
+      this.http.get(environment.apiBaseUrl + 'api/users').subscribe(
+  		(res: Response)=>{
+  			this.resourceAllocationProp.userid=res.json();
+  			this.ng4LoadingSpinnerService.hide();
+  		}
+  		)
+    }
+
+    fetchWons= function(){
+  	this.ng4LoadingSpinnerService.show();
+      this.http.get(environment.apiBaseUrl + 'api/wons').subscribe(
+  		(res: Response)=>{
+  			this.resourceAllocationProp.WON=res.json();
+  			this.ng4LoadingSpinnerService.hide();
+  		}
+  		)
+    }
+
+    fetchBillingDesc= function(){
+  	this.ng4LoadingSpinnerService.show();
+      this.http.get(environment.apiBaseUrl + 'api/billdescrips').subscribe(
+  		(res: Response)=>{
+  			this.resourceAllocationProp.BIL_DESC_ID=res.json();
+  			this.ng4LoadingSpinnerService.hide();
+  		}
+  		)
+    }
+
+    selectedProjectid: string='';
+	selectProjectHandler(event:any){
+	  this.selectedProjectid=event.target.value;
+	}
+
+    selectedUserid: string='';
+	selectUseridHandler(event:any){
+	  this.selectedUserid=event.target.value;
+	}
+
+	selectedWon: string='';
+	selectWonHandler(event:any){
+	  this.selectedWon=event.target.value;
+	}
+
+	selectedBillingDesc: string='';
+	selectBillingDescHandler(event:any){
+	  this.selectedBillingDesc=event.target.value;
+	}
+
+    addRecords=function(data){
+    	this.dataObj={
+		"PROJECT_CODE":(this.selectedProjectid==='')? this.PROJECT_CODE :this.selectedProjectid,
+		"userid":(this.selectedUserid==='')? this.userid :this.selectedUserid,
+		"WON":(this.selectedWon==='')? this.WON :this.selectedWon,
+		"BIL_DESC_ID":(this.selectedBillingDesc==='')? this.selectedBillingDesc :this.selectedBillingDesc,
+		"START_DATE":data.START_DATE,
+		"END_DATE":data.END_DATE,
+		"DAILY_RATE":data.DAILY_RATE,		
+		
+		}
+		//alert(JSON.stringify(this.dataObj));
+		
+		if(this.internalid!==undefined)
+  		{
+  		
+  			console.log('Update Called');
+  			this.http.post(environment.apiBaseUrl + 'api/allocations/'+ this.internalid,this.dataObj).subscribe((res:Response)=>
+			{
+				console.log(res);				
+				this.isAdded=true;	
+				//this.clearFields();			
+			})
+  		}	
+		else
+		{
+			console.log('Add New Called');
+			this.http.post(environment.apiBaseUrl + 'api/allocations',this.dataObj).subscribe((res:Response)=>
+			{
+				console.log(res);
+				this.isAdded=true;
+				this.clearFields();				
+			})
+		}
+
+
+
+    }
+  clearFields()
+	{
+		  this.PROJECT_CODE='';
+		  this.userid='';
+		  this.WON=0; 
+		  this.BIL_DESC_ID=''; 	
+		  this.START_DATE=''; 
+		  this.END_DATE='';
+		  this.DAILY_RATE=0; 		  
+	} 
+}
+export class ResourceAllocationProp  
+{
+		PROJECT_CODE: Object[];
+		userid: Object[];
+		WON:Object[];
+		BIL_DESC_ID:Object[];
+}
+export class DropdownValue
+{
+	constructor(id:number, name:string) {
+		this.id=id;
+		this.name=name;
+	}
+	id:number;
+	name:string;
 }

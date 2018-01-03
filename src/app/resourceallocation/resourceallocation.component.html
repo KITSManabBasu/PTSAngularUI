@@ -1,3 +1,32 @@
-<h2>
-  Under Construction!
-</h2>
+<ng4-loading-spinner></ng4-loading-spinner>
+<p>
+  <a routerLink='/updateResourceallocation'>Add Resource Allocation</a>
+</p>
+<h1>
+	Resource Allocation Details
+</h1>
+<table>
+  <tr>	
+	<th style="display: none;">ID</th>
+	<th>USER ID</th>
+	<th>Project Code</th>	
+	<th>WON</th>	
+	<th>Start Date</th>	
+	<th>End Date</th>	
+	<th></th>
+	<th></th>
+  </tr>
+  
+  	<tr *ngFor="let allocation of allocations">
+		<td style="display: none;">{{allocation._id}}</td>
+		<td style="width: 5%">{{allocation.userid}}</td>
+		<td style="width: 20%">{{allocation.PROJECT_CODE}}</td>
+		<td style="width: 5%">{{allocation.WON}}</td>	
+		<td style="width: 5%">{{allocation.START_DATE}}</td>	
+		<td style="width: 5%">{{allocation.END_DATE}}</td>			
+		<td style="width: 2%" (click)="deleteAllocations(allocation._id)"><a>DELETE</a></td>
+		<td style="width: 2%" [routerLink]="['/updateResourceallocation',allocation._id]" ><a>UPDATE</a></td>
+		
+	</tr>
+  	
+</table>

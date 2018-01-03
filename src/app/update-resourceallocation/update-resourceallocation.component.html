@@ -1,3 +1,107 @@
-<p>
-  update-resourceallocation works!
-</p>
+<ng4-loading-spinner></ng4-loading-spinner>
+<a routerLink='/resourceallocation'>View Resource Allocation</a>
+<span *ngIf="(this.internalid!==undefined)">
+			<a routerLink='/updateResourceallocation'>Add Resource Allocation</a>
+</span>
+
+	<h2>
+		<span *ngIf="(this.internalid===undefined)">
+			Add FP Billing
+		</span>
+		<span *ngIf="(this.internalid!==undefined)">
+			Update FP Billing
+		</span>		
+	</h2>
+<form id="formAllocation" name="formAllocation" #data="ngForm" (ngSubmit)="addRecords(data.value)" ngNativeValidate>
+	<table>
+			<tr>
+					<td><label class="required">Project Name :</label></td>
+					<td>
+						<span *ngIf="(this.internalid===undefined)">						
+							<span *ngIf="resourceAllocationProp.PROJECT_CODE !== null">
+					            <select name="PROJECT_CODE" (change)="selectProjectHandler($event)" [(ngModel)]="PROJECT_CODE" required ngModel>
+					                <option value="" selected disabled>Select</option>
+					                <option *ngFor="let x of resourceAllocationProp.PROJECT_CODE" value={{x._id}} >{{x.PROJECT_CODE + ' - '+ x.PROJECT_NAME}}</option>
+					            </select>
+					        </span>				        
+						</span>
+						<span *ngIf="(this.internalid!==undefined)">						
+							<span *ngIf="resourceAllocationProp.PROJECT_CODE !== null">
+					            <select name="PROJECT_CODE" (change)="selectProjectHandler($event)" [(ngModel)]="PROJECT_CODE" required ngModel disabled>
+					                <option value="" selected disabled>Select</option>
+					                <option *ngFor="let x of resourceAllocationProp.PROJECT_CODE" value={{x._id}} >{{x.PROJECT_CODE + ' - '+ x.PROJECT_NAME}}</option>
+					            </select>
+					        </span>			        
+						</span>
+					</td>	
+			</tr>
+			<tr>
+					<td><label class="required">Resource Name :</label></td>
+					<td>
+						<span *ngIf="(this.internalid===undefined)">						
+							<span *ngIf="resourceAllocationProp.userid !== null">
+								
+					            <select name="userid" (change)="selectUseridHandler($event)" [(ngModel)]="userid" required ngModel>
+					                <option value="" selected disabled>Select</option>
+					                <option *ngFor="let x of resourceAllocationProp.userid" value={{x._id}} >{{x.firstname + ' '+ x.middlename+' ' +x.lastname}}</option>
+					            </select>
+					        </span>				        
+						</span>
+						<span *ngIf="(this.internalid!==undefined)">						
+							<span *ngIf="resourceAllocationProp.userid !== null">
+								
+					            <select name="userid" (change)="selectUseridHandler($event)" [(ngModel)]="userid" required ngModel disabled>
+					                <option value="" selected disabled>Select</option>
+					                <option *ngFor="let x of resourceAllocationProp.userid" value={{x._id}} >{{x.firstname + ' '+ x.middlename+' ' +x.lastname}}</option>
+					            </select>
+					        </span>				        
+						</span>
+					</td>	
+			</tr>
+			<tr>
+				<td><label class="required">WON :</label></td>
+				<td>
+									
+							<span *ngIf="resourceAllocationProp.WON !== null">								
+					            <select name="WON" (change)="selectWonHandler($event)" [(ngModel)]="WON" required ngModel>
+					                <option value="" selected disabled>Select</option>
+					                <option *ngFor="let x of resourceAllocationProp.WON" value={{x.WON}} >{{x.WON + '-'+ x.WON_DESC+':' +x.WON_TYPE+'-'+x.OFF_ON+'-'+x.START_DATE+' to '+x.END_DATE}}</option>
+					            </select>
+					        </span>				        
+						
+				</td>
+			</tr>
+			<tr>
+				<td><label class="required">Billing Description :</label></td>
+				<td>
+										
+								<span *ngIf="resourceAllocationProp.BIL_DESC_ID !== null">							
+						            <select name="BIL_DESC_ID" (change)="selectBillingDescHandler($event)" [(ngModel)]="BIL_DESC_ID" required ngModel>
+						                <option value="" selected disabled>Select</option>
+						                <option *ngFor="let x of resourceAllocationProp.BIL_DESC_ID" value={{x._id}} >{{x.DESCRIPTION}}</option>
+						            </select>
+						        </span>				        
+					
+			   </td>
+			<tr>	
+			<tr>
+				<td><label class="required">Billing Rate :</label></td>
+				<td>
+					<input type="number" name="DAILY_RATE" id="DAILY_RATE" placeholder="Billing Rate" [(ngModel)]="DAILY_RATE" required ngModel>
+				</td>
+			</tr>
+			<tr>
+				<td><label class="required">Allocation Start Date :</label></td>
+				<td><input type="Date" name="START_DATE" id="START_DATE" placeholder="Allocation Start Date" [(ngModel)]="START_DATE" required ngModel></td>
+			</tr>
+			<tr>
+				<td><label class="required">Allocation End Date :</label></td>
+				<td><input type="Date" name="END_DATE" id="END_DATE" placeholder="Allocation End Date" [(ngModel)]="END_DATE" required ngModel></td>
+			</tr>	
+	</table>	
+	<h3 *ngIf= "isAdded" >{{confirmationString}}</h3>
+	<input type="submit" value="Save">
+	<span *ngIf="(this.internalid===undefined)">
+		<button (click)="clearFields()">Clear</button>
+	</span>
+</form>
