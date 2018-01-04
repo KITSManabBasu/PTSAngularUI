@@ -56,7 +56,7 @@ export class UpdateFpbillingComponent implements OnInit {
   	this.http.get(environment.apiBaseUrl + 'api/fpbillings/' + targetInternalID +'/'+new Date().getTime()).subscribe(
   		(res: Response)=>{
   			this.existingData=res.json();
-
+        alert(this.existingData[0].WON);
   			this.WON=this.existingData[0].WON;
   			this.bill_amount=this.existingData[0].bill_amount;
   			this.billing_date=this.existingData[0].billing_date;

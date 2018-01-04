@@ -17,10 +17,10 @@
 				<td><label class="required">WON :</label></td>
 				<td>
 					<span *ngIf="(this.internalid===undefined)">
-						<input type="text" name="WON" id="WON" placeholder="Won Number" required minlength="5" maxlength="10" [(ngModel)]="WON" ngModel (change)="isExist()">
+						<input type="Number" name="WON" id="WON" placeholder="Won Number" required minlength="5" maxlength="10" [(ngModel)]="WON" ngModel (change)="isExist()">
 					</span>
 					<span *ngIf="(this.internalid!==undefined)">
-						<input type="text" name="WON" id="WON" placeholder="Won Number" required minlength="5" maxlength="10" [(ngModel)]="WON" ngModel disabled="">
+						<input type="Number" name="WON" id="WON" placeholder="Won Number" required minlength="5" maxlength="10" [(ngModel)]="WON" ngModel disabled="">
 					</span>
 				</td>
 			</tr>
@@ -32,7 +32,7 @@
 				<td><label class="required">Start Date:</label></td>
 				<td>
 					<!--<input type="text" name="START_DATE" id="START_DATE" placeholder="WON Start Date" [(ngModel)]="START_DATE" required ngModel>-->
-				<input type="date" name="START_DATE" id="START_DATE" placeholder="WON Start Date" [(ngModel)]="START_DATE" required ngModel>
+				<input type="Date" name="START_DATE" id="START_DATE" placeholder="WON Start Date" [(ngModel)]="START_DATE" required ngModel>
 				</td>
 			</tr>
 			<tr>
@@ -69,7 +69,7 @@
 					<span *ngIf="wonProp.GEO_ID != null">
 			            <select name="GEO_ID" [(ngModel)]="GEO_ID" required ngModel (change)="selectGeoHandler($event)">
 			            	<option value="" selected disabled>Select</option>
-			                <option *ngFor="let x of wonProp.GEO_ID" value={{x.LOC_ID}} >{{x.LOCATION}}</option>
+			                <option *ngFor="let x of wonProp.GEO_ID" value={{x._id}} >{{x.LOCATION}}</option>
 			            </select>
 			        </span>
 				</td>				

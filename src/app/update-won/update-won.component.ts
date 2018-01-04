@@ -5,6 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import {ActivatedRoute} from '@angular/router';
 import {Router} from '@angular/router'; 
+import { UtilityService } from '../utility.service';
 
 @Component({
   selector: 'app-update-won',
@@ -24,12 +25,14 @@ export class UpdateWonComponent implements OnInit {
 
   WON: string;
   WON_DESC: string;
-  START_DATE: string;
+  START_DATE: Date;
   END_DATE: string;
   WON_TYPE:number;
   OFF_ON:number;
   GEO_ID:number;
   IS_ACTIVE:number;
+  CREATED_BY: string;
+  UPDATED_BY: string;
 
 
   constructor(private router:Router, private route:ActivatedRoute, private http:Http) { }
@@ -46,6 +49,8 @@ export class UpdateWonComponent implements OnInit {
 	  this.getOffon();
 	  this.fetchgeos();
 	  this.getIsActive();
+	  this.CREATED_BY=this.UPDATED_BY=UtilityService.getCurrentSessionID();
+	  alert(UtilityService.getCurrentSessionID());
   }
 
    populateWon=function(targetInternalID: String)
@@ -59,8 +64,10 @@ export class UpdateWonComponent implements OnInit {
   			this.WON_TYPE=this.existingData[0].WON_TYPE;
   			this.OFF_ON=this.existingData[0].OFF_ON;
   			this.IS_ACTIVE=this.existingData[0].IS_ACTIVE;
-  			this.START_DATE=this.existingData[0].START_DATE;
-  			this.END_DATE=this.existingData[0].END_DATE;
+  			//this.START_DATE=this.existingData[0].START_DATE;
+  			this.START_DATE=UtilityService.convertISOtoStringDate(this.existingData[0].START_DATE);
+  			//this.END_DATE=this.existingData[0].END_DATE;
+  			this.END_DATE=UtilityService.convertISOtoStringDate(this.existingData[0].END_DATE);	
   			this.GEO_ID=this.existingData[0].GEO_ID;
   		}
   		)
@@ -125,10 +132,10 @@ export class UpdateWonComponent implements OnInit {
 		"END_DATE":data.END_DATE,	
 		"GEO_ID":(this.selectedGeo==='')?this.GEO_ID:this.selectedGeo,
 		"OWNER_NUMBER":0,
-		"CREATED_BY" : "0",
-		"CREATED_ON" : "12-12-2017",
-		"UPDATED_BY" : "0",
-		"UPDATED_ON" :"12-12-2020"
+		"CREATED_BY" : this.CREATED_BY,
+		//"CREATED_ON" : "12-12-2017",
+		"UPDATED_BY" : this.UPDATED_BY,
+		//"UPDATED_ON" :"12-12-2020"
 		}
 		//alert(JSON.stringify(this.dataObj));
 		
@@ -176,7 +183,7 @@ export class UpdateWonComponent implements OnInit {
 	{
 		  this.WON='';
 		  this.WON_DESC='';
-		  this.START_DATE='';
+		  this.START_DATE=null;
 		  this.END_DATE='';
 		  this.WON_TYPE=0;
 		  this.OFF_ON=0;
