@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import {ActivatedRoute} from '@angular/router';
 import {Router} from '@angular/router'; 
 import { UtilityService } from '../utility.service';
+import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-update-won',
@@ -26,16 +27,17 @@ export class UpdateWonComponent implements OnInit {
   WON: string;
   WON_DESC: string;
   START_DATE: Date;
-  END_DATE: string;
-  WON_TYPE:number;
+  END_DATE: Date;
+  WON_TYPE:string;
   OFF_ON:number;
-  GEO_ID:number;
+  GEO_ID:string;
   IS_ACTIVE:number;
   CREATED_BY: string;
   UPDATED_BY: string;
+  OWNER_ID:string;
 
 
-  constructor(private router:Router, private route:ActivatedRoute, private http:Http) { }
+  constructor(private router:Router, private route:ActivatedRoute, private http:Http,private ng4LoadingSpinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
    this.route.params.subscribe(params=>{
@@ -49,8 +51,8 @@ export class UpdateWonComponent implements OnInit {
 	  this.getOffon();
 	  this.fetchgeos();
 	  this.getIsActive();
+	  this.fetchOwners();
 	  this.CREATED_BY=this.UPDATED_BY=UtilityService.getCurrentSessionID();
-	  alert(UtilityService.getCurrentSessionID());
   }
 
    populateWon=function(targetInternalID: String)
@@ -58,17 +60,20 @@ export class UpdateWonComponent implements OnInit {
 		this.http.get(environment.apiBaseUrl + 'api/wons/' + targetInternalID +'/'+new Date().getTime()).subscribe(
   		(res: Response)=>{
   			this.existingData=res.json();
+  			
+  			if(this.existingData!==null)
+  			{
 
-  			this.WON=this.existingData[0].WON;
-  			this.WON_DESC=this.existingData[0].WON_DESC;
-  			this.WON_TYPE=this.existingData[0].WON_TYPE;
-  			this.OFF_ON=this.existingData[0].OFF_ON;
-  			this.IS_ACTIVE=this.existingData[0].IS_ACTIVE;
-  			//this.START_DATE=this.existingData[0].START_DATE;
-  			this.START_DATE=UtilityService.convertISOtoStringDate(this.existingData[0].START_DATE);
-  			//this.END_DATE=this.existingData[0].END_DATE;
-  			this.END_DATE=UtilityService.convertISOtoStringDate(this.existingData[0].END_DATE);	
-  			this.GEO_ID=this.existingData[0].GEO_ID;
+  			this.WON=this.existingData.WON;
+  			this.WON_DESC=this.existingData.WON_DESC;
+  			this.WON_TYPE=this.existingData.WON_TYPE;
+  			this.OWNER_ID=this.existingData.OWNER_ID;
+  			this.OFF_ON=this.existingData.OFF_ON;
+  			this.IS_ACTIVE=this.existingData.IS_ACTIVE;
+  			this.START_DATE=UtilityService.convertISOtoStringDate(this.existingData.START_DATE);
+  			this.END_DATE=UtilityService.convertISOtoStringDate(this.existingData.END_DATE);	
+  			this.GEO_ID=this.existingData.GEO_ID;
+  			}
   		}
   		)
 	}  
@@ -93,6 +98,15 @@ export class UpdateWonComponent implements OnInit {
   		}
   		)
      }
+     fetchOwners= function(){
+     this.ng4LoadingSpinnerService.show();
+      this.http.get(environment.apiBaseUrl + 'api/users').subscribe(
+  		(res: Response)=>{
+  			this.wonProp.OWNER_ID=res.json();
+  			this.ng4LoadingSpinnerService.hide();
+  		}
+  		)
+     }
 	getIsActive=function(){
 		this.isActive = Array<DropdownValue>();
 		this.isActive.push(new DropdownValue(1, 'Yes'));
@@ -102,6 +116,10 @@ export class UpdateWonComponent implements OnInit {
 	selectedWon: string='';
 	selectWonHandler(event:any){
 	  this.selectedWon=event.target.value;
+	  }  
+	selectedOwner: string='';  
+	selectOwnerHandler(event:any){
+	  this.selectedOwner=event.target.value;
 	  }  
 
 	selectedOffon: string='';
@@ -131,11 +149,9 @@ export class UpdateWonComponent implements OnInit {
 		"START_DATE":data.START_DATE,	
 		"END_DATE":data.END_DATE,	
 		"GEO_ID":(this.selectedGeo==='')?this.GEO_ID:this.selectedGeo,
-		"OWNER_NUMBER":0,
-		"CREATED_BY" : this.CREATED_BY,
-		//"CREATED_ON" : "12-12-2017",
-		"UPDATED_BY" : this.UPDATED_BY,
-		//"UPDATED_ON" :"12-12-2020"
+		"OWNER_ID":(this.selectedOwner==='')?this.OWNER_ID:this.selectedOwner,
+		"CREATED_BY" : this.CREATED_BY,		
+		"UPDATED_BY" : this.UPDATED_BY,		
 		}
 		//alert(JSON.stringify(this.dataObj));
 		
@@ -167,7 +183,7 @@ export class UpdateWonComponent implements OnInit {
 		this.http.get(environment.apiBaseUrl + 'api/wons/' + this.WON).subscribe(
   		(res: Response)=>{
   			this.datafindbyid=res.json();  			
-  			if(this.datafindbyid.length>0)
+  			if(this.datafindbyid!==null)
   				{ 
   					alert('WON Already exist');
   					this.WON='';
@@ -184,10 +200,10 @@ export class UpdateWonComponent implements OnInit {
 		  this.WON='';
 		  this.WON_DESC='';
 		  this.START_DATE=null;
-		  this.END_DATE='';
+		  this.END_DATE=null;
 		  this.WON_TYPE=0;
 		  this.OFF_ON=0;
-		  this.GEO_ID=0;
+		  this.GEO_ID='';
 		  this.IS_ACTIVE=0;	    
 	}
 }
@@ -196,7 +212,8 @@ export class WonProp
 		WON_TYPE:DropdownValue;	
 		OFF_ON:DropdownValue;	
 		GEO_ID: Object[];	
-		IS_ACTIVE:DropdownValue;	
+		IS_ACTIVE:DropdownValue;
+		OWNER_ID: Object[];	
 }
 export class DropdownValue
 {

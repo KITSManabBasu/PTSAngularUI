@@ -1,3 +1,4 @@
+<ng4-loading-spinner></ng4-loading-spinner>
 <a routerLink='/won'>View Won</a>
 <span *ngIf="(this.internalid!==undefined)">
 			<a routerLink='/updateWon'>Add Won</a>
@@ -44,10 +45,21 @@
 			<tr>
 				<td><label class="required">WON Type:</label></td>
 				<td>
-					<span *ngIf="wonProp.WON_TYPE != null">
+					<span *ngIf="wonProp.WON_TYPE != null">						
 		            <select name="WON_TYPE" (change)="selectWonHandler($event)" [(ngModel)]="WON_TYPE" required ngModel>
 		                <option value="" selected disabled>Select</option>
 		                <option *ngFor="let x of wonProp.WON_TYPE" value={{x.name}} >{{x.name}}</option>
+		            </select>
+		            </span>		        	
+				</td>
+			</tr>
+			<tr>
+				<td><label class="required">Owner:</label></td>
+				<td>
+					<span *ngIf="wonProp.OWNER_ID != null">
+		            <select name="OWNER_ID" (change)="selectOwnerHandler($event)" [(ngModel)]="OWNER_ID" required ngModel>
+		                <option value="" selected disabled>Select</option>
+		                <option *ngFor="let x of wonProp.OWNER_ID" value={{x._id}}  >{{x.firstname}} {{x.lastname}}</option>
 		            </select>
 		            </span>		        	
 				</td>
