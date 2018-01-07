@@ -29,7 +29,9 @@ import { UpdateBillingdescriptionComponent } from './update-billingdescription/u
 import { FreezeComponent } from './freeze/freeze.component';
 import { BillingextractComponent } from './billingextract/billingextract.component';
 import { LoginFormComponent } from './login-form/login-form.component';
+import { TimesheetComponent } from './timesheet/timesheet.component';
 //import { UtilityService } from './utility.service';
+import { OnlyNumber } from './onlynumber.directive';
 
 
 
@@ -53,7 +55,9 @@ import { LoginFormComponent } from './login-form/login-form.component';
     UpdateBillingdescriptionComponent,
     FreezeComponent,
     BillingextractComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    TimesheetComponent,
+    OnlyNumber
   ],
   imports: [
     BrowserModule,
@@ -81,7 +85,9 @@ import { LoginFormComponent } from './login-form/login-form.component';
 
     {path:"resourceallocation",canActivate: [AuthguardGuard],component: ResourceallocationComponent},
     {path:"updateResourceallocation/:id",canActivate: [AuthguardGuard],component: UpdateResourceallocationComponent},
-    {path:"updateResourceallocation",canActivate: [AuthguardGuard],component: UpdateResourceallocationComponent}, 
+    {path:"updateResourceallocation",canActivate: [AuthguardGuard],component: UpdateResourceallocationComponent},
+
+    {path:"timesheet",component: TimesheetComponent},
 
     {path:"billingdescription",canActivate: [AuthguardGuard],component: BillingdescriptionComponent},
     {path:"updateBillingdescription/:id",canActivate: [AuthguardGuard],component: UpdateBillingdescriptionComponent},

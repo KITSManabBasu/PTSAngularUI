@@ -51,6 +51,7 @@ ngAfterViewInit() {
                    //{"title":"Add FP Billing","link":"/updateFpbilling"},  
                    {"title":"Resource Allocation","link":"/resourceallocation"},
                    //{"title":"Add Resource Allocation","link":"/updateResourceallocation"},
+                   {"title":"Timesheet","link":"/timesheet"},
                    {"title":"Billing Description","link":"/billingdescription"},
                    {"title":"Freeze","link":"/freeze"},                
                   ]
