@@ -1,3 +1,13 @@
+<!--
+"isLoggedIn$ | async"
+<span *ngIf="isLoggedIn$ | async">
+			User Logged In
+</span>
+<span *ngIf="isLoggedIn===false">
+			User Not Logged In
+</span>-->
+
+
 <cuppa-slidemenu  [menulist]="menuItemsArray" (open)="onMenuOpen()" (close)="onMenuClose()" (onItemSelect)="onItemSelect($event)"></cuppa-slidemenu>
 
 <div class="container">

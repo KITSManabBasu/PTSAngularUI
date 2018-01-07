@@ -1,6 +1,8 @@
 	import { Component } from '@angular/core';
   import { AuthguardGuard } from './authguard.guard';
   import { UserService } from './user.service'; 
+  import { UtilityService } from './utility.service';
+  import { Observable } from 'rxjs/Observable';
 
 	@Component({
 	  selector: 'app-root',
@@ -12,7 +14,18 @@
 
 
 	export class AppComponent {
-	  title = 'app works!';
+	  title = 'PTS Reimagined!';
+
+
+     isLoggedIn$: Observable<boolean>; 
+     constructor(private userService: UserService) { }
+      ngOnInit() {
+       this.isLoggedIn$ = this.userService.isUserLoggedIn;
+    }
+
+ngAfterViewInit() {
+       // alert(UtilityService.getCurrentSessionID());
+    }
    
 
   public menuItemsArray: any[] = [ 

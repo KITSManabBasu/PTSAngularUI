@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {UserService} from '../user.service';
+import { UtilityService } from '../utility.service';
 
 @Component({
   selector: 'app-login-form',
@@ -15,6 +16,14 @@ export class LoginFormComponent implements OnInit {
   sessionStorage.removeItem("userID");
   sessionStorage.clear();
   }
+
+  isUserLogin= function(){
+  if(UtilityService.getCurrentSessionID()!==null)
+    return true;
+  else
+    return false;  
+}
+  
   loginUser(e) {
   	e.preventDefault();
   	console.log(e);

@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class UserService {
 
-  private isUserLoggedIn;
+  public isUserLoggedIn;
   private username;
 
   constructor() { 
