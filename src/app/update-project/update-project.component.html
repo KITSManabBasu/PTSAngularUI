@@ -34,7 +34,7 @@
 					<span *ngIf="projectProp.BUSINESS_AREA_ID != null">
 		            <select name="BUSINESS_AREA_ID" (change)="selectBusinessAreaHandler($event)" [(ngModel)]="BUSINESS_AREA_ID" required ngModel>
 		                <option value="" selected disabled>Select</option>
-		                <option *ngFor="let x of projectProp.BUSINESS_AREA_ID" value={{x.BUSINESS_AREA_ID}} >{{x.BUSINESS_AREA_DESC}}</option>
+		                <option *ngFor="let x of projectProp.BUSINESS_AREA_ID" value={{x._id}} >{{x.BUSINESS_AREA_DESC}}</option>
 		            </select>
 		            </span>		        	
 				</td>
@@ -45,7 +45,7 @@
 					<span *ngIf="projectProp.PROJECT_TYPE_ID != null">
 		            <select name="PROJECT_TYPE_ID" (change)="selectProjectTypeHandler($event)" [(ngModel)]="PROJECT_TYPE_ID" required ngModel>
 		                <option value="" selected disabled>Select</option>
-		                <option *ngFor="let x of projectProp.PROJECT_TYPE_ID" value={{x.PROJECT_TYPE_ID}} >{{x.PROJECT_TYPE_DESC}}</option>
+		                <option *ngFor="let x of projectProp.PROJECT_TYPE_ID" value={{x._id}} >{{x.PROJECT_TYPE_DESC}}</option>
 		            </select>
 		            </span>		        	
 				</td>

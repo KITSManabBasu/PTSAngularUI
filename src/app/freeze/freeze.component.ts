@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import {Http, Response, Headers} from '@angular/http'
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx'; 
+import { UtilityService } from '../utility.service';
 import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
 
 @Component({
@@ -24,14 +25,15 @@ export class FreezeComponent implements OnInit {
     StartDate:string;
     EndDate: string;
     Freeze: boolean;    
-    UpdatedBy:string;
-    UpdatedOn:string;
+    CREATED_BY: string;
+    UPDATED_BY: string;
     
   constructor(private http:Http,private ng4LoadingSpinnerService: Ng4LoadingSpinnerService) { }
   private headers=new Headers({'Content-Type':'application/json'});
 
   ngOnInit() {
   	this.populateFreezeData();
+    this.CREATED_BY=this.UPDATED_BY=UtilityService.getCurrentSessionID();
   }
   populateFreezeData=function()
 	{
@@ -40,11 +42,10 @@ export class FreezeComponent implements OnInit {
   			this.existingData=res.json();
 
   			this.SLNO=this.existingData[0].SLNO;
-  			this.StartDate=this.existingData[0].StartDate;
-  			this.EndDate=this.existingData[0].EndDate;
+  			this.StartDate=UtilityService.convertISOtoStringDate(this.existingData[0].StartDate);
+  			this.EndDate=UtilityService.convertISOtoStringDate(this.existingData[0].EndDate);
   			this.Freeze=this.existingData[0].Freeze;
-  			this.UpdatedBy=this.existingData[0].UpdatedBy;
-  			this.UpdatedOn=this.existingData[0].UpdatedOn;
+        
   			
   			//alert(JSON.stringify(this.existingData));
   						
@@ -58,8 +59,8 @@ export class FreezeComponent implements OnInit {
 		"StartDate":data.StartDate,
 		"EndDate":data.EndDate,
 		"Freeze":data.Freeze,
-		"UpdatedBy":data.UpdatedBy,
-		"UpdatedOn":data.UpdatedOn,			
+		"CREATED_BY" : this.CREATED_BY,
+        "UPDATED_BY" : this.UPDATED_BY,
 		}
 		//alert(JSON.stringify(this.dataObj));
   			console.log('Update Called');

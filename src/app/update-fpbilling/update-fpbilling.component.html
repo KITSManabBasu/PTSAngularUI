@@ -21,7 +21,7 @@
 						<span *ngIf="fpbillingProp.WON != null">
 				            <select name="WON" (change)="selectWONHandler($event)" [(ngModel)]="WON" required ngModel>
 				                <option value="" selected disabled>Select</option>
-				                <option *ngFor="let x of fpbillingProp.WON" value={{x.WON}} >{{x.WON + '-' +x.WON_DESC}}</option>
+				                <option *ngFor="let x of fpbillingProp.WON" value={{x._id}} >{{x.WON + '-' +x.WON_DESC}}</option>
 				            </select>
 				        </span>	
 					</span>
@@ -29,7 +29,7 @@
 						<span *ngIf="fpbillingProp.WON != null">
 				            <select name="WON" (change)="selectWONHandler($event)" [(ngModel)]="WON" required ngModel disabled>
 				                <option value="" selected disabled>Select</option>
-				                <option *ngFor="let x of fpbillingProp.WON" value={{x.WON}} >{{x.WON + '-' +x.WON_DESC}}</option>
+				                <option *ngFor="let x of fpbillingProp.WON" value={{x._id}} >{{x.WON + '-' +x.WON_DESC}}</option>
 				            </select>
 				        </span>	
 					</span>

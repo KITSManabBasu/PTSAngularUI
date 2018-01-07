@@ -57,7 +57,7 @@
 				<span *ngIf="userprop.roles != null">
 			            <select name="role" (change)="selectRoleHandler($event)" [(ngModel)]="role" required ngModel >
 			            	<option value="" selected disabled>Select</option>
-			                <option *ngFor="let x of userprop.roles" value={{x.ROLE_ID}} >{{x.ROLE_DESC}}</option>			               
+			                <option *ngFor="let x of userprop.roles" value={{x._id}} >{{x.ROLE_DESC}}</option>			               
 			            </select>
 			    </span>	
 			    				
@@ -78,7 +78,7 @@
 					<span *ngIf="userprop.teams != null">
 			            <select name="teams" (change)="selectTeamHandler($event)" [(ngModel)]="team" required ngModel>
 			            	<option value="" selected disabled>Select</option>
-			                <option *ngFor="let x of userprop.teams" value={{x.TEAM_ID}} >{{x.TEAM_NAME}}</option>
+			                <option *ngFor="let x of userprop.teams" value={{x._id}} >{{x.TEAM_NAME}}</option>
 			            </select>
 			         </span>   
 			        </td>
@@ -99,7 +99,7 @@
 					<span *ngIf="userprop.billingtypes != null">
 			            <select name="billingtypes" [(ngModel)]="billingtypes" required ngModel (change)="selectBillingTypeHandler($event)">
 			            	<option value="" selected disabled>Select</option>
-			                <option *ngFor="let x of userprop.billingtypes" value={{x.BILL_TYPE_ID}} >{{x.BILL_TYPE_DESC}}</option>
+			                <option *ngFor="let x of userprop.billingtypes" value={{x._id}} >{{x.BILL_TYPE_DESC}}</option>
 			        </select>
 			    </span>		        	
 				</td>
@@ -108,7 +108,7 @@
 				<td><label class="required">Team Lead :</label></td>
 				<td>
 					<span *ngIf="userprop.teamleads != null">
-			            <select name="teamleads" [(ngModel)]="teamleads" required ngModel (change)="selectTeamLeadHandler($event)">
+			            <select name="teamleads" [(ngModel)]="teamleads"  ngModel (change)="selectTeamLeadHandler($event)">
 			            	<option value="" selected disabled>Select</option>
 			                <option *ngFor="let x of userprop.teamleads" value={{x._id}} >{{x.firstname}} {{x.lastname}}</option>
 			            </select>
@@ -119,7 +119,7 @@
 					<span *ngIf="userprop.locs != null">
 			            <select name="locs" (change)="selectLocsHandler($event)" [(ngModel)]="locs" required ngModel>
 			            	<option value="" selected disabled>Select</option>
-			                <option *ngFor="let x of userprop.locs" value={{x.LOC_ID}} >
+			                <option *ngFor="let x of userprop.locs" value={{x._id}} >
 			                		{{x.LOCATION}}
 			            	</option>
 			            </select>
@@ -132,7 +132,7 @@
 					<span *ngIf="userprop.desigs != null">
 			            <select name="desigs" [(ngModel)]="desigs" required ngModel (change)="selectDesigHandler($event)">
 			            	<option value="" selected disabled>Select</option>
-			                <option *ngFor="let x of userprop.desigs" value={{x.DESGN_ID}}  >{{x.DESGN_DESC}}</option>
+			                <option *ngFor="let x of userprop.desigs" value={{x._id}}  >{{x.DESGN_DESC}}</option>
 			            </select>
 			    </span>		        	
 				</td>
@@ -145,7 +145,7 @@
 					<span *ngIf="userprop.usertypes != null">
 			            <select name="usertypes" [(ngModel)]="usertypes" required ngModel (change)="selectUserTypeHandler($event)">
 			                <option value="" selected disabled>Select</option>
-			                <option *ngFor="let x of userprop.usertypes" value={{x.USER_TYPE_ID}} >{{x.USER_TYPE_DESC}}</option>
+			                <option *ngFor="let x of userprop.usertypes" value={{x._id}} >{{x.USER_TYPE_DESC}}</option>
 			            </select>
 			    </span>		        	
 				</td>
@@ -154,7 +154,7 @@
 					<span *ngIf="userprop.companies != null">
 			            <select name="companies" [(ngModel)]="companies" required ngModel (change)="selectCompanyHandler($event)">
 			            	<option value="" selected disabled>Select</option>
-			                <option *ngFor="let x of userprop.companies" value={{x.COMPANY_ID}} >{{x.COMPANY_NAME}}</option>
+			                <option *ngFor="let x of userprop.companies" value={{x._id}} >{{x.COMPANY_NAME}}</option>
 			            </select>
 			        </span>		        	
 				</td>
@@ -176,7 +176,7 @@
 					<span *ngIf="userprop.geos != null">
 			            <select name="geos" [(ngModel)]="geos" required ngModel (change)="selectGeoHandler($event)">
 			            	<option value="" selected disabled>Select</option>
-			                <option *ngFor="let x of userprop.geos" value={{x.LOC_ID}} >{{x.LOCATION}}</option>
+			                <option *ngFor="let x of userprop.geos" value={{x._id}} >{{x.LOCATION}}</option>
 			            </select>
 			        </span>
 				</td>

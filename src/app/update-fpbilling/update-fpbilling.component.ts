@@ -5,6 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import {ActivatedRoute} from '@angular/router';
 import {Router} from '@angular/router';
+import { UtilityService } from '../utility.service';
 import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
 
 @Component({
@@ -22,14 +23,12 @@ export class UpdateFpbillingComponent implements OnInit {
     existingData:object={};
 
    
-    WON:number;
+    WON:string;
     bill_amount:number;
-    billing_date: string;
+    billing_date: Date;
     bil_desc_id: string;
-    CREATED_BY:string;
-    CREATED_ON:string;
-    UPDATED_BY:string;
-    UPDATED_ON:string;
+    CREATED_BY: string;
+    UPDATED_BY: string;
 
   constructor(private router:Router, private route:ActivatedRoute, private http:Http,private ng4LoadingSpinnerService: Ng4LoadingSpinnerService) { }
 
@@ -50,21 +49,23 @@ export class UpdateFpbillingComponent implements OnInit {
 	  });
 	  this.fpbillingProp = new FpbillingProp();
 	  this.fetchWons();
+    this.CREATED_BY=this.UPDATED_BY=UtilityService.getCurrentSessionID();
   }
   populateFpdetails=function(targetInternalID: String)
   {
   	this.http.get(environment.apiBaseUrl + 'api/fpbillings/' + targetInternalID +'/'+new Date().getTime()).subscribe(
   		(res: Response)=>{
   			this.existingData=res.json();
-        alert(this.existingData[0].WON);
-  			this.WON=this.existingData[0].WON;
-  			this.bill_amount=this.existingData[0].bill_amount;
-  			this.billing_date=this.existingData[0].billing_date;
-  			this.bil_desc_id=this.existingData[0].bil_desc_id;
-  			this.CREATED_BY=this.existingData[0].CREATED_BY;
-  			this.CREATED_ON=this.existingData[0].CREATED_ON;
-  			this.UPDATED_BY=this.existingData[0].UPDATED_BY;
-  			this.UPDATED_ON=this.existingData[0].UPDATED_ON;  			
+        //alert(this.existingData[0].WON);
+        if(this.existingData!==null)
+        {
+  			this.WON=this.existingData.WON;
+  			this.bill_amount=this.existingData.bill_amount;
+  			//this.billing_date=this.existingData.billing_date;
+        this.billing_date=UtilityService.convertISOtoStringDate(this.existingData.billing_date);
+  			this.bil_desc_id=this.existingData.bil_desc_id;
+  			
+        }			
   		}
   		)
   }
@@ -89,12 +90,10 @@ export class UpdateFpbillingComponent implements OnInit {
 		"bill_amount":data.bill_amount,
 		"billing_date":data.billing_date,
 		"bil_desc_id":data.bil_desc_id,
-		"CREATED_BY":data.CREATED_BY,
-		"CREATED_ON":data.CREATED_ON,
-		"UPDATED_BY":data.UPDATED_BY,		
-		"UPDATED_ON":data.UPDATED_ON,
+		"CREATED_BY" : this.CREATED_BY,
+    "UPDATED_BY" : this.UPDATED_BY,
 		}
-		//alert(JSON.stringify(this.dataObj));
+		alert(JSON.stringify(this.dataObj));
 		
 		if(this.internalid!==undefined)
   		{
@@ -121,9 +120,9 @@ export class UpdateFpbillingComponent implements OnInit {
 	}
  clearFields()
 	{
-		  this.WON=0;
+		  this.WON='';
 		  this.bill_amount=0;
-		  this.billing_date='';
+		  this.billing_date=null;
 		  this.bil_desc_id='';	  			  
 	} 
 

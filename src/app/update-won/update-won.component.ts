@@ -29,7 +29,7 @@ export class UpdateWonComponent implements OnInit {
   START_DATE: Date;
   END_DATE: Date;
   WON_TYPE:string;
-  OFF_ON:number;
+  OFF_ON:string;
   GEO_ID:string;
   IS_ACTIVE:number;
   CREATED_BY: string;
@@ -201,8 +201,8 @@ export class UpdateWonComponent implements OnInit {
 		  this.WON_DESC='';
 		  this.START_DATE=null;
 		  this.END_DATE=null;
-		  this.WON_TYPE=0;
-		  this.OFF_ON=0;
+		  this.WON_TYPE='';
+		  this.OFF_ON='';
 		  this.GEO_ID='';
 		  this.IS_ACTIVE=0;	    
 	}

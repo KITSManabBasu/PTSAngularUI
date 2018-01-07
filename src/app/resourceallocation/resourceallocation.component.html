@@ -24,14 +24,14 @@
   	<tr *ngFor="let allocation of allocations">
 		<td style="display: none;">{{allocation._id}}</td>
 		
-		<td style="width: 5%">{{allocation.username}}</td>
-		<td style="width: 5%">{{allocation.useremployeeid}}</td>
+		<td style="width: 5%">{{allocation.userid.userid}}</td>
+		<td style="width: 5%">{{allocation.userid.employeeid}}</td>
 		
-		<td style="width: 20%">{{allocation.PROJECT_NAME}}</td>
-		<td style="width: 5%">{{allocation.WON}} '-' {{allocation.WONDESC}}</td>		
-		<td style="width: 5%">{{allocation.BIL_DESC}} - {{allocation.BILLTYPE}}</td>	
-		<td style="width: 5%">{{allocation.START_DATE}}</td>
-		<td style="width: 5%">{{allocation.END_DATE}}</td>	
+		<td style="width: 20%">{{allocation.PROJECT_CODE.PROJECT_CODE}} '-' {{allocation.PROJECT_CODE.PROJECT_NAME}}</td>
+		<td style="width: 5%">{{allocation.WON.WON}} '-' {{allocation.WON.WON_DESC}}</td>		
+		<td style="width: 5%">{{allocation.BIL_DESC_ID.DESCRIPTION}} - {{allocation.BIL_DESC_ID.TYPE}}</td>	
+		<td style="width: 5%">{{convertISODatetoString(allocation.START_DATE)}}</td>
+		<td style="width: 5%">{{convertISODatetoString(allocation.END_DATE)}}</td>	
 		<td style="width: 5%">{{allocation.DAILY_RATE}}</td>			
 		<td style="width: 2%" (click)="deleteAllocations(allocation._id)"><a>DELETE</a></td>
 		<td style="width: 2%" [routerLink]="['/updateResourceallocation',allocation._id]" ><a>UPDATE</a></td>

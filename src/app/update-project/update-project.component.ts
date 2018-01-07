@@ -5,6 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import {ActivatedRoute} from '@angular/router';
 import {Router} from '@angular/router'; 
+import { UtilityService } from '../utility.service';
 
 @Component({
   selector: 'app-update-project',
@@ -27,12 +28,12 @@ export class UpdateProjectComponent implements OnInit {
     PROJECT_TYPE_ID:number;
     ACTIVE:number;
 
-    BUDGET_CATEGORY_ID:number;
-    PROJECT_CATEGORY_ID:number;
+    BUDGET_CATEGORY_ID:string;
+    PROJECT_CATEGORY_ID:string;
     BS_NON_BS:string;
     BUDGET_TYPE:string;
-    USER_ID:string;
-    STMP:string;
+    CREATED_BY: string;
+  	UPDATED_BY: string;
 
 
   constructor(private router:Router, private route:ActivatedRoute, private http:Http) { }
@@ -48,6 +49,9 @@ export class UpdateProjectComponent implements OnInit {
 	  this.fetchbusinessareas();
 	  this.fetchprojecttypes();
 	  this.getIsActive();
+	  this.CREATED_BY=this.UPDATED_BY=UtilityService.getCurrentSessionID();
+	  this.BUDGET_CATEGORY_ID='5a50a714f36d287cf86bece1';
+	  this.PROJECT_CATEGORY_ID='5a50a5d7f36d287cf86becdb';
   }
 
   populateProjectdetails=function(targetInternalID: String)
@@ -55,20 +59,18 @@ export class UpdateProjectComponent implements OnInit {
 		this.http.get(environment.apiBaseUrl + 'api/projectdetails/' + targetInternalID +'/'+new Date().getTime()).subscribe(
   		(res: Response)=>{
   			this.existingData=res.json();
-
-  			this.PROJECT_CODE=this.existingData[0].PROJECT_CODE;
-  			this.PROJECT_NAME=this.existingData[0].PROJECT_NAME;
-  			this.BUSINESS_AREA_ID=this.existingData[0].BUSINESS_AREA_ID;
-  			this.PROJECT_TYPE_ID=this.existingData[0].PROJECT_TYPE_ID;
-  			this.ACTIVE=this.existingData[0].ACTIVE;
-
-  			this.BUDGET_CATEGORY_ID=this.existingData[0].BUDGET_CATEGORY_ID;
-  			this.PROJECT_CATEGORY_ID=this.existingData[0].PROJECT_CATEGORY_ID;
-  			this.BS_NON_BS=this.existingData[0].BS_NON_BS;
-  			this.BUDGET_TYPE=this.existingData[0].BUDGET_TYPE;
-  			this.USER_ID=this.existingData[0].USER_ID;
-  			this.STMP=this.existingData[0].STMP;
+  			if(this.existingData!==null)
+  			{
+  				this.PROJECT_CODE=this.existingData.PROJECT_CODE;
+  				this.PROJECT_NAME=this.existingData.PROJECT_NAME;
+  				this.BUSINESS_AREA_ID=this.existingData.BUSINESS_AREA_ID;
+  				this.PROJECT_TYPE_ID=this.existingData.PROJECT_TYPE_ID;
+  				this.ACTIVE=this.existingData.ACTIVE;  				
+  				this.BS_NON_BS=this.existingData.BS_NON_BS;
+  				this.BUDGET_TYPE=this.existingData.BUDGET_TYPE;  				
   			//alert(JSON.stringify(this.existingData));
+  			}
+  			
   		}
   		)
 	}
@@ -98,7 +100,7 @@ export class UpdateProjectComponent implements OnInit {
 		this.http.get(environment.apiBaseUrl + 'api/projectdetails/' + this.PROJECT_CODE).subscribe(
   		(res: Response)=>{
   			this.datafindbyid=res.json();  			
-  			if(this.datafindbyid.length>0)
+  			if(this.datafindbyid!==null)
   				{ 
   					alert('Project Code Already exist');
   					this.PROJECT_CODE='';
@@ -132,12 +134,12 @@ export class UpdateProjectComponent implements OnInit {
 		"BUSINESS_AREA_ID":(this.selectedBusinessArea==='')?this.BUSINESS_AREA_ID:this.selectedBusinessArea,
 		"PROJECT_TYPE_ID":(this.selectedProjectType==='')?this.PROJECT_TYPE_ID:this.selectedProjectType,
 		"ACTIVE":(this.selectedActive==='')?this.ACTIVE:this.selectedActive,
-		"BUDGET_CATEGORY_ID":1,	
-		"PROJECT_CATEGORY_ID":1,
+		"BUDGET_CATEGORY_ID":this.BUDGET_CATEGORY_ID ,	
+		"PROJECT_CATEGORY_ID":this.PROJECT_CATEGORY_ID,
 		"BS_NON_BS":"BS",
 		"BUDGET_TYPE":"Cap",
-		"USER_ID":this.USER_ID,
-		"STMP":this.STMP
+		"CREATED_BY" : this.CREATED_BY,
+		"UPDATED_BY" : this.UPDATED_BY
 		}
 		//alert(JSON.stringify(this.dataObj));
 		
@@ -170,13 +172,9 @@ export class UpdateProjectComponent implements OnInit {
 		  this.PROJECT_NAME='';
 		  this.BUSINESS_AREA_ID=0;
 		  this.PROJECT_TYPE_ID=0;
-		  this.ACTIVE=0;
-		  this.BUDGET_CATEGORY_ID=0;
-		  this.PROJECT_CATEGORY_ID=0;		  
+		  this.ACTIVE=0;		   
 		  this.BS_NON_BS='';
-		  this.BUDGET_TYPE='';
-		  this.USER_ID='';
-		  this.STMP='';		  			  
+		  this.BUDGET_TYPE='';		   			  
 	}
 }
 export class ProjectProp  

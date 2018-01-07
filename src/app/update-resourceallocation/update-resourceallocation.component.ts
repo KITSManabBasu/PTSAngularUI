@@ -5,6 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx';
 import {ActivatedRoute} from '@angular/router';
 import {Router} from '@angular/router';
+import { UtilityService } from '../utility.service';
 import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
 
 @Component({
@@ -27,9 +28,11 @@ export class UpdateResourceallocationComponent implements OnInit {
     PROJECT_CODE:string;
     WON: number;
     BIL_DESC_ID: string;
-    START_DATE:string;
-    END_DATE:string;
+    START_DATE:Date;
+    END_DATE:Date;
     DAILY_RATE:number;
+    CREATED_BY: string;
+    UPDATED_BY: string;
     
 
   constructor(private router:Router, private route:ActivatedRoute, private http:Http,private ng4LoadingSpinnerService: Ng4LoadingSpinnerService) { }
@@ -54,21 +57,23 @@ export class UpdateResourceallocationComponent implements OnInit {
   		}
   		//this.UPDATED_BY=usersessionID;
 	  });
+    this.CREATED_BY=this.UPDATED_BY=UtilityService.getCurrentSessionID();
   }
   populateAllocationdetails=function(targetInternalID: String)
   {
   	this.http.get(environment.apiBaseUrl + 'api/allocations/' + targetInternalID +'/'+new Date().getTime()).subscribe(
   		(res: Response)=>{
   			this.existingData=res.json();
-
-  			this.PROJECT_CODE=this.existingData[0].PROJECT_CODE;
-  			this.userid=this.existingData[0].userid;
-  			this.WON=this.existingData[0].WON;
-  			this.BIL_DESC_ID=this.existingData[0].BIL_DESC_ID;
-  			this.START_DATE=this.existingData[0].START_DATE;
-  			this.END_DATE=this.existingData[0].END_DATE;
-  			this.DAILY_RATE=this.existingData[0].DAILY_RATE;
-
+        if(this.existingData!==null)
+        {
+    			this.PROJECT_CODE=this.existingData.PROJECT_CODE;
+    			this.userid=this.existingData.userid;
+    			this.WON=this.existingData.WON;
+    			this.BIL_DESC_ID=this.existingData.BIL_DESC_ID;
+    			this.START_DATE=UtilityService.convertISOtoStringDate(this.existingData.START_DATE);
+    			this.END_DATE=UtilityService.convertISOtoStringDate(this.existingData.END_DATE);
+    			this.DAILY_RATE=this.existingData.DAILY_RATE;
+        }
   			//alert(JSON.stringify(this.existingData));
   						
   		}
@@ -113,7 +118,7 @@ export class UpdateResourceallocationComponent implements OnInit {
   		}
   		)
     }
-
+    
     selectedProjectid: string='';
 	selectProjectHandler(event:any){
 	  this.selectedProjectid=event.target.value;
@@ -132,6 +137,7 @@ export class UpdateResourceallocationComponent implements OnInit {
 	selectedBillingDesc: string='';
 	selectBillingDescHandler(event:any){
 	  this.selectedBillingDesc=event.target.value;
+    alert(this.selectedBillingDesc);
 	}
 
     addRecords=function(data){
@@ -142,10 +148,12 @@ export class UpdateResourceallocationComponent implements OnInit {
 		"BIL_DESC_ID":(this.selectedBillingDesc==='')? this.selectedBillingDesc :this.selectedBillingDesc,
 		"START_DATE":data.START_DATE,
 		"END_DATE":data.END_DATE,
-		"DAILY_RATE":data.DAILY_RATE,		
+		"DAILY_RATE":data.DAILY_RATE,	
+    "CREATED_BY" : this.CREATED_BY,
+    "UPDATED_BY" : this.UPDATED_BY,	
 		
 		}
-		//alert(JSON.stringify(this.dataObj));
+		alert(JSON.stringify(this.dataObj));
 		
 		if(this.internalid!==undefined)
   		{
@@ -168,18 +176,15 @@ export class UpdateResourceallocationComponent implements OnInit {
 				this.clearFields();				
 			})
 		}
-
-
-
-    }
+  }
   clearFields()
 	{
 		  this.PROJECT_CODE='';
 		  this.userid='';
 		  this.WON=0; 
 		  this.BIL_DESC_ID=''; 	
-		  this.START_DATE=''; 
-		  this.END_DATE='';
+		  this.START_DATE=null; 
+		  this.END_DATE=null;
 		  this.DAILY_RATE=0; 		  
 	} 
 }

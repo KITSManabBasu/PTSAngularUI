@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import {ActivatedRoute} from '@angular/router';
 import {Router} from '@angular/router'; 
 import {UserService} from '../user.service';
+import { UtilityService } from '../utility.service';
 import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
 
 	@Component({
@@ -49,6 +50,9 @@ mySimpleModel: string =this.simpleItems[1]; */
 	deskphno:string;
 	geos:number;
 
+	CREATED_BY: string;
+  	UPDATED_BY: string;
+
 
 	  constructor(private user: UserService,private router:Router, private route:ActivatedRoute, private http:Http,private ng4LoadingSpinnerService: Ng4LoadingSpinnerService) { }
 
@@ -71,6 +75,7 @@ mySimpleModel: string =this.simpleItems[1]; */
 		this.fetchcompanies();
 		this.fetchlocs();
 		this.fetchgeos();
+		this.CREATED_BY=this.UPDATED_BY=UtilityService.getCurrentSessionID();
 		
 	  }
 	userIsExist=function()
@@ -78,7 +83,7 @@ mySimpleModel: string =this.simpleItems[1]; */
 		this.http.get(environment.apiBaseUrl + 'api/users/' + this.userid).subscribe(
   		(res: Response)=>{
   			this.userdatafindbyloginid=res.json();  			
-  			if(this.userdatafindbyloginid.length>0)
+  			if(this.userdatafindbyloginid!==null)
   				{ 
   					alert('User ID Already exist');
   					this.userid='';
@@ -97,39 +102,43 @@ mySimpleModel: string =this.simpleItems[1]; */
   			this.userexistingdata=res.json();
   			
   			//alert(JSON.stringify(this.userexistingdata));
-  			this.userid=this.userexistingdata[0].userid;
-  			this.password=this.userexistingdata[0].password;
-  			this.employeeid=this.userexistingdata[0].employeeid;
-  			this.role=this.userexistingdata[0].roleid;
-  			this.roleText=this.userexistingdata[0].roleText;
-  			this.title=this.userexistingdata[0].title;
-  			this.team=this.userexistingdata[0].teamid;
-  			this.teamText=this.userexistingdata[0].teamText;
-  			this.firstname=this.userexistingdata[0].firstname;
-  			this.middlename=this.userexistingdata[0].middlename;
-  			this.lastname=this.userexistingdata[0].lastname;
-  			this.billingtypes=this.userexistingdata[0].billingtypeid;
-  			this.billingtypeText=this.userexistingdata[0].billingtypeText;
-  			this.teamleads=this.userexistingdata[0].teamleadid;
-  			this.teamleadText=this.userexistingdata[0].teamleadText;
-  			this.locs=this.userexistingdata[0].locid;
-  			this.locText=this.userexistingdata[0].locText;
-  			this.desigs=this.userexistingdata[0].desigid;
-  			this.desigText=this.userexistingdata[0].desigText;
-  			this.isu=this.userexistingdata[0].isu;
-  			this.usertypes=this.userexistingdata[0].usertypeid;
-  			this.usertypeText=this.userexistingdata[0].usertypeText;
-  			this.companies=this.userexistingdata[0].companyid;
-  			this.companyText=this.userexistingdata[0].companyText;
-  			this.mobileno=this.userexistingdata[0].mobileno;
-  			this.deskphno=this.userexistingdata[0].deskphno;
-  			this.geos=this.userexistingdata[0].geoid;
-  			this.geoText=this.userexistingdata[0].geoText;
-  			this.chkProjectUser=this.userexistingdata[0].isProjectUser;
-  			this.chkTimeSheetUser=this.userexistingdata[0].isTimeSheetUser;
-  			this.chkProjectReportUser=this.userexistingdata[0].isProjectReportUser;
-  			this.chkTimeSheetReportUser=this.userexistingdata[0].isTimeSheetReportUser;
-  			this.chkTimeSheetUserAllocation=this.userexistingdata[0].isTimeSheetUserAllocation;
+  			if(this.existingData!==null)
+  			{
+  			this.userid=this.userexistingdata.userid;
+  			this.password=this.userexistingdata.password;
+  			this.employeeid=this.userexistingdata.employeeid;
+  			this.role=this.userexistingdata.roleid;
+  			//this.roleText=this.userexistingdata.roleText;
+  			this.title=this.userexistingdata.title;
+  			this.team=this.userexistingdata.teamid;
+  			//this.teamText=this.userexistingdata[0].teamText;
+  			this.firstname=this.userexistingdata.firstname;
+  			this.middlename=this.userexistingdata.middlename;
+  			this.lastname=this.userexistingdata.lastname;
+  			this.billingtypes=this.userexistingdata.billingtypeid;
+  			//this.billingtypeText=this.userexistingdata[0].billingtypeText;
+  			this.teamleads=this.userexistingdata.teamleadid;
+  			//this.teamleadText=this.userexistingdata[0].teamleadText;
+  			this.locs=this.userexistingdata.locid;
+  			//this.locText=this.userexistingdata[0].locText;
+  			this.desigs=this.userexistingdata.desigid;
+  			//this.desigText=this.userexistingdata[0].desigText;
+  			this.isu=this.userexistingdata.isu;
+  			this.usertypes=this.userexistingdata.usertypeid;
+  			//this.usertypeText=this.userexistingdata[0].usertypeText;
+  			this.companies=this.userexistingdata.companyid;
+  			//this.companyText=this.userexistingdata[0].companyText;
+  			this.mobileno=this.userexistingdata.mobileno;
+  			this.deskphno=this.userexistingdata.deskphno;
+  			this.geos=this.userexistingdata.geoid;
+  			//this.geoText=this.userexistingdata[0].geoText;
+  			this.chkProjectUser=this.userexistingdata.isProjectUser;
+  			this.chkTimeSheetUser=this.userexistingdata.isTimeSheetUser;
+  			this.chkProjectReportUser=this.userexistingdata.isProjectReportUser;
+  			this.chkTimeSheetReportUser=this.userexistingdata.isTimeSheetReportUser;
+  			this.chkTimeSheetUserAllocation=this.userexistingdata.isTimeSheetUserAllocation;
+  			}
+  			
   		}
   		)
 	}  
@@ -262,34 +271,27 @@ mySimpleModel: string =this.simpleItems[1]; */
 		"employeeid":user.employeeid,
 		"selectedTitle":(this.selectedTitle==='')?this.title:this.selectedTitle,
 		"selectedRole":(this.selectedRole==='')?this.role:this.selectedRole,
-		"selectedRoleText":(this.selectedRoleText==='')?this.roleText:this.selectedRoleText,
 		"selectedTeam":(this.selectedTeam==='')?this.team:this.selectedTeam,
-		"selectedTeamText":(this.selectedTeamText==='')?this.teamText:this.selectedTeamText,
 		"firstname":user.firstname,
 		"middlename":user.middlename,
 		"lastname":user.lastname,
 		"selectedBillingType":(this.selectedBillingType==='')? this.billingtypes: this.selectedBillingType,
-		"selectedBillingTypeText":(this.selectedBillingTypeText==='')? this.billingtypeText:this.selectedBillingTypeText,
 		"selectedTeamLead":(this.selectedTeamLead==='')? this.teamleads:this.selectedTeamLead,
-		"selectedTeamLeadText":(this.selectedTeamLeadText==='')? this.teamleadText: this.selectedTeamLeadText,
 		"selectedLoc":(this.selectedLoc==='')? this.locs: this.selectedLoc,
-		"selectedLocText":(this.selectedLocText==='')? this.locText : this.selectedLocText,
 		"selectedDesig":(this.selectedDesig==='') ? this.desigs:this.selectedDesig,
-		"selectedDesigText":(this.selectedDesigText==='')? this.desigText:this.selectedDesigText,
 		"isu":user.isu,
 		"selectedUserType":(this.selectedUserType==='')? this.usertypes:this.selectedUserType,
-		"selectedUserTypeText":(this.selectedUserTypeText==='')? this.usertypeText:this.selectedUserTypeText,
 		"selectedCompany":(this.selectedCompany==='')? this.companies: this.selectedCompany ,
-		"selectedCompanyText":(this.selectedCompanyText==='')? this.companyText : this.selectedCompanyText,
 		"mobileno":user.mobileno,
 		"deskphno":user.deskphno,
 		"selectedGeo":(this.selectedGeo==='')? this.geos:this.selectedGeo ,
-		"selectedGeoText":(this.selectedGeoText==='')? this.geoText:this.selectedGeoText ,
 		"isProjectUser":this.chkProjectUser,
 		"isTimeSheetUser":this.chkTimeSheetUser,
 		"isProjectReportUser":this.chkProjectReportUser,
 		"isTimeSheetReportUser":this.chkTimeSheetReportUser,
 		"isTimeSheetUserAllocation":this.chkTimeSheetUserAllocation,
+		"CREATED_BY" : this.CREATED_BY,		
+		"UPDATED_BY" : this.UPDATED_BY,	
 		}
 		//alert(JSON.stringify(this.userObj));
 		
@@ -321,58 +323,40 @@ mySimpleModel: string =this.simpleItems[1]; */
 	  this.selectedTitle=event.target.value;
 	  }
 	  selectedRole: string='';
-	  selectedRoleText: string='';
 	  selectRoleHandler(event:any){
 	  	this.selectedRole=event.target.value;
-	  	this.selectedRoleText=event.target.options[event.target.selectedIndex].text;
 	  }	  
-	  selectedTeam: string='';
-	  selectedTeamText: string='';
+	  selectedTeam: string='';	  
 	  selectTeamHandler(event:any){
 	  	this.selectedTeam=event.target.value;
-	  	this.selectedTeamText=event.target.options[event.target.selectedIndex].text;
 	  }
 	  selectedBillingType: string='';
-	  selectedBillingTypeText: string='';
 	  selectBillingTypeHandler(event:any){
 	  	this.selectedBillingType=event.target.value;
-	  	this.selectedBillingTypeText=event.target.options[event.target.selectedIndex].text;
 	  }
 	  selectedTeamLead: string='';
-	  selectedTeamLeadText: string='';
 	  selectTeamLeadHandler(event:any){
 	  	this.selectedTeamLead=event.target.value;
-	  	this.selectedTeamLeadText=event.target.options[event.target.selectedIndex].text;
 	  }
 	  selectedLoc: string='';
-	  selectedLocText: string='';
 	  selectLocsHandler(event:any){
 	  	this.selectedLoc=event.target.value;
-	  	this.selectedLocText=event.target.options[event.target.selectedIndex].text;
 	  }
 	  selectedDesig: string='';
-	  selectedDesigText: string='';
 	  selectDesigHandler(event:any){
 	  	this.selectedDesig=event.target.value;
-	  	this.selectedDesigText=event.target.options[event.target.selectedIndex].text;
 	  }
 	  selectedUserType: string='';
-	  selectedUserTypeText: string='';
 	  selectUserTypeHandler(event:any){
 	  	this.selectedUserType=event.target.value;
-	  	this.selectedUserTypeText=event.target.options[event.target.selectedIndex].text;
 	  }
 	  selectedCompany: string='';
-	  selectedCompanyText: string='';
 	  selectCompanyHandler(event:any){
 	  	this.selectedCompany=event.target.value;
-	  	this.selectedCompanyText=event.target.options[event.target.selectedIndex].text;
 	  }
 	  selectedGeo: string='';
-	  selectedGeoText: string='';
 	  selectGeoHandler(event:any){
 	  	this.selectedGeo=event.target.value;
-	  	this.selectedGeoText=event.target.options[event.target.selectedIndex].text;
 	  }
 	  
 	}
