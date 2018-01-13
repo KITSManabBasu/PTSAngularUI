@@ -93,7 +93,7 @@ export class UpdateFpbillingComponent implements OnInit {
 		"CREATED_BY" : this.CREATED_BY,
     "UPDATED_BY" : this.UPDATED_BY,
 		}
-		alert(JSON.stringify(this.dataObj));
+		//alert(JSON.stringify(this.dataObj));
 		
 		if(this.internalid!==undefined)
   		{

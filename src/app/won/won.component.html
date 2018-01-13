@@ -25,7 +25,7 @@
 		<td>{{won.WON_TYPE}}</td>
 		<td>{{won.OFF_ON}}</td>
 		<td>{{won.IS_ACTIVE}}</td>
-		<td>{{won.END_DATE}}</td>
+		<td>{{convertISODatetoString(won.END_DATE)}}</td>
 		<td (click)="deleteWon(won._id)"><a>DELETE</a></td>
 		<td [routerLink]="['/updateWon',won._id]" ><a>UPDATE</a></td>
 		

@@ -204,7 +204,8 @@ export class UpdateWonComponent implements OnInit {
 		  this.WON_TYPE='';
 		  this.OFF_ON='';
 		  this.GEO_ID='';
-		  this.IS_ACTIVE=0;	    
+		  this.IS_ACTIVE=0;	  
+		  this.OWNER_ID='';  
 	}
 }
 export class WonProp  

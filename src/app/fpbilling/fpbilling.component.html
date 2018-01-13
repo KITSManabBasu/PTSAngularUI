@@ -21,7 +21,7 @@
 		<td style="width: 5%">{{fpbillings.WON.WON}}-{{fpbillings.WON.WON_DESC}}</td>
 		<td style="width: 20%">{{fpbillings.bil_desc_id}}</td>
 		<td style="width: 5%">{{fpbillings.bill_amount}}</td>	
-		<td style="width: 5%">{{fpbillings.billing_date}}</td>			
+		<td style="width: 5%">{{convertISODatetoString(fpbillings.billing_date)}}</td>			
 		<td style="width: 2%" (click)="deleteFpbillings(fpbillings._id)"><a>DELETE</a></td>
 		<td style="width: 2%" [routerLink]="['/updateFpbilling',fpbillings._id]" ><a>UPDATE</a></td>
 		

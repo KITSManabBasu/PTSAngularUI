@@ -15,86 +15,79 @@ import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-
 })
 export class BillingextractComponent implements OnInit {
 
+  weekProp:WeekProp;	
+  WEEKSTARTDATE:String;
+  WEEKENDDATE:String;
+  WEEKSTARTPERIOD:Date;
+  STARTPERIOD:number;
+  STARTYEAR:number;
+  //items: any[];
+  periods: string[];
+  years: string[];
+
   constructor(private router:Router, private route:ActivatedRoute, private http:Http,private ng4LoadingSpinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
+  this.weekProp = new WeekProp();
+  this.fetchweeks();
+  this.fetchperiods();
+
   }
 
-  downloadFile(data: Response){
-  var blob = new Blob([data], { type: 'text/csv' });
-  var url= window.URL.createObjectURL(blob);
-  window.open(url);
-}
+convertISODatetoString= function(str1:string){return UtilityService.convertISOtoStringDate(str1);}
+fetchweeks= function(){
+      this.http.get(environment.apiBaseUrl + 'api/weeks').subscribe(
+  		(res: Response)=>{
+  			this.weekProp.Weeks=res.json();
 
-private saveAsBlob(data: any) {
-    const blob = new Blob([data._body],
-        { type: 'application/vnd.ms-excel' });
-    const file = new File([blob], 'report.xlsx',
-        { type: 'application/vnd.ms-excel' });
+  		}
+  		)
+     }
+fetchperiods= function(){
+      this.http.get(environment.apiBaseUrl + 'api/periods').subscribe(
+  		(res: Response)=>{
+  			this.weekProp.Periods=res.json();  			
+  		}
+  		)
+     }
 
-   // FileSaver.saveAs(file);
-}
+   selectedStartPeriod: string=null;
+   selecteddisplayPeriod: string=null;	  
+	  selectStartPeriodHandler(event:any){
+	  	this.selectedStartPeriod=event.target.value;	  	
+	  	var splitted = this.selectedStartPeriod.split("#", 3);
+	  	//alert(splitted[0]);
+	  	this.WEEKSTARTDATE=splitted[0];
+	  	this.WEEKENDDATE=splitted[1];
+	  	this.selecteddisplayPeriod=event.target.options[event.target.selectedIndex].text;
+	}
 
+			
+	   
+  selectedStartWeek: Date=null;	  
+	  selectStartDatetHandler(event:any){
+	  	this.selectedStartWeek=event.target.value;	
+	}
+	selectedEndWeek: Date=null;	  
+	  selectEndDatetHandler(event:any){
+	  	this.selectedEndWeek=event.target.value;	  	
+	}   
   addRecords=function(data){
-  var destination=environment.apiBaseUrl + 'api/pocexcel/AAA/BBBB';
+
+  var startdate=this.WEEKSTARTDATE;
+  var enddate=this.WEEKENDDATE;
+  var displayperiod=this.selecteddisplayPeriod;
+  var displaystart=UtilityService.convertISOtoStringDate(startdate);
+  var displayend=UtilityService.convertISOtoStringDate(enddate);
+
+  var destination=environment.apiBaseUrl + 'api/extractfpbilling/'+startdate+'/'+enddate+'/'+displayperiod+'/'+displaystart+'/'+displayend;
   		window.location.href=destination;
-
-		/*console.log('Update Called');
-  			this.http.get(environment.apiBaseUrl + 'api/pocexcel').subscribe(
-		  		(res: Response)=>{
-		  			this.existingData=res.json();
-		  			
-		  			if(this.existingData!==null)
-		  			{
-
-		  				console.log('Data Exist');
-		  			}
-		  		}
-		  		)*/
-
-		 /*this.http.get(environment.apiBaseUrl + 'api/pocexcel').subscribe(data => this.downloadFile(data)),//console.log(data),
-                 error => console.log("Error downloading the file."),
-                 () => console.info("OK");*/
-
-             
-
-		/*this.dataObj={
-		"WON":(data.WON===undefined)? this.WON :data.WON,
-		"WON_DESC":data.WON_DESC,		
-		"WON_TYPE":(this.selectedWon==='')?this.WON_TYPE:this.selectedWon,
-		"OFF_ON":(this.selectedOffon==='')?this.OFF_ON:this.selectedOffon,
-		"IS_ACTIVE":(this.selectedIsActive==='')?this.IS_ACTIVE:this.selectedIsActive,
-		"START_DATE":data.START_DATE,	
-		"END_DATE":data.END_DATE,	
-		"GEO_ID":(this.selectedGeo==='')?this.GEO_ID:this.selectedGeo,
-		"OWNER_ID":(this.selectedOwner==='')?this.OWNER_ID:this.selectedOwner,
-		"CREATED_BY" : this.CREATED_BY,		
-		"UPDATED_BY" : this.UPDATED_BY,		
-		}
-		//alert(JSON.stringify(this.dataObj));
-		
-		if(this.internalid!==undefined)
-  		{
-  		
-  			console.log('Update Called');
-  			this.http.post(environment.apiBaseUrl + 'api/wons/'+ this.internalid,this.dataObj).subscribe((res:Response)=>
-			{
-				console.log(res);				
-				this.isAdded=true;	
-				//this.clearFields();			
-			})
-  		}	
-		else
-		{
-			console.log('Add New Called');
-			this.http.post(environment.apiBaseUrl + 'api/wons',this.dataObj).subscribe((res:Response)=>
-			{
-				console.log(res);
-				this.isAdded=true;
-				this.clearFields();				
-			})
-		}*/
 
 	}
 
+}
+export class WeekProp  
+{
+		Weeks:Object[];	
+		Periods:Object[];		
 }

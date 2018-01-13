@@ -1,5 +1,40 @@
 <ng4-loading-spinner></ng4-loading-spinner>
 <form id="formWon" name="formWon" #data="ngForm" (ngSubmit)="addRecords(data.value)" ngNativeValidate>
+	<table>
+		<tr>
+				<td><label class="required">Period :</label></td>
+				<td>
+					<span *ngIf="weekProp.Periods != null">
+			            <select name="WEEKSTARTPERIOD" [(ngModel)]="WEEKSTARTPERIOD" required ngModel (change)="selectStartPeriodHandler($event)" style="width: 100px">
+			            	<option value="" selected disabled>Select</option>
+			                <option *ngFor="let x of weekProp.Periods" value={{x.WEEKSTARTDATE}}#{{x.WEEKENDDATE}} >P{{x.TRADINGPERIOD}}-{{x.TRADINGYEAR}}</option>
+			            </select>
+			        </span>   
+				</td>				
+		</tr>
+		<tr>
+				<td><label class="required">Start Week :</label></td>
+				<td>
+					<span *ngIf="weekProp.Weeks != null">
+			            <select name="WEEKSTARTDATE" [(ngModel)]="WEEKSTARTDATE" required ngModel (change)="selectStartDatetHandler($event)" style="width: 100px">
+			            	<option value="" selected disabled>Select</option>
+			                <option *ngFor="let x of weekProp.Weeks" value={{x.WEEKSTARTDATE}} >{{convertISODatetoString(x.WEEKSTARTDATE)}}</option>
+			            </select>
+			        </span>
+				</td>				
+		</tr>
+		<tr>
+				<td><label class="required">End Week :</label></td>
+				<td>
+					<span *ngIf="weekProp.Weeks != null">
+			            <select name="WEEKENDDATE" [(ngModel)]="WEEKENDDATE" required ngModel (change)="selectEndDatetHandler($event)" style="width: 100px">
+			            	<option value="" selected disabled>Select</option>
+			                <option *ngFor="let x of weekProp.Weeks" value={{x.WEEKENDDATE}} >{{convertISODatetoString(x.WEEKENDDATE)}}</option>
+			            </select>
+			        </span>
+				</td>				
+		</tr>
+	</table>	
 		<input type="submit" value="Download">
 
 </form>

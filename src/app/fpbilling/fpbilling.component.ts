@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment';
 import {Http, Response, Headers} from '@angular/http'
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Rx'; 
+import { UtilityService } from '../utility.service';
 import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
 
 @Component({
@@ -28,7 +29,7 @@ export class FpbillingComponent implements OnInit {
   		}
   		)
     }
-
+convertISODatetoString= function(str1:string){return UtilityService.convertISOtoStringDate(str1);}
     deleteFpbillings= function(id){
     if(confirm('Are you sure ?'))
 	    {

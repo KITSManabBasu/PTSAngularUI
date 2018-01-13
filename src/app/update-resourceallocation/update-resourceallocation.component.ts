@@ -80,11 +80,11 @@ export class UpdateResourceallocationComponent implements OnInit {
   		)
   }
   fetchProjectID= function(){
-  	this.ng4LoadingSpinnerService.show();
+  	//this.ng4LoadingSpinnerService.show();
       this.http.get(environment.apiBaseUrl + 'api/projectdetails').subscribe(
   		(res: Response)=>{
   			this.resourceAllocationProp.PROJECT_CODE=res.json();
-  			this.ng4LoadingSpinnerService.hide();
+  			//this.ng4LoadingSpinnerService.hide();
   		}
   		)
     }
@@ -100,21 +100,21 @@ export class UpdateResourceallocationComponent implements OnInit {
     }
 
     fetchWons= function(){
-  	this.ng4LoadingSpinnerService.show();
+  	//this.ng4LoadingSpinnerService.show();
       this.http.get(environment.apiBaseUrl + 'api/wons').subscribe(
   		(res: Response)=>{
   			this.resourceAllocationProp.WON=res.json();
-  			this.ng4LoadingSpinnerService.hide();
+  			//this.ng4LoadingSpinnerService.hide();
   		}
   		)
     }
 
     fetchBillingDesc= function(){
-  	this.ng4LoadingSpinnerService.show();
+  	//this.ng4LoadingSpinnerService.show();
       this.http.get(environment.apiBaseUrl + 'api/billdescrips').subscribe(
   		(res: Response)=>{
   			this.resourceAllocationProp.BIL_DESC_ID=res.json();
-  			this.ng4LoadingSpinnerService.hide();
+  			//this.ng4LoadingSpinnerService.hide();
   		}
   		)
     }
@@ -137,7 +137,7 @@ export class UpdateResourceallocationComponent implements OnInit {
 	selectedBillingDesc: string='';
 	selectBillingDescHandler(event:any){
 	  this.selectedBillingDesc=event.target.value;
-    alert(this.selectedBillingDesc);
+   // alert(this.selectedBillingDesc);
 	}
 
     addRecords=function(data){
@@ -153,7 +153,7 @@ export class UpdateResourceallocationComponent implements OnInit {
     "UPDATED_BY" : this.UPDATED_BY,	
 		
 		}
-		alert(JSON.stringify(this.dataObj));
+		//alert(JSON.stringify(this.dataObj));
 		
 		if(this.internalid!==undefined)
   		{
