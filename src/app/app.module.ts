@@ -32,7 +32,8 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { TimesheetComponent } from './timesheet/timesheet.component';
 //import { UtilityService } from './utility.service';
 import { OnlyNumber } from './onlynumber.directive';
-
+import { MenuComponent } from './menu/menu.component';
+import { MenuService } from './menu.service';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import { OnlyNumber } from './onlynumber.directive';
     BillingextractComponent,
     LoginFormComponent,
     TimesheetComponent,
-    OnlyNumber
+    OnlyNumber,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
@@ -103,7 +105,7 @@ import { OnlyNumber } from './onlynumber.directive';
     {path:"",component: LoginFormComponent}
     ])
   ],
-  providers: [UserService,AuthguardGuard],
+  providers: [UserService,AuthguardGuard,MenuService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

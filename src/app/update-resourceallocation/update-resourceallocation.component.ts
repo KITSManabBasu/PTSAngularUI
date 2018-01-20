@@ -37,7 +37,10 @@ export class UpdateResourceallocationComponent implements OnInit {
 
   constructor(private router:Router, private route:ActivatedRoute, private http:Http,private ng4LoadingSpinnerService: Ng4LoadingSpinnerService) { }
 
+  
+
   ngOnInit() {
+  
   var usersessionID = sessionStorage.getItem("userID"); 
     this.resourceAllocationProp=new ResourceAllocationProp();
   	
@@ -55,6 +58,7 @@ export class UpdateResourceallocationComponent implements OnInit {
   		
 	  });
     this.CREATED_BY=this.UPDATED_BY=UtilityService.getCurrentSessionID();
+    this.setDefaultStartAndEndWeek()
   }
   populateAllocationdetails=function(targetInternalID: String)
   {
@@ -77,6 +81,18 @@ export class UpdateResourceallocationComponent implements OnInit {
   		}
   		)
   }
+
+  setDefaultStartAndEndWeek=function () {
+   var now = new Date();
+   var next_week_start = new Date(now.getFullYear(), now.getMonth(), now.getDate()+(7 - now.getDay())).toISOString();
+   var next_week_end = new Date(now.getFullYear(), now.getMonth(), now.getDate()+(13 - now.getDay())).toISOString();
+   
+   this.START_DATE=next_week_start;
+   this.END_DATE=next_week_end;
+   //return next_week_end;
+   //return new Date().toISOString();
+  }
+
   fetchProjectID= function(){
   	//this.ng4LoadingSpinnerService.show();
       this.http.get(environment.apiBaseUrl + 'api/projectdetails').subscribe(
@@ -159,6 +175,10 @@ export class UpdateResourceallocationComponent implements OnInit {
       this.selectedEndWeek=event.target.value;
       this.END_DATE=this.selectedEndWeek;      
   } 
+
+
+
+
 convertISODatetoString= function(str1:string){return UtilityService.convertISOtoStringDate(str1);}
   
   addRecords=function(data){
@@ -236,7 +256,8 @@ convertISODatetoString= function(str1:string){return UtilityService.convertISOto
 		  this.BIL_DESC_ID=''; 	
 		  this.START_DATE=''; 
 		  this.END_DATE='';
-		  this.DAILY_RATE=0; 		  
+		  this.DAILY_RATE=0; 		
+      this.setDefaultStartAndEndWeek();  
 	} 
 }
 export class ResourceAllocationProp  

@@ -65,7 +65,7 @@
 							<span *ngIf="resourceAllocationProp.WON !== null">								
 					            <select name="WON" (change)="selectWonHandler($event)" [(ngModel)]="WON" required ngModel>
 					                <option value="" selected disabled>Select</option>
-					                <option *ngFor="let x of resourceAllocationProp.WON" value={{x._id}} >{{x.WON + '-'+ x.WON_DESC+':' +x.WON_TYPE+'-'+x.OFF_ON+'-'+x.START_DATE+' to '+x.END_DATE}}</option>
+					                <option *ngFor="let x of resourceAllocationProp.WON" value={{x._id}} >{{x.WON + '-'+ x.WON_DESC+':' +x.WON_TYPE+'-'+x.OFF_ON+'-'+convertISODatetoString(x.START_DATE)+' to '+convertISODatetoString(x.END_DATE)}}</option>
 					            </select>
 					        </span>				        
 						

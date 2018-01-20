@@ -3,23 +3,22 @@
 @Injectable()
 export class UserService {
 
-  public isUserLoggedIn;
-  private username;
+  public isUserLoggedIn: boolean;
 
-  constructor() { 
-  	this.isUserLoggedIn = false;
+  constructor() {
+    this.isUserLoggedIn = false;
   }
 
   setUserLoggedIn() {
-  	this.isUserLoggedIn = true;
+    this.isUserLoggedIn = true;
   }
 
   getUserLoggedIn() {
-    var userdata = sessionStorage.getItem("userID"); 
+    var userdata = sessionStorage.getItem("User");
     //alert(userdata);
     if(userdata!==null)
       this.isUserLoggedIn = true;
-  	return this.isUserLoggedIn;
+    return this.isUserLoggedIn;
   }
 
 }

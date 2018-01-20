@@ -26,8 +26,51 @@ export class UtilityService {
 			var startdate = year1+'-' + month2 + '-'+dt2;
   		return startdate;
   }
+
   public static getCurrentSessionID() {
-   return sessionStorage.getItem("userID"); 
+    return this.getItemfromSessionStorage("userID");
+/*    var user : any;
+    user = sessionStorage.getItem("User");
+    console.log('utiltiy - ' + user.username);
+    return user.username;*/
   }
+
+  public static setItemtoSessionStorage(key, value){
+    if (typeof value === 'object')
+      value = JSON.stringify(value);
+    sessionStorage.setItem(key, value);
+  }
+
+  public static getItemfromSessionStorage(key){
+      var item = sessionStorage.getItem(key)
+      if(this.isJson(item)) {
+        console.log("item is object in sessionstorage");
+        return JSON.parse(item);
+      }
+      else
+        return item;
+  }
+
+  public static getCurrentUserSession() {
+    return this.getItemfromSessionStorage("User");
+  }
+
+  private static isJson(item) {
+    item = typeof item !== "string"
+      ? JSON.stringify(item)
+      : item;
+
+    try {
+      item = JSON.parse(item);
+    } catch (e) {
+      return false;
+    }
+
+    if (typeof item === "object" && item !== null) {
+      return true;
+    }
+    return false;
+  }
+
 
 }

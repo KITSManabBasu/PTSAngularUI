@@ -7,17 +7,13 @@
 			User Not Logged In
 </span>-->
 
-
-<cuppa-slidemenu  [menulist]="menuItemsArray" (open)="onMenuOpen()" (close)="onMenuClose()" (onItemSelect)="onItemSelect($event)"></cuppa-slidemenu>
-
+<!--<cuppa-slidemenu [menulist]="menuItemsArray" (open)="onMenuOpen()" (close)="onMenuClose()" (onItemSelect)="onItemSelect($event)"></cuppa-slidemenu>-->
+<div [hidden] = "hideMenu" >
+  <app-menu></app-menu>
+</div>
 <div class="container">
   <div class="row">
     <!-- routing here -->
     <router-outlet></router-outlet>
   </div>
 </div>
-						
-
-
-
-
