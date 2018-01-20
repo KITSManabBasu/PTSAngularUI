@@ -35,11 +35,14 @@ export class BillingextractComponent implements OnInit {
   }
 
 convertISODatetoString= function(str1:string){return UtilityService.convertISOtoStringDate(str1);}
+
+
 fetchweeks= function(){
+this.ng4LoadingSpinnerService.show();
       this.http.get(environment.apiBaseUrl + 'api/weeks').subscribe(
   		(res: Response)=>{
   			this.weekProp.Weeks=res.json();
-
+  			this.ng4LoadingSpinnerService.hide();
   		}
   		)
      }
@@ -64,13 +67,15 @@ fetchperiods= function(){
 
 			
 	   
-  selectedStartWeek: Date=null;	  
+  selectedStartWeek: String='';	  
 	  selectStartDatetHandler(event:any){
 	  	this.selectedStartWeek=event.target.value;	
+	  	this.WEEKSTARTDATE=this.selectedStartWeek;
 	}
-	selectedEndWeek: Date=null;	  
+	selectedEndWeek: String='';	  
 	  selectEndDatetHandler(event:any){
-	  	this.selectedEndWeek=event.target.value;	  	
+	  	this.selectedEndWeek=event.target.value;
+	  	this.WEEKENDDATE=this.selectedEndWeek;	  	
 	}   
   addRecords=function(data){
 
@@ -80,11 +85,9 @@ fetchperiods= function(){
   var displaystart=UtilityService.convertISOtoStringDate(startdate);
   var displayend=UtilityService.convertISOtoStringDate(enddate);
 
-  var destination=environment.apiBaseUrl + 'api/extractfpbilling/'+startdate+'/'+enddate+'/'+displayperiod+'/'+displaystart+'/'+displayend;
+  var destination=environment.apiBaseUrl + 'api/extractbilling/'+startdate+'/'+enddate+'/'+displayperiod+'/'+displaystart+'/'+displayend;
   		window.location.href=destination;
-
 	}
-
 }
 export class WeekProp  
 {

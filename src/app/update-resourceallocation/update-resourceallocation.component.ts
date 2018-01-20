@@ -28,8 +28,8 @@ export class UpdateResourceallocationComponent implements OnInit {
     PROJECT_CODE:string;
     WON: number;
     BIL_DESC_ID: string;
-    START_DATE:Date;
-    END_DATE:Date;
+    START_DATE:String;
+    END_DATE:String;
     DAILY_RATE:number;
     CREATED_BY: string;
     UPDATED_BY: string;
@@ -45,17 +45,14 @@ export class UpdateResourceallocationComponent implements OnInit {
   	this.fetchUserID();
   	this.fetchWons();
   	this.fetchBillingDesc();
+    this.fetchweeks();
   	this.route.params.subscribe(params=>{
   		this.internalid= params['id'];
   		if(this.internalid!==undefined)
   		{
   		 this.populateAllocationdetails(this.internalid);
   		}
-  		else
-  		{
-  			//this.CREATED_BY=usersessionID;  			
-  		}
-  		//this.UPDATED_BY=usersessionID;
+  		
 	  });
     this.CREATED_BY=this.UPDATED_BY=UtilityService.getCurrentSessionID();
   }
@@ -70,10 +67,11 @@ export class UpdateResourceallocationComponent implements OnInit {
     			this.userid=this.existingData.userid;
     			this.WON=this.existingData.WON;
     			this.BIL_DESC_ID=this.existingData.BIL_DESC_ID;
-    			this.START_DATE=UtilityService.convertISOtoStringDate(this.existingData.START_DATE);
-    			this.END_DATE=UtilityService.convertISOtoStringDate(this.existingData.END_DATE);
+    			this.START_DATE=this.existingData.START_DATE;
+    			this.END_DATE=this.existingData.END_DATE;
     			this.DAILY_RATE=this.existingData.DAILY_RATE;
         }
+        //alert(UtilityService.convertISOtoStringDate(this.existingData.START_DATE));
   			//alert(JSON.stringify(this.existingData));
   						
   		}
@@ -118,8 +116,18 @@ export class UpdateResourceallocationComponent implements OnInit {
   		}
   		)
     }
+
+  fetchweeks= function(){
+  //this.ng4LoadingSpinnerService.show();
+      this.http.get(environment.apiBaseUrl + 'api/weeks').subscribe(
+      (res: Response)=>{
+        this.resourceAllocationProp.Weeks=res.json();
+        //this.ng4LoadingSpinnerService.hide();
+      }
+      )
+     }
     
-    selectedProjectid: string='';
+  selectedProjectid: string='';
 	selectProjectHandler(event:any){
 	  this.selectedProjectid=event.target.value;
 	}
@@ -140,14 +148,30 @@ export class UpdateResourceallocationComponent implements OnInit {
    // alert(this.selectedBillingDesc);
 	}
 
-    addRecords=function(data){
+  selectedStartWeek: String='';   
+    selectStartDatetHandler(event:any){
+      this.selectedStartWeek=event.target.value;  
+      this.START_DATE=this.selectedStartWeek;
+  }
+
+  selectedEndWeek: String='';   
+    selectEndDatetHandler(event:any){
+      this.selectedEndWeek=event.target.value;
+      this.END_DATE=this.selectedEndWeek;      
+  } 
+convertISODatetoString= function(str1:string){return UtilityService.convertISOtoStringDate(str1);}
+  
+  addRecords=function(data){
+
+  if(this.END_DATE>this.START_DATE)
+  {
     	this.dataObj={
 		"PROJECT_CODE":(this.selectedProjectid==='')? this.PROJECT_CODE :this.selectedProjectid,
 		"userid":(this.selectedUserid==='')? this.userid :this.selectedUserid,
 		"WON":(this.selectedWon==='')? this.WON :this.selectedWon,
-		"BIL_DESC_ID":(this.selectedBillingDesc==='')? this.selectedBillingDesc :this.selectedBillingDesc,
-		"START_DATE":data.START_DATE,
-		"END_DATE":data.END_DATE,
+		"BIL_DESC_ID":(this.selectedBillingDesc==='')? this.BIL_DESC_ID :this.selectedBillingDesc,
+		"START_DATE":this.START_DATE,
+		"END_DATE":this.END_DATE,
 		"DAILY_RATE":data.DAILY_RATE,	
     "CREATED_BY" : this.CREATED_BY,
     "UPDATED_BY" : this.UPDATED_BY,	
@@ -159,23 +183,50 @@ export class UpdateResourceallocationComponent implements OnInit {
   		{
   		
   			console.log('Update Called');
-  			this.http.post(environment.apiBaseUrl + 'api/allocations/'+ this.internalid,this.dataObj).subscribe((res:Response)=>
-			{
-				console.log(res);				
-				this.isAdded=true;	
-				//this.clearFields();			
-			})
+
+         this.http.get(environment.apiBaseUrl + 'api/allocationsallow/'+ this.internalid +'/'+this.dataObj.userid+'/'+this.dataObj.START_DATE+'/'+this.dataObj.END_DATE).subscribe((res:Response)=>
+          {
+          this.validaionresult=res.json();
+            if(this.validaionresult)
+              {
+                this.http.post(environment.apiBaseUrl + 'api/allocations/'+ this.internalid,this.dataObj).subscribe((res:Response)=>
+                {
+                  console.log(res);       
+                  this.isAdded=true;  
+                  //this.clearFields();     
+                })
+              }
+            else
+              alert("User already allocated during this period, Please change the allocation date");
+                   
+          })
   		}	
 		else
-		{
-			console.log('Add New Called');
-			this.http.post(environment.apiBaseUrl + 'api/allocations',this.dataObj).subscribe((res:Response)=>
-			{
-				console.log(res);
-				this.isAdded=true;
-				this.clearFields();				
-			})
-		}
+		  {
+  			console.log('Add New Called');
+
+        this.http.get(environment.apiBaseUrl + 'api/allocationsallow/0/'+this.dataObj.userid+'/'+this.dataObj.START_DATE+'/'+this.dataObj.END_DATE).subscribe((res:Response)=>
+        {
+        this.validaionresult=res.json();
+          if(this.validaionresult)
+            {
+              this.http.post(environment.apiBaseUrl + 'api/allocations',this.dataObj).subscribe((res:Response)=>
+              {
+                console.log(res);
+                this.isAdded=true;
+                this.clearFields();       
+              })
+            }
+          else
+            alert("User already allocated during this period, Please change the allocation date");
+                 
+          })
+		    }
+      }
+      else
+      {
+        alert("End date should be always greater than start date");
+      }
   }
   clearFields()
 	{
@@ -183,8 +234,8 @@ export class UpdateResourceallocationComponent implements OnInit {
 		  this.userid='';
 		  this.WON=0; 
 		  this.BIL_DESC_ID=''; 	
-		  this.START_DATE=null; 
-		  this.END_DATE=null;
+		  this.START_DATE=''; 
+		  this.END_DATE='';
 		  this.DAILY_RATE=0; 		  
 	} 
 }
@@ -194,6 +245,7 @@ export class ResourceAllocationProp
 		userid: Object[];
 		WON:Object[];
 		BIL_DESC_ID:Object[];
+    Weeks:Object[];
 }
 export class DropdownValue
 {

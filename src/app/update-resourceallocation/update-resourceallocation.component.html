@@ -92,11 +92,30 @@
 			</tr>
 			<tr>
 				<td><label class="required">Allocation Start Date :</label></td>
-				<td><input type="Date" name="START_DATE" id="START_DATE" placeholder="Allocation Start Date" [(ngModel)]="START_DATE" required ngModel></td>
+				<td>
+					<!--<input type="Date" name="START_DATE" id="START_DATE" placeholder="Allocation Start Date" [(ngModel)]="START_DATE" required ngModel>-->
+
+					<span *ngIf="resourceAllocationProp.Weeks != null">
+			            <select name="START_DATE" [(ngModel)]="START_DATE" required ngModel (change)="selectStartDatetHandler($event)" style="width: 100px">
+			            	<option value="" selected disabled>Select</option>
+			                <option *ngFor="let x of resourceAllocationProp.Weeks" value={{x.WEEKSTARTDATE}} >{{convertISODatetoString(x.WEEKSTARTDATE)}}</option>
+			            </select>
+			        </span>
+
+				</td>
 			</tr>
 			<tr>
 				<td><label class="required">Allocation End Date :</label></td>
-				<td><input type="Date" name="END_DATE" id="END_DATE" placeholder="Allocation End Date" [(ngModel)]="END_DATE" required ngModel></td>
+				<td>
+					<!--<input type="Date" name="END_DATE" id="END_DATE" placeholder="Allocation End Date" [(ngModel)]="END_DATE" required ngModel>-->
+					<span *ngIf="resourceAllocationProp.Weeks != null">
+			            <select name="END_DATE" [(ngModel)]="END_DATE" required ngModel (change)="selectEndDatetHandler($event)" style="width: 100px">
+			            	<option value="" selected disabled>Select</option>
+			                <option *ngFor="let x of resourceAllocationProp.Weeks" value={{x.WEEKENDDATE}} >{{convertISODatetoString(x.WEEKENDDATE)}}</option>
+			            </select>
+			        </span>
+
+				</td>
 			</tr>	
 	</table>	
 	<h3 *ngIf= "isAdded" >{{confirmationString}}</h3>
