@@ -1,26 +1,28 @@
-<a routerLink='/project'>View Project</a>
+<!--<a routerLink='/project'>View Project</a>-->
+<a routerLink='/project' title="View Project"><i class="fa fa-eye" aria-hidden="true"> View Project</i></a>
 <span *ngIf="(this.internalid!==undefined)">
-			<a routerLink='/updateProject'>Add Project</a>
+			<!--<a routerLink='/updateProject'>Add Project</a>-->
+			<a routerLink='/updateProject' title="Add Project"><i class="fa fa-plus" aria-hidden="false"> Add Project</i></a>
 </span>
 
-	<h2>
+	
 		<span *ngIf="(this.internalid===undefined)">
-			Add Project
+			<h1>Add Project</h1>
 		</span>
 		<span *ngIf="(this.internalid!==undefined)">
-			Update Project
+			<h1>Update Project</h1>
 		</span>		
-	</h2>
+	
 	<form id="formWon" name="formProject" #data="ngForm" (ngSubmit)="addRecords(data.value)" ngNativeValidate>
 		<table>
 			<tr>
 				<td><label class="required">Project Code :</label></td>
 				<td>
 					<span *ngIf="(this.internalid===undefined)">
-						<input type="text" name="PROJECT_CODE" id="PROJECT_CODE" placeholder="Project Code" required minlength="5" maxlength="10" [(ngModel)]="PROJECT_CODE" ngModel (change)="isExist()">
+						<input type="number" name="PROJECT_CODE" id="PROJECT_CODE" placeholder="Project Code" required minlength="5" maxlength="10" [(ngModel)]="PROJECT_CODE" ngModel (change)="isExist()">
 					</span>
 					<span *ngIf="(this.internalid!==undefined)">
-						<input type="text" name="PROJECT_CODE" id="PROJECT_CODE" placeholder="Project Code" required minlength="5" maxlength="10" [(ngModel)]="PROJECT_CODE" ngModel disabled="">
+						<input type="number" name="PROJECT_CODE" id="PROJECT_CODE" placeholder="Project Code" required minlength="5" maxlength="10" [(ngModel)]="PROJECT_CODE" ngModel disabled="">
 					</span>
 				</td>
 			</tr>
@@ -63,9 +65,11 @@
 			</tr>			
 		</table>
 		<h3 *ngIf= "isAdded" >{{confirmationString}}</h3>
-	<input type="submit" value="Save">
+	<!--<input type="submit" value="Save">-->
+	<button type="submit" title="Save"><i class="fa fa-floppy-o"></i> Save</button>
 	<span *ngIf="(this.internalid===undefined)">
-		<button (click)="clearFields()">Clear</button>
+		<!--<button (click)="clearFields()">Clear</button>-->
+		<button type="button" title="Clear" (click)="clearFields()"><i class="fa fa-window-close-o"></i> Clear</button>
 	</span>
 	</form>	
 

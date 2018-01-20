@@ -1,6 +1,7 @@
 <ng4-loading-spinner></ng4-loading-spinner>
 <p>
-  <a routerLink='/updateBillingdescription'>Add Billing Description</a>
+ <!-- <a routerLink='/updateBillingdescription'>Add Billing Description</a>-->
+ <a routerLink='/updateBillingdescription' title="Add Billing Description"><i class="fa fa-plus" aria-hidden="false"> Add Billing Description</i></a>
 </p>
 <h1>
 	Billing Descriptions Details
@@ -18,8 +19,12 @@
 		<td style="display: none;">{{billdescrip._id}}</td>
 		<td style="width: 5%">{{billdescrip.TYPE}}</td>
 		<td style="width: 20%">{{billdescrip.DESCRIPTION}}</td>				
-		<td style="width: 2%" (click)="deleteBilldescrips(billdescrip._id)"><a>DELETE</a></td>
-		<td style="width: 2%" [routerLink]="['/updateBillingdescription',billdescrip._id]" ><a>UPDATE</a></td>
+		<td style="width: 2%" (click)="deleteBilldescrips(billdescrip._id)"><!--<a>DELETE</a>-->
+			<a title="Delete"><i class="fa fa-trash-o fa-lg"></i></a>
+		</td>
+		<td style="width: 2%" [routerLink]="['/updateBillingdescription',billdescrip._id]" ><!--<a>UPDATE</a>-->
+			<a title="Edit"><i class="fa fa-pencil fa-fw"></i></a>
+		</td>
 		
 	</tr>
   	

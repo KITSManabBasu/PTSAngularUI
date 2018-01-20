@@ -1,35 +1,22 @@
 <ng4-loading-spinner></ng4-loading-spinner>
-	<a routerLink='/user'>View User</a>
+	<!--<a routerLink='/user'>View User</a>-->
+	<a routerLink='/user' title="View User"><i class="fa fa-eye" aria-hidden="true"> View User</i></a>
+
 	<span *ngIf="(this.userInternalid!==undefined)">
-			<a routerLink='/updateUser'>Add User</a>
-	</span>
+			<!--<a routerLink='/updateUser'>Add User</a>-->
+			<a routerLink='/updateUser' title="Add User"><i class="fa fa-plus" aria-hidden="false"> Add User</i></a>
+	</span>	
 	
-	<h2>
-		<span *ngIf="(this.userInternalid===undefined)">
-			Add User
-		</span>
-		<span *ngIf="(this.userInternalid!==undefined)">
-			Update User
-		</span>
+	<span *ngIf="(this.userInternalid===undefined)">
+			<h1>Add User</h1>
+	</span>
+	<span *ngIf="(this.userInternalid!==undefined)">
+			<h1> Update User</h1>
+	</span>
 		
-	</h2>
+	
 	<form id="formNewUser" name="formNewUser" #userData="ngForm" (ngSubmit)="addNewUser(userData.value)" ngNativeValidate>
-		<table>
-			<!--<tr>
-				<td colspan="4">
-					{{myModel | json}}
-					<select [(ngModel)]="myModel" name="test1">
-					      <option *ngFor="let i of items" [ngValue]="i">{{i.value}}</option>
-					</select>
-
-					<br /><br />
-
-					{{mySimpleModel}}
-					<select [(ngModel)]="mySimpleModel" name="test2">
-					      <option *ngFor="let i of simpleItems" [value]="i">{{i}}</option>
-					</select>
-				</td>
-			</tr>-->
+		<table>			
 			<tr>
 				<td><label class="required">User ID :</label></td>
 				<td>
@@ -43,7 +30,7 @@
 				
 				<td><label class="required">Password :</label></td>
 				<td>
-					<input type="text" name="password" id="password" placeholder="Password" [(ngModel)]="password" required ngModel>
+					<input type="password" name="password" id="password" placeholder="Password" [(ngModel)]="password" required ngModel>
 				</td>
 				
 			</tr>
@@ -209,11 +196,13 @@
 			</tr>	
 		</table>
 		<h3 *ngIf= "isAdded" >{{confirmationString}}</h3>
-	<input type="submit" value="Save">
+	<!--<input type="submit" value="Save">-->
+	<button type="submit" title="Save"><i class="fa fa-floppy-o"></i> Save</button>
 	
-
+<!--<i class="fa fa-floppy-o" aria-hidden="true"><input type="submit" value="Save"></i>-->
 <span *ngIf="(this.userInternalid===undefined)">
-	<button (click)="clearFields()">Clear</button>
+	<!--<button (click)="clearFields()">Clear</button>-->
+	<button type="button" title="Clear" (click)="clearFields()"><i class="fa fa-window-close-o"></i> Clear</button>
 </span>
 	<!--<button (click)="
 	userid='';

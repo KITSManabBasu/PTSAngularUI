@@ -1,4 +1,4 @@
-
+<h1>Timesheet Entry</h1>
 <span>User:</span>
 <select id="ddlUser" [disabled]="enableUserList == false" required [(ngModel)]="userId"
         (change)="populateUserTimesheet($event)">
@@ -8,12 +8,14 @@
 <br/>
 <br/>
 Week:
-<button (click)="showPreviousWeek()">Previous</button>
+<!--<button (click)="showPreviousWeek()">Previous</button>-->
+<button type="button" title="Previous" (click)="showPreviousWeek()"><i class="fa fa-step-backward"></i> Previous</button>
 |
-<button (click)="showCurrentWeek()">Current</button>
+<!--<button (click)="showCurrentWeek()">Current</button>-->
+<button type="button" title="Current" (click)="showCurrentWeek()"><i class="fa fa-arrows-alt"></i> Current</button>
 |
-<button (click)="showNextWeek()">Next</button>
-
+<!--<button (click)="showNextWeek()">Next</button>-->
+<button type="button" title="Next" (click)="showNextWeek()">Next <i class="fa fa-step-forward"></i></button>
 <div>
   <table>
     <thead>
@@ -84,4 +86,5 @@ Week:
     </tbody>
   </table>
 </div>
-<button (click)="saveTimesheet($event)">Save</button>
+<!--<button (click)="saveTimesheet($event)">Save</button>-->
+<button type="button" title="Save" (click)="saveTimesheet($event)"><i class="fa fa-floppy-o"></i> Save</button>

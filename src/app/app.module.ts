@@ -35,6 +35,8 @@ import { OnlyNumber } from './onlynumber.directive';
 import { MenuComponent } from './menu/menu.component';
 import { MenuService } from './menu.service';
 
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
+
 
 @NgModule({
   declarations: [
@@ -66,6 +68,7 @@ import { MenuService } from './menu.service';
     FormsModule,
     HttpModule,
     SlideMenuModule,// Import SlideMenu module variable here 
+    AngularFontAwesomeModule,
     Ng4LoadingSpinnerModule,
     RouterModule.forRoot([
     

@@ -1,6 +1,7 @@
 <ng4-loading-spinner></ng4-loading-spinner>
 <p>
-  <a routerLink='/updateWon'>Add Won</a>
+  <!--<a routerLink='/updateWon'>Add Won</a>-->
+  <a routerLink='/updateWon' title="Add Won"><i class="fa fa-plus" aria-hidden="false"> Add Won</i></a>
 </p>
 <h1>
 	Won Details
@@ -26,8 +27,14 @@
 		<td>{{won.OFF_ON}}</td>
 		<td>{{won.IS_ACTIVE}}</td>
 		<td>{{convertISODatetoString(won.END_DATE)}}</td>
-		<td (click)="deleteWon(won._id)"><a>DELETE</a></td>
-		<td [routerLink]="['/updateWon',won._id]" ><a>UPDATE</a></td>
+		<td (click)="deleteWon(won._id)"><!--<a>DELETE</a>-->
+			<a title="Delete"><i class="fa fa-trash-o fa-lg"></i></a>
+		</td>
+		<td [routerLink]="['/updateWon',won._id]" >
+			<!--<a>UPDATE</a>-->
+			<a title="Edit"><i class="fa fa-pencil fa-fw"></i></a>
+		</td>
+		
 		
 	</tr>
   	

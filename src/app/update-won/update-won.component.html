@@ -1,17 +1,19 @@
 <ng4-loading-spinner></ng4-loading-spinner>
-<a routerLink='/won'>View Won</a>
+<!--<a routerLink='/won'>View Won</a>-->
+<a routerLink='/won' title="View Won"><i class="fa fa-eye" aria-hidden="true"> View Won</i></a>
 <span *ngIf="(this.internalid!==undefined)">
-			<a routerLink='/updateWon'>Add Won</a>
+			<!--<a routerLink='/updateWon'>Add Won</a>-->
+			<a routerLink='/updateWon' title="Add Won"><i class="fa fa-plus" aria-hidden="false"> Add Won</i></a>
 </span>
 
-	<h2>
+
 		<span *ngIf="(this.internalid===undefined)">
-			Add Won
+			<h1>Add Won</h1>
 		</span>
 		<span *ngIf="(this.internalid!==undefined)">
-			Update Won
+			<h1>Update Won</h1>
 		</span>		
-	</h2>
+
 	<form id="formWon" name="formWon" #data="ngForm" (ngSubmit)="addRecords(data.value)" ngNativeValidate>
 		<table>
 			<tr>
@@ -99,8 +101,10 @@
 			</tr>
 		</table>
 		<h3 *ngIf= "isAdded" >{{confirmationString}}</h3>
-	<input type="submit" value="Save">
+	<!--<input type="submit" value="Save">-->
+	<button type="submit" title="Save"><i class="fa fa-floppy-o"></i> Save</button>
 	<span *ngIf="(this.internalid===undefined)">
-		<button (click)="clearFields()">Clear</button>
+		<!--<button (click)="clearFields()">Clear</button>-->
+		<button type="button" title="Clear" (click)="clearFields()"><i class="fa fa-window-close-o"></i> Clear</button>
 	</span>
 	</form>	

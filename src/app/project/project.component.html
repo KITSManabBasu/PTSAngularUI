@@ -1,6 +1,7 @@
 <ng4-loading-spinner></ng4-loading-spinner>
 <p>
-  <a routerLink='/updateProject'>Add Project</a>
+  <!--<a routerLink='/updateProject'>Add Project</a>-->
+  <a routerLink='/updateProject' title="Add Project"><i class="fa fa-plus" aria-hidden="false"> Add Project</i></a>
 </p>
 <h1>
 	Project Details
@@ -20,8 +21,13 @@
 		<td>{{proj.PROJECT_CODE}}</td>
 		<td>{{proj.PROJECT_NAME}}</td>		
 		<td>{{proj.ACTIVE}}</td>
-		<td (click)="deleteProjectdetails(proj._id)"><a>DELETE</a></td>
-		<td [routerLink]="['/updateProject',proj._id]" ><a>UPDATE</a></td>
+		<td (click)="deleteProjectdetails(proj._id)">
+			<!--<a>DELETE</a>-->
+			<a title="Delete"><i class="fa fa-trash-o fa-lg"></i></a>
+		</td>
+		<td [routerLink]="['/updateProject',proj._id]" ><!--<a>UPDATE</a>-->
+			<a title="Edit"><i class="fa fa-pencil fa-fw"></i></a>
+		</td>
 		
 	</tr>
   	

@@ -1,6 +1,9 @@
 <ng4-loading-spinner></ng4-loading-spinner>
 <p>
-  <a routerLink='/updateUser'>Add User</a>
+  <!--<a routerLink='/updateUser'>Add User</a>-->
+<a routerLink='/updateUser' title="Add User"><i class="fa fa-plus" aria-hidden="false"> Add User</i></a>
+ 
+
 </p>
 <h1>
 	User Details
@@ -14,22 +17,6 @@
 		<th>First Name</th>
 		<th>Middle Name</th>
 		<th>Last Name</th>
-		
-		<!--<th>Role</th>
-		<th>Team</th>
-		<th>Billing Type</th>
-		<th>Location</th>
-		<th>Designation</th>
-		<th>ISU</th>
-		<th>User Type</th>
-
-		<th>Company</th>
-		<th>Geography</th>
-		<th>IsProject User</th>
-		<th>IsTimeSheet User</th>
-		<th>IsProjectReport User</th>
-		<th>IsTimeSheetReport User</th>
-		<th>isTimeSheetUser Allocation</th>-->
 		<th></th>
 		<th></th>
 	</tr>
@@ -41,24 +28,15 @@
 		<td>{{user.firstname}}</td>
 		<td>{{user.middlename}}</td>
 		<td>{{user.lastname}}</td>
-
-		<!--<td>{{user.roleText}}</td>
-		<td>{{user.teamText}}</td>
-		<td>{{user.billingtypeText}}</td>
-		<td>{{user.locText}}</td>
-		<td>{{user.desigText}}</td>
-		<td>{{user.isu}}</td>
-		<td>{{user.usertypeText}}</td>
-
-		<td>{{user.companyText}}</td>
-		<td>{{user.geoText}}</td>
-		<td>{{user.isProjectUser}}</td>
-		<td>{{user.isTimeSheetUser}}</td>
-		<td>{{user.isProjectReportUser}}</td>
-		<td>{{user.isTimeSheetReportUser}}</td>
-		<td>{{user.isTimeSheetUserAllocation}}</td>-->
-		<td (click)="deleteUser(user._id)"><a>DELETE</a></td>		
-		<td [routerLink]="['/updateUser',user._id]" ><a>UPDATE</a></td>		
+		<td (click)="deleteUser(user._id)">
+			<!--<a>DELETE</a>-->
+			<a title="Delete User">
+  				<i class="fa fa-trash-o fa-lg"></i></a>
+		</td>		
+		<td [routerLink]="['/updateUser',user._id]" >
+			<!--<a>UPDATE</a>-->
+			<a title="Edit User"><i class="fa fa-pencil fa-fw"></i></a>
+		</td>		
 	</tr>
 
 </table>

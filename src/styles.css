@@ -33,7 +33,7 @@ html
 
 body
 { font: normal .80em 'trebuchet ms', arial, sans-serif;
-  background: #FFF;
+  background: #f2eff7;
   color: #555;}
 
 p
@@ -44,7 +44,7 @@ img
 { border: 0;}
 
 h1, h2, h3, h4, h5, h6 
-{ color: #362C20;
+{ color: #7018e2;
   letter-spacing: 0em;
   padding: 0 0 5px 0;}
 
@@ -52,19 +52,19 @@ h1, h2, h3
 { font: normal 170% 'century gothic', arial;
   margin: 0 0 15px 0;
   padding: 15px 0 5px 0;
-  color: #000;}
+  color: #7018e2;}
 
 h2
 { font-size: 160%;
   padding: 9px 0 5px 0;
-  color: #B48A7C;}
+  color: #d6cee0;}
 
 h3
 { font-size: 140%;
   padding: 5px 0 0 0;}
 
 h4, h6
-{ color: #B48A7C;
+{ color: #d6cee0;
   padding: 0 0 5px 0;
   font: normal 110% arial;
   text-transform: uppercase;}
@@ -74,11 +74,14 @@ h5, h6
   font: normal 95% arial;
   letter-spacing: normal;
   padding: 0 0 15px 0;}
-
+a {
+    cursor: pointer;
+    font-size: 12px;
+}
 a, a:hover
 { outline: none;
   text-decoration: underline;
-  color: #B48A7C;}
+  color: #d6ceeo;}
 
 a:hover
 { text-decoration: none;}
@@ -125,8 +128,26 @@ ol li
 select{width: 200px;}
 
 input[type=text]{width: 200px;}
+input[type=password]{width: 200px;}
 input[type=date]{width: 200px;}
 input[type=number]{width: 200px;}
+
+button[type=submit],button[type=button] {
+    color:#ffffff;
+    background-color: #7018e2;
+    font:1.4em Futura, ‘Century Gothic’, AppleGothic, sans-serif;
+    
+    /* ... other rules ... */
+    cursor:pointer;
+}
+button[type=submit]:hover {
+    background-color:#000000;
+    color:#ffffff;
+}
+button[type=button]:hover {
+    background-color:#000000;
+    color:#ffffff;
+}
 
 label.required::after {
     content: "*";
@@ -190,7 +211,7 @@ label.required::after {
 #logo_text h2
 { font-size: 120%;
   padding: 4px 0 0 0;
-  color: #B48A7C;}
+  color: #d6cee0;}
 
   #menubar
 { width: 872px;
@@ -226,14 +247,14 @@ ul#menu li.selected a
 
 ul#menu li.selected
 { margin: 8px 4px 0 13px;
-  background: #B48A7C;}
+  background: #d6cee0;}
 
 ul#menu li.selected a, ul#menu li.selected a:hover
-{ background: #B48A7C;
+{ background: #d6cee0;
   color: #FFF;}
 
 ul#menu li a:hover
-{ color: #B48A7C;}
+{ color: #d6cee0;}
 
 #site_content
 { width: 880px;
@@ -291,7 +312,7 @@ ul#menu li a:hover
   text-decoration: none;}
 
 #footer a:hover
-{ color: #B48A7C;
+{ color: #d6cee0;
   text-decoration: none;}
 
 .search
@@ -355,13 +376,13 @@ table
 { margin: 10px 0 30px 0;}
 
 table tr th, table tr td
-{ background: #3B3B3B;
+{ background: #7018e2;
   color: #FFF;
   padding: 7px 4px;
   text-align: left;}
   
 table tr td
-{ background: #E5E5DB;
+{ background: #e3d1f9;
   color: #47433F;
   border-top: 1px solid #FFF;}
 
@@ -377,7 +398,8 @@ fieldset {
   padding: 1em;
 }
 
-legend{
-  font-size: large;
+legend,label{
+  font-size: small;
+  color: #7018e2;
 }
 

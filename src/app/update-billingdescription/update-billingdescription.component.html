@@ -1,17 +1,18 @@
  <ng4-loading-spinner></ng4-loading-spinner>
-<a routerLink='/billingdescription'>View Billing Description</a>
+<!--<a routerLink='/billingdescription'>View Billing Description</a>-->
+<a routerLink='/billingdescription' title="View Billing Description"><i class="fa fa-eye" aria-hidden="true"> View Billing Description</i></a>
 <span *ngIf="(this.internalid!==undefined)">
-			<a routerLink='/updateBillingdescription'>Add FP Billing</a>
+			<!--<a routerLink='/updateBillingdescription'>Add FP Billing</a>-->
+			<a routerLink='/updateBillingdescription' title="Add FP Billing"><i class="fa fa-plus" aria-hidden="false"> Add Billing Description</i></a>
 </span>
 
-	<h2>
 		<span *ngIf="(this.internalid===undefined)">
-			Add Billing Description
+			<h1>Add Billing Description</h1>
 		</span>
 		<span *ngIf="(this.internalid!==undefined)">
-			Update Billing Description
+			<h1>Update Billing Description</h1>
 		</span>		
-	</h2>
+	
 	<form id="formBilldescrips" name="formBilldescrips" #data="ngForm" (ngSubmit)="addRecords(data.value)" ngNativeValidate>
 		<table>
 			<tr>
@@ -51,9 +52,11 @@
 					
 		</table>
 		<h3 *ngIf= "isAdded" >{{confirmationString}}</h3>
-	<input type="submit" value="Save">
+	<!--<input type="submit" value="Save">-->
+	<button type="submit" title="Save"><i class="fa fa-floppy-o"></i> Save</button>
 	<span *ngIf="(this.internalid===undefined)">
-		<button (click)="clearFields()">Clear</button>
+		<!--<button (click)="clearFields()">Clear</button>-->
+		<button type="button" title="Clear" (click)="clearFields()"><i class="fa fa-window-close-o"></i> Clear</button>
 	</span>
 	</form>	
 

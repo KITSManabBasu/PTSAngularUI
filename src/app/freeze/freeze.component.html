@@ -1,5 +1,9 @@
 <ng4-loading-spinner></ng4-loading-spinner>
+<h1>
+	Freeze Timesheet
+</h1>
 <form id="formFreeze" name="formFreeze" #data="ngForm" (ngSubmit)="addRecords(data.value)" ngNativeValidate>
+	
 	<table>
 		<tr>
 				<td><label class="required">Start Date :</label></td>
@@ -15,5 +19,6 @@
 		</tr>
 	</table>	
 	<h3 *ngIf= "isAdded" >{{confirmationString}}</h3>
-	<input type="submit" value="Save">
+	<!--<input type="submit" value="Save">-->
+	<button type="submit" title="Save"><i class="fa fa-floppy-o"></i> Save</button>
 </form>	

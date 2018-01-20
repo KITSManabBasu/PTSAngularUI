@@ -1,6 +1,7 @@
 <ng4-loading-spinner></ng4-loading-spinner>
 <p>
-  <a routerLink='/updateResourceallocation'>Add Resource Allocation</a>
+  <!--<a routerLink='/updateResourceallocation'>Add Resource Allocation</a>-->
+  <a routerLink='/updateResourceallocation' title="Add Resource Allocation"><i class="fa fa-plus" aria-hidden="false"> Add Resource Allocation</i></a>
 </p>
 <h1>
 	Resource Allocation Details
@@ -33,8 +34,8 @@
 		<td style="width: 5%">{{convertISODatetoString(allocation.START_DATE)}}</td>
 		<td style="width: 5%">{{convertISODatetoString(allocation.END_DATE)}}</td>	
 		<td style="width: 5%">{{allocation.DAILY_RATE}}</td>			
-		<td style="width: 2%" (click)="deleteAllocations(allocation._id)"><a>DELETE</a></td>
-		<td style="width: 2%" [routerLink]="['/updateResourceallocation',allocation._id]" ><a>UPDATE</a></td>
+		<td style="width: 2%" (click)="deleteAllocations(allocation._id)"><!--<a>DELETE</a>--><a title="Delete"><i class="fa fa-trash-o fa-lg"></i></a></td>
+		<td style="width: 2%" [routerLink]="['/updateResourceallocation',allocation._id]" ><!--<a>UPDATE</a>--><a title="Edit"><i class="fa fa-pencil fa-fw"></i></a></td>
 		
 	</tr>
   	

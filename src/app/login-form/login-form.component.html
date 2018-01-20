@@ -2,19 +2,23 @@
 
 <form (submit)="loginUser($event)">
   <fieldset>
-    <legend><b>Project Management System</b></legend>
+    <legend><b><i class="fa fa-lock" aria-hidden="true"></i>Login to Digital PMO</b></legend>
     <div class="input">
-      <p><label>Username</label>
+      <p><label><i class="fa fa-user-circle" aria-hidden="true"></i>Username</label>
         <input type="text" style="width: 180px"></p>
       </div>
 
    <div class="input">
-     <p><label>Password</label>
+     <p><label><i class="fa fa-key" aria-hidden="true"></i>Password</label>
         <input type="password" style="width: 180px"></p>
       </div>
 
       <div class="input" align="center">
-        <input type="submit" value="Login">
+        <!--<i  aria-hidden="true"></i>-->
+        <!--<input type="submit" value="Login">-->
+        <button type="submit" class="btn btn-default" title="Login">
+                    <i class="fa fa-sign-in fa-3x"></i>
+        </button>
       </div>
   </fieldset>
 </form>
