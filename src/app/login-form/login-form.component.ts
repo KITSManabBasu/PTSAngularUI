@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import 'rxjs/add/operator/toPromise';
 import {Http, Response, Headers} from '@angular/http';
 import {MenuService} from "../menu.service";
+import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-login-form',
@@ -15,7 +16,7 @@ import {MenuService} from "../menu.service";
 export class LoginFormComponent implements OnInit {
   @Output() onFilter: EventEmitter<any> = new EventEmitter();
 
-  constructor(private router:Router, private user:UserService, private http:Http, private menuService: MenuService) { }
+  constructor(private router:Router, private user:UserService, private http:Http, private menuService: MenuService,private ng4LoadingSpinnerService: Ng4LoadingSpinnerService) { }
 
   private userObjectId : string;
   private username : string;
@@ -74,6 +75,7 @@ export class LoginFormComponent implements OnInit {
 
   validateLogin(loginId, password, event){
     console.log('in validateLogin');
+    this.ng4LoadingSpinnerService.show();
     this.http.get(environment.apiBaseUrl + 'api/users/login/' + loginId +'/'+ password).subscribe(
       (res: Response)=>{
         if(res.json())
@@ -101,6 +103,7 @@ export class LoginFormComponent implements OnInit {
             this.user.setUserLoggedIn();
             UtilityService.setItemtoSessionStorage('User', this.userData);
             UtilityService.setItemtoSessionStorage('userID', this.userData.username);
+            this.ng4LoadingSpinnerService.hide();
             this.loadMenu();
             this.router.navigate(['home']);
           }
@@ -108,6 +111,7 @@ export class LoginFormComponent implements OnInit {
         else{
           event.target.elements[1].value = '';
           event.target.elements[2].value = '';
+          this.ng4LoadingSpinnerService.hide();
           alert('Invalid Credentials');
         }
       },

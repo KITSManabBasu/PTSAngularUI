@@ -9,7 +9,14 @@ import {MenuService} from "../menu.service";
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
+private userfullname: string;
 
+config = {
+animation: "spin",
+offset: {
+top: 60
+}
+};
 constructor(private userService: UserService, private menuService: MenuService) {
 
   this.menuService.listenLogin().subscribe(m=>{
@@ -136,10 +143,11 @@ constructor(private userService: UserService, private menuService: MenuService) 
 
 
   public loadMenuBasedonRole(){
-    this.clearMenuItems();
+    this.clearMenuItems(); 
     this.userSession = UtilityService.getItemfromSessionStorage("User");
     if(this.userSession) {
       console.log(this.roleMenuItemsArray);
+      this.userfullname=this.userSession.firstname+ ' '+ this.userSession.middlename+ ' '+  this.userSession.lastname;
       if (this.userSession.isProjectUser == true) {
         if (!this.checkMenuItemExists(this.userMenu.subItems,this.addModifyUserMenuItem.order))
           this.userMenu.subItems.push(this.addModifyUserMenuItem);
