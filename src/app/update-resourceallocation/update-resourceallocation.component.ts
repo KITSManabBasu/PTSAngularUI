@@ -30,9 +30,13 @@ export class UpdateResourceallocationComponent implements OnInit {
     BIL_DESC_ID: string;
     START_DATE:String;
     END_DATE:String;
+    EXISTING_START_DATE:String;
+    EXISTING_END_DATE:String;
     DAILY_RATE:number;
     CREATED_BY: string;
     UPDATED_BY: string;
+    enableStartDate=true;
+    enableEndDate=true;
     
 
   constructor(private router:Router, private route:ActivatedRoute, private http:Http,private ng4LoadingSpinnerService: Ng4LoadingSpinnerService) { }
@@ -48,7 +52,7 @@ export class UpdateResourceallocationComponent implements OnInit {
   	this.fetchUserID();
   	this.fetchWons();
   	this.fetchBillingDesc();
-    this.fetchweeks();
+    //this.fetchweeks();
   	this.route.params.subscribe(params=>{
   		this.internalid= params['id'];
   		if(this.internalid!==undefined)
@@ -58,7 +62,7 @@ export class UpdateResourceallocationComponent implements OnInit {
   		
 	  });
     this.CREATED_BY=this.UPDATED_BY=UtilityService.getCurrentSessionID();
-    this.setDefaultStartAndEndWeek()
+    //this.setDefaultStartAndEndWeek()
   }
   populateAllocationdetails=function(targetInternalID: String)
   {
@@ -71,9 +75,11 @@ export class UpdateResourceallocationComponent implements OnInit {
     			this.userid=this.existingData.userid;
     			this.WON=this.existingData.WON;
     			this.BIL_DESC_ID=this.existingData.BIL_DESC_ID;
-    			this.START_DATE=this.existingData.START_DATE;
-    			this.END_DATE=this.existingData.END_DATE;
+    			this.EXISTING_START_DATE=this.START_DATE=UtilityService.convertISOtoStringDate(this.existingData.START_DATE);
+    			this.EXISTING_END_DATE=this.END_DATE=UtilityService.convertISOtoStringDate(this.existingData.END_DATE);
     			this.DAILY_RATE=this.existingData.DAILY_RATE;
+          this.setStartDateEnableDisabled();
+          this.setEndDateEnableDisabled();
         }
         //alert(UtilityService.convertISOtoStringDate(this.existingData.START_DATE));
   			//alert(JSON.stringify(this.existingData));
@@ -81,8 +87,41 @@ export class UpdateResourceallocationComponent implements OnInit {
   		}
   		)
   }
+setStartDateEnableDisabled=function() {  
+this.http.get(environment.apiBaseUrl + 'api/allocationstimesheetexist/'+ this.internalid +'/'+this.EXISTING_START_DATE).subscribe((res:Response)=>
+          {
+            this.validatestartweek=res.json();
+            if(this.validatestartweek)//start week already in TS
+            {
+              //alert("The time sheet already exist for the allocation start date.Unable to change.");
+              this.enableStartDate=false;
+            }
+            else
+            {
+              this.enableStartDate=true;              
+            }
+          })
+}
 
-  setDefaultStartAndEndWeek=function () {
+setEndDateEnableDisabled=function() {  
+this.http.get(environment.apiBaseUrl + 'api/allocationstimesheetexist/'+ this.internalid +'/'+this.EXISTING_END_DATE).subscribe((res:Response)=>
+            {
+              this.validateendweek=res.json();
+              //alert(this.validateendweek);
+              if(this.validateendweek)//start week already in TS
+              {
+                //alert("The time sheet already exist for the allocation End date.Unable to change.");
+                this.enableEndDate=false;
+              }
+              else
+              {
+                this.enableEndDate=true;              
+              }
+              //alert(this.enableEndDate);
+            })
+}
+
+  /*setDefaultStartAndEndWeek=function () {
    var now = new Date();
    var next_week_start = new Date(now.getFullYear(), now.getMonth(), now.getDate()+(7 - now.getDay())).toISOString();
    var next_week_end = new Date(now.getFullYear(), now.getMonth(), now.getDate()+(13 - now.getDay())).toISOString();
@@ -91,7 +130,7 @@ export class UpdateResourceallocationComponent implements OnInit {
    this.END_DATE=next_week_end;
    //return next_week_end;
    //return new Date().toISOString();
-  }
+  }*/
 
   fetchProjectID= function(){
   	//this.ng4LoadingSpinnerService.show();
@@ -203,12 +242,13 @@ convertISODatetoString= function(str1:string){return UtilityService.convertISOto
   		{
   		
   			console.log('Update Called');
-
-         this.http.get(environment.apiBaseUrl + 'api/allocationsallow/'+ this.internalid +'/'+this.dataObj.userid+'/'+this.dataObj.START_DATE+'/'+this.dataObj.END_DATE).subscribe((res:Response)=>
+        this.http.get(environment.apiBaseUrl + 'api/allocationsallow/'+ this.internalid +'/'+this.dataObj.userid+'/'+this.dataObj.START_DATE+'/'+this.dataObj.END_DATE).subscribe((res:Response)=>
           {
           this.validaionresult=res.json();
-            if(this.validaionresult)
+            if(this.validaionresult)//further validation to check if already allocatated during this period
               {
+               //alert("disabled Save");
+                
                 this.http.post(environment.apiBaseUrl + 'api/allocations/'+ this.internalid,this.dataObj).subscribe((res:Response)=>
                 {
                   console.log(res);       
@@ -220,6 +260,66 @@ convertISODatetoString= function(str1:string){return UtilityService.convertISOto
               alert("User already allocated during this period, Please change the allocation date");
                    
           })
+        //Check if TS already Logged for the changed period
+       /* this.allowsave=true;
+        if(this.EXISTING_START_DATE!=this.dataObj.START_DATE)
+        {
+          this.http.get(environment.apiBaseUrl + 'api/allocationstimesheetexist/'+ this.internalid +'/'+this.EXISTING_START_DATE).subscribe((res:Response)=>
+          {
+            this.validatestartweek=res.json();
+            if(this.validatestartweek)//start week already in TS
+            {
+              alert("The time sheet already exist for the allocation start date.Unable to change.");
+              this.allowsave=false;
+              //return;
+            }
+            else
+            {
+              this.allowsave=true;              
+            }
+          })
+        }
+        else if(this.EXISTING_END_DATE!=this.dataObj.END_DATE)
+        {
+            this.http.get(environment.apiBaseUrl + 'api/allocationstimesheetexist/'+ this.internalid +'/'+this.EXISTING_END_DATE).subscribe((res:Response)=>
+            {
+              this.validatestartweek=res.json();
+              if(this.validatestartweek)//start week already in TS
+              {
+                alert("The time sheet already exist for the allocation End date.Unable to change.");
+                this.allowsave=false;
+              }
+              else
+              {
+                this.allowsave=true;              
+              }
+            })
+        }
+        else{
+        alert(this.allowsave);
+        if(this.allowsave)
+        {
+         this.http.get(environment.apiBaseUrl + 'api/allocationsallow/'+ this.internalid +'/'+this.dataObj.userid+'/'+this.dataObj.START_DATE+'/'+this.dataObj.END_DATE).subscribe((res:Response)=>
+          {
+          this.validaionresult=res.json();
+            if(this.validaionresult)//further validation to check if already allocatated during this period
+              {
+               //alert("disabled Save");
+                
+                this.http.post(environment.apiBaseUrl + 'api/allocations/'+ this.internalid,this.dataObj).subscribe((res:Response)=>
+                {
+                  console.log(res);       
+                  this.isAdded=true;  
+                  //this.clearFields();     
+                })
+              }
+            else
+              alert("User already allocated during this period, Please change the allocation date");
+                   
+          })
+        }
+        }//
+*/
   		}	
 		else
 		  {
@@ -257,7 +357,7 @@ convertISODatetoString= function(str1:string){return UtilityService.convertISOto
 		  this.START_DATE=''; 
 		  this.END_DATE='';
 		  this.DAILY_RATE=0; 		
-      this.setDefaultStartAndEndWeek();  
+      //this.setDefaultStartAndEndWeek();  
 	} 
 }
 export class ResourceAllocationProp  

@@ -2,21 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import {UserService} from '../user.service';
 import { UtilityService } from '../utility.service';
 import {MenuService} from "../menu.service";
- 
+
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
-private userfullname: string;
 
-config = {
-animation: "spin",
-offset: {
-top: 60
-}
-};
 constructor(private userService: UserService, private menuService: MenuService) {
 
   this.menuService.listenLogin().subscribe(m=>{
@@ -43,12 +36,12 @@ constructor(private userService: UserService, private menuService: MenuService) 
     "order":1,
     "subItems":[]
   };
-  wonMenu: any =  {"title":"Details",
+  projectMenu: any =  {"title":"Project and Billing",
     "link":"/won",
     "order":2,
     "subItems":[]
   };
-  timesheetMenu: any = {"title":"Timesheets",
+  timesheetMenu: any = {"title":"Timesheet",
     "link":"/won",
     "order":3,
     "subItems":[]
@@ -76,11 +69,12 @@ constructor(private userService: UserService, private menuService: MenuService) 
   wonDetailsManuItem = {"title": "WON Details","order":1,"link": "/won"};
   projectDetailMenuItem = {"title": "Project Detail","order":2,"link": "/project"};
 
-  FPBillingMenuItem = {"title": "FP Billing","order":1,"link": "/fpbilling"};
-  resourceAllocationMenuItem = {"title": "Resource Allocation","order":2,"link": "/resourceallocation"};
-  timesheetmenuItem = {"title": "Timesheet","order":3,"link": "/timesheet"};
-  billlingDescMenuItem = {"title": "Billing Description","order":4,"link": "/billingdescription"};
-  freezeMenuItem = {"title": "Freeze","order":5,"link": "/freeze"};
+  FPBillingMenuItem = {"title": "FP Billing","order":3,"link": "/fpbilling"};
+  resourceAllocationMenuItem = {"title": "Resource Allocation","order":4,"link": "/resourceallocation"};
+  billlingDescMenuItem = {"title": "Billing Description","order":5,"link": "/billingdescription"};
+  freezeMenuItem = {"title": "Freeze","order":6,"link": "/freeze"};
+
+  timesheetmenuItem = {"title": "Timesheet Entry","order":3,"link": "/timesheet"};
 
   billingExtractMenuItem = {"title": "Billing Extract","order":1,"link": "/billingextract"};
 
@@ -135,7 +129,7 @@ constructor(private userService: UserService, private menuService: MenuService) 
   private clearMenuItems() {
     this.roleMenuItemsArray = [];
     this.userMenu.subItems = [];
-    this.wonMenu.subItems = [];
+    this.projectMenu.subItems = [];
     this.timesheetMenu.subItems = [];
     this.projectReportMenu.subItems = [];
     this.timesheetReportMenu.subItems = [];
@@ -143,28 +137,27 @@ constructor(private userService: UserService, private menuService: MenuService) 
 
 
   public loadMenuBasedonRole(){
-    this.clearMenuItems(); 
+    this.clearMenuItems();
     this.userSession = UtilityService.getItemfromSessionStorage("User");
     if(this.userSession) {
       console.log(this.roleMenuItemsArray);
-      this.userfullname=this.userSession.firstname+ ' '+ this.userSession.middlename+ ' '+  this.userSession.lastname;
       if (this.userSession.isProjectUser == true) {
         if (!this.checkMenuItemExists(this.userMenu.subItems,this.addModifyUserMenuItem.order))
           this.userMenu.subItems.push(this.addModifyUserMenuItem);
 
-        if (!this.checkMenuItemExists(this.wonMenu.subItems,this.wonDetailsManuItem.order))
-          this.wonMenu.subItems.push(this. wonDetailsManuItem);
-        if (!this.checkMenuItemExists(this.wonMenu.subItems,this.projectDetailMenuItem.order))
-          this.wonMenu.subItems.push(this.projectDetailMenuItem);
+        if (!this.checkMenuItemExists(this.projectMenu.subItems,this.wonDetailsManuItem.order))
+          this.projectMenu.subItems.push(this. wonDetailsManuItem);
+        if (!this.checkMenuItemExists(this.projectMenu.subItems,this.projectDetailMenuItem.order))
+          this.projectMenu.subItems.push(this.projectDetailMenuItem);
 
         if (!this.checkMenuItemExists(this.timesheetMenu.subItems,this.FPBillingMenuItem.order))
-          this.timesheetMenu.subItems.push(this.FPBillingMenuItem);
+          this.projectMenu.subItems.push(this.FPBillingMenuItem);
         if (!this.checkMenuItemExists(this.timesheetMenu.subItems,this.billlingDescMenuItem.order))
-          this.timesheetMenu.subItems.push(this.billlingDescMenuItem);
+          this.projectMenu.subItems.push(this.billlingDescMenuItem);
         if (!this.checkMenuItemExists(this.timesheetMenu.subItems,this.freezeMenuItem.order))
-          this.timesheetMenu.subItems.push(this.freezeMenuItem);
+          this.projectMenu.subItems.push(this.freezeMenuItem);
 
-        console.log('this.wonMenu - ' + JSON.parse(JSON.stringify(this.wonMenu)));
+        console.log('this.projectMenu - ' + JSON.parse(JSON.stringify(this.projectMenu)));
       }
       if (this.userSession.isTimeSheetUser) {
         if (!this.checkMenuItemExists(this.timesheetMenu.subItems,this.timesheetmenuItem.order))
@@ -183,15 +176,15 @@ constructor(private userService: UserService, private menuService: MenuService) 
       }
       if (this.userSession.isTimeSheetUserAllocation) {
         if (!this.checkMenuItemExists(this.timesheetMenu.subItems,this.resourceAllocationMenuItem.order))
-          this.timesheetMenu.subItems.push(this.resourceAllocationMenuItem);
+          this.projectMenu.subItems.push(this.resourceAllocationMenuItem);
         console.log('this.timesheetMenu - ' + JSON.parse(JSON.stringify(this.timesheetMenu)));
       }
 
       if (this.userMenu.subItems.length > 0)
         this.roleMenuItemsArray.push(this.userMenu);
 
-      if (this.wonMenu.subItems.length > 0)
-        this.roleMenuItemsArray.push(this.wonMenu);
+      if (this.projectMenu.subItems.length > 0)
+        this.roleMenuItemsArray.push(this.projectMenu);
 
       if (this.timesheetMenu.subItems.length > 0)
         this.roleMenuItemsArray.push(this.timesheetMenu);
@@ -203,11 +196,18 @@ constructor(private userService: UserService, private menuService: MenuService) 
         this.roleMenuItemsArray.push(this.timesheetReportMenu);
 
       this.roleMenuItemsArray.push(this.accountMenu);
+      this.sortMenuItems();
       console.log(this.userSession);
       console.log(this.roleMenuItemsArray);
     }
   }
 
+  public sortMenuItems(){
+    this.roleMenuItemsArray.sort((a, b) => Number(a.order) - Number(b.order));
+    for (let parentMenu of this.roleMenuItemsArray) {
+      parentMenu.subItems.sort((a, b) => Number(a.order) - Number(b.order));
+    }
+  }
   public onMenuClose(){
     console.log("menu closed");
   }

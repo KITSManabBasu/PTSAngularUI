@@ -27,6 +27,8 @@ export class UpdateFpbillingComponent implements OnInit {
     bill_amount:number;
     billing_date: Date;
     bil_desc_id: string;
+    po_number:number;
+    sow_number:number;
     CREATED_BY: string;
     UPDATED_BY: string;
 
@@ -64,6 +66,8 @@ export class UpdateFpbillingComponent implements OnInit {
   			//this.billing_date=this.existingData.billing_date;
         this.billing_date=UtilityService.convertISOtoStringDate(this.existingData.billing_date);
   			this.bil_desc_id=this.existingData.bil_desc_id;
+        this.po_number=this.existingData.po_number;
+        this.sow_number=this.existingData.sow_number;
   			
         }			
   		}
@@ -90,6 +94,8 @@ export class UpdateFpbillingComponent implements OnInit {
 		"bill_amount":data.bill_amount,
 		"billing_date":data.billing_date,
 		"bil_desc_id":data.bil_desc_id,
+    "po_number":data.po_number,
+    "sow_number":data.sow_number,
 		"CREATED_BY" : this.CREATED_BY,
     "UPDATED_BY" : this.UPDATED_BY,
 		}
@@ -123,7 +129,9 @@ export class UpdateFpbillingComponent implements OnInit {
 		  this.WON='';
 		  this.bill_amount=0;
 		  this.billing_date=null;
-		  this.bil_desc_id='';	  			  
+		  this.bil_desc_id='';	
+      this.po_number=0;
+      this.sow_number=0;  			  
 	} 
 
 }

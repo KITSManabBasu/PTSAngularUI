@@ -1,4 +1,5 @@
-<h1>Timesheet Entry</h1>
+<br/>
+<br/>
 <span>User:</span>
 <select id="ddlUser" [disabled]="enableUserList == false" required [(ngModel)]="userId"
         (change)="populateUserTimesheet($event)">
@@ -16,6 +17,7 @@ Week:
 |
 <!--<button (click)="showNextWeek()">Next</button>-->
 <button type="button" title="Next" (click)="showNextWeek()">Next <i class="fa fa-step-forward"></i></button>
+
 <div>
   <table>
     <thead>
@@ -29,58 +31,68 @@ Week:
       <th><span id="lblFriday" >Fri - {{fridayDate | date: 'dd/MM/yyyy'}}</span> </th>
       <th><span id="lblSatday" >Sat - {{saturdayDate | date: 'dd/MM/yyyy'}}</span> </th>
     </tr>
+    <tr>
+      <th><span id="lblAllocation" >Allocation</span></th>
+      <th><input id= "txtProjectCodeMon" class="hourText" [(ngModel)]="projectCodeSun" [value]="projectCodeSun" disabled="disabled" /></th>
+      <th><input id= "txtProjectCodeTue" class="hourText" [(ngModel)]="projectCodeMon" [value]="projectCodeMon" disabled="disabled" /></th>
+      <th><input id= "txtProjectCodeWed" class="hourText" [(ngModel)]="projectCodeTue" [value]="projectCodeTue" disabled="disabled" /></th>
+      <th><input id= "txtProjectCodeThurs" class="hourText" [(ngModel)]="projectCodeWed" [value]="projectCodeWed" disabled="disabled" /></th>
+      <th><input id= "txtProjectCodeFri" class="hourText" [(ngModel)]="projectCodeThurs" [value]="projectCodeThurs" disabled="disabled" /></th>
+      <th><input id= "txtProjectCodeSat" class="hourText" [(ngModel)]="projectCodeFri" [value]="projectCodeFri" disabled="disabled" /></th>
+      <th><input id= "txtProjectCodeSun" class="hourText" [(ngModel)]="projectCodeSat" [value]="projectCodeSat" disabled="disabled" /></th>
+    </tr>
     </thead>
     <tbody>
     <tr>
       <td >
-        <input id= "txtProjectCode" class="projectText" [(ngModel)]="projectCode" [value]="projectCode" disabled="disabled" />
+        <input id= "txtProjectCode" class="projectText" [value]="projectText" disabled="disabled" />
       </td>
       <td>
-        <input id= "txtProjectSunday" class="hourText" OnlyNumber="true" [(ngModel)]="projectSundayHour" [value]="projectSundayHour" (ngModelChange)="leaveSundayHour=null" [disabled] ="sundayDate>= freezeStartDate && sundayDate<= freezeEndDate"/>
+        <input id= "txtProjectSunday" class="hourText" OnlyNumber="true" [(ngModel)]="projectSundayHour" [value]="projectSundayHour" [disabled] ="(sundayDate>= freezeStartDate && sundayDate<= freezeEndDate) || allocationIdSun == null"/>
       </td>
       <td>
-        <input id= "txtProjectMonday" class="hourText" OnlyNumber="true" [(ngModel)]="projectMondayHour" [value]="projectMondayHour" (ngModelChange)="leaveMondayHour=null" [disabled] ="mondayDate>= freezeStartDate && sundayDate<= freezeEndDate"/>
+        <input id= "txtProjectMonday" class="hourText" OnlyNumber="true" [(ngModel)]="projectMondayHour" [value]="projectMondayHour" [disabled] ="(mondayDate>= freezeStartDate && sundayDate<= freezeEndDate) || allocationIdMon == null"/>
       </td>
       <td>
-        <input id= "txtProjectTuesday" class="hourText" OnlyNumber="true" [(ngModel)]="projectTuesdayHour" [value]="projectTuesdayHour" (ngModelChange)="leaveTuesdayHour=null" [disabled] ="tuesdayDate>= freezeStartDate && sundayDate<= freezeEndDate"/>
+        <input id= "txtProjectTuesday" class="hourText" OnlyNumber="true" [(ngModel)]="projectTuesdayHour" [value]="projectTuesdayHour" [disabled] ="(tuesdayDate>= freezeStartDate && sundayDate<= freezeEndDate) || allocationIdTue == null"/>
       </td>
       <td>
-        <input id= "txtProjectWednesday" class="hourText" OnlyNumber="true" [(ngModel)]="projectWednesdayHour" [value]="projectWednesdayHour" (ngModelChange)="leaveWednesdayHour=null" [disabled] ="wednesdayDate>= freezeStartDate && sundayDate<= freezeEndDate"/>
+        <input id= "txtProjectWednesday" class="hourText" OnlyNumber="true" [(ngModel)]="projectWednesdayHour" [value]="projectWednesdayHour" [disabled] ="(wednesdayDate>= freezeStartDate && sundayDate<= freezeEndDate) || allocationIdWed == null"/>
       </td>
       <td>
-        <input id= "txtProjectThursday" class="hourText" OnlyNumber="true" [(ngModel)]="projectThursdayHour" [value]="projectThursdayHour" (ngModelChange)="leaveThursdayHour=null" [disabled] ="thursdayDate>= freezeStartDate && sundayDate<= freezeEndDate"/>
+        <input id= "txtProjectThursday" class="hourText" OnlyNumber="true" [(ngModel)]="projectThursdayHour" [value]="projectThursdayHour" [disabled] ="(thursdayDate>= freezeStartDate && sundayDate<= freezeEndDate) || allocationIdThurs == null"/>
       </td>
       <td>
-      <input id= "txtProjectFriday" class="hourText" OnlyNumber="true" [(ngModel)]="projectFridayHour" [value]="projectFridayHour" (ngModelChange)="leaveFridayHour=null" [disabled] ="fridayDate>= freezeStartDate && sundayDate<= freezeEndDate"/>
+        <input id= "txtProjectFriday" class="hourText" OnlyNumber="true" [(ngModel)]="projectFridayHour" [value]="projectFridayHour" [disabled] ="(fridayDate>= freezeStartDate && sundayDate<= freezeEndDate) || allocationIdFri == null"/>
     </td>
       <td>
-        <input id= "txtProjectSaturday" class="hourText" OnlyNumber="true" [(ngModel)]="projectSaturdayHour" [value]="projectSaturdayHour" (ngModelChange)="leaveSaturdayHour=null" [disabled] ="saturdayDate>= freezeStartDate && sundayDate<= freezeEndDate"/>
+        <input id= "txtProjectSaturday" class="hourText" OnlyNumber="true" [(ngModel)]="projectSaturdayHour" [value]="projectSaturdayHour" [disabled] ="(saturdayDate>= freezeStartDate && sundayDate<= freezeEndDate) || allocationIdSat == null"/>
       </td>
     </tr>
     <tr>
       <td>
-        <input id= "txtLeaveCode" class="projectText" [(ngModel)]="leaveCode" [value]="leaveCode" disabled="disabled"/>
+        <input id= "txtLeaveCode" class="projectText" [value]="leaveText" disabled="disabled"/>
       </td>
       <td>
-        <input id= "txtLeaveSunday" class="hourText" OnlyNumber="true" [(ngModel)]="leaveSundayHour" [value]="leaveSundayHour" (ngModelChange)="projectSundayHour=null" [disabled] ="sundayDate>= freezeStartDate && sundayDate<= freezeEndDate"/>
+        <input id= "txtLeaveSunday" class="hourText" OnlyNumber="true" [(ngModel)]="leaveSundayHour" [value]="leaveSundayHour" [disabled] ="(sundayDate>= freezeStartDate && sundayDate<= freezeEndDate) || allocationIdSun == null"/>
       </td>
       <td>
-        <input id= "txtLeaveMonday" class="hourText" OnlyNumber="true" [(ngModel)]="leaveMondayHour" [value]="leaveMondayHour" (ngModelChange)="projectMondayHour=null" [disabled] ="mondayDate>= freezeStartDate && sundayDate<= freezeEndDate"/>
+        <input id= "txtLeaveMonday" class="hourText" OnlyNumber="true" [(ngModel)]="leaveMondayHour" [value]="leaveMondayHour" [disabled] ="(mondayDate>= freezeStartDate && sundayDate<= freezeEndDate) || allocationIdMon == null"/>
       </td>
       <td>
-        <input id= "txtLeaveTuesday" class="hourText" OnlyNumber="true" [(ngModel)]="leaveTuesdayHour" [value]="leaveTuesdayHour" (ngModelChange)="projectTuesdayHour=null" [disabled] ="tuesdayDate>= freezeStartDate && sundayDate<= freezeEndDate"/>
+        <input id= "txtLeaveTuesday" class="hourText" OnlyNumber="true" [(ngModel)]="leaveTuesdayHour" [value]="leaveTuesdayHour" [disabled] ="(tuesdayDate>= freezeStartDate && sundayDate<= freezeEndDate) || allocationIdTue == null"/>
       </td>
       <td>
-        <input id= "txtLeaveWednesday" class="hourText" OnlyNumber="true" [(ngModel)]="leaveWednesdayHour" [value]="leaveWednesdayHour" (ngModelChange)="projectWednesdayHour=null" [disabled] ="wednesdayDate>= freezeStartDate && sundayDate<= freezeEndDate"/>
+        <input id= "txtLeaveWednesday" class="hourText" OnlyNumber="true" [(ngModel)]="leaveWednesdayHour" [value]="leaveWednesdayHour" [disabled] ="(wednesdayDate>= freezeStartDate && sundayDate<= freezeEndDate) || allocationIdWed == null"/>
       </td>
       <td>
-        <input id= "txtLeaveThursday" class="hourText" OnlyNumber="true" [(ngModel)]="leaveThursdayHour" [value]="leaveThursdayHour" (ngModelChange)="projectThursdayHour=null" [disabled] ="thursdayDate>= freezeStartDate && sundayDate<= freezeEndDate"/>
+        <input id= "txtLeaveThursday" class="hourText" OnlyNumber="true" [(ngModel)]="leaveThursdayHour" [value]="leaveThursdayHour" [disabled] ="(thursdayDate>= freezeStartDate && sundayDate<= freezeEndDate) || allocationIdThurs == null"/>
       </td>
       <td>
-        <input id= "txtLeaveFriday" class="hourText" OnlyNumber="true" [(ngModel)]="leaveFridayHour" [value]="leaveFridayHour" (ngModelChange)="projectFridayHour=null" [disabled] ="fridayDate>= freezeStartDate && sundayDate<= freezeEndDate"/>
+        <input id= "txtLeaveFriday" class="hourText" OnlyNumber="true" [(ngModel)]="leaveFridayHour" [value]="leaveFridayHour" [disabled] ="(fridayDate>= freezeStartDate && sundayDate<= freezeEndDate) || allocationIdFri == null"/>
       </td>
       <td>
-        <input id= "txtLeaveSaturday" class="hourText" OnlyNumber="true" [(ngModel)]="leaveSaturdayHour" [value]="leaveSaturdayHour" (ngModelChange)="projectSaturdayHour=null" [disabled] ="saturdayDate>= freezeStartDate && sundayDate<= freezeEndDate"/>
+        <input id= "txtLeaveSaturday" class="hourText" OnlyNumber="true" [(ngModel)]="leaveSaturdayHour" [value]="leaveSaturdayHour" [disabled] ="(saturdayDate>= freezeStartDate && sundayDate<= freezeEndDate) || allocationIdSat == null"/>
       </td>
     </tr>
     </tbody>

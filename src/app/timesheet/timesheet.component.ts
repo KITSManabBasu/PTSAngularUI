@@ -11,6 +11,7 @@ import { DatePipe } from '@angular/common';
 import {isNullOrUndefined} from "util";
 import { UtilityService } from '../utility.service';
 import {UserService} from '../user.service';
+import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-timesheet',
@@ -19,16 +20,32 @@ import {UserService} from '../user.service';
 })
 export class TimesheetComponent implements OnInit {
 
-  constructor(private router:Router, private route:ActivatedRoute, private http:Http, private user:UserService) { }
+  constructor(private router:Router, private route:ActivatedRoute, private http:Http, private user:UserService
+  ,private ng4LoadingSpinnerService: Ng4LoadingSpinnerService) { }
 
   ngOnInit() {
     this.CREATED_BY=this.UPDATED_BY=UtilityService.getCurrentSessionID();
+    this.ng4LoadingSpinnerService.show();
     this.populateUserList();
     this.validateTimesheetFreezed();
     this.populateTimesheet(new Date(), true);
+    this.ng4LoadingSpinnerService.hide();
   }
 
-  timesheetId: string;
+  timesheetMap: Map<string, string>;
+  allocationMap: Map<string, any>;
+
+  projectText: string = "PROJECT";
+  leaveText: string = "LEAVE";
+
+  allocationIdSun: string;
+  allocationIdMon: string;
+  allocationIdTue: string;
+  allocationIdWed: string;
+  allocationIdThurs: string;
+  allocationIdFri: string;
+  allocationIdSat: string;
+
   userId: string;
   currentDate: Date;
   startDate: Date;
@@ -40,7 +57,7 @@ export class TimesheetComponent implements OnInit {
   thursdayDate: Date;
   fridayDate: Date;
   saturdayDate: Date;
-  projectCode: string;
+
   projectSundayHour: number;
   projectMondayHour: number;
   projectTuesdayHour: number;
@@ -48,7 +65,6 @@ export class TimesheetComponent implements OnInit {
   projectThursdayHour: number;
   projectFridayHour: number;
   projectSaturdayHour: number;
-  leaveCode: string = "LEAVE";
   leaveSundayHour: number;
   leaveMondayHour: number;
   leaveTuesdayHour: number;
@@ -57,7 +73,7 @@ export class TimesheetComponent implements OnInit {
   leaveFridayHour: number;
   leaveSaturdayHour: number;
 
-  timesheetObj: any;
+  timesheetObj: any[];
   datePipe: DatePipe = new DatePipe("en-US");
   freezeStartDate: Date;
   freezeEndDate: Date;
@@ -67,6 +83,14 @@ export class TimesheetComponent implements OnInit {
   enableUserList: boolean = false;
   CREATED_BY: string;
   UPDATED_BY: string;
+
+  projectCodeSun: string;
+  projectCodeMon: string;
+  projectCodeTue: string;
+  projectCodeWed: string;
+  projectCodeThurs: string;
+  projectCodeFri: string;
+  projectCodeSat: string;
 
 
   public clearTime(event,flag) {
@@ -96,6 +120,7 @@ export class TimesheetComponent implements OnInit {
         }
       },
       err => {
+        this.ng4LoadingSpinnerService.hide();
         console.log("Error occured.")
       }
     )
@@ -113,11 +138,12 @@ export class TimesheetComponent implements OnInit {
         {
           console.log("no user exists");
           //check for any alllocation based on startdate
-          this.checkForValidAllocation();
+          //this.checkForValidAllocation();
         }
       },
       err => {
         console.log("Error occured.")
+        this.ng4LoadingSpinnerService.hide();
       }
     )
   }
@@ -171,83 +197,136 @@ export class TimesheetComponent implements OnInit {
       this.saturdayDate = this.getDayOfWeek(this.startDate, 6);
       this.endDate = new Date(this.saturdayDate);
       console.log((this.endDate));
-      this.http.get(environment.apiBaseUrl + 'api/timesheet/' + this.userId + '/' + this.datePipe.transform(this.startDate, 'yyyy-MM-dd')).subscribe(
-        (res: Response) => {
+      this.checkForValidAllocation();
+    }
+  }
+
+  public checkForValidTimesheet(){
+    this.ng4LoadingSpinnerService.show();
+    this.http.get(environment.apiBaseUrl + 'api/timesheet/' + this.userId + '/' + this.datePipe.transform(this.startDate, 'yyyy-MM-dd')).subscribe(
+      (res: Response) => {
           if (res.json()) {
             this.timesheetObj = JSON.parse(JSON.stringify(res.json()));
-            //console.log(this.timesheetObj);
-            //console.log(this.timesheetObj.length);
             if (this.timesheetObj.length > 0) {
-              console.log('timesheet exists');
-              console.log(this.timesheetObj);
-              this.timesheetId = this.timesheetObj[0]._id;
-              this.allocationId = this.timesheetObj[0].allocationId;
-              this.projectCode = this.timesheetObj[0].projectCode;
-              //Populate Allocation Id and Project Code for latest allocation
-              this.checkForValidAllocation();
-              this.projectSundayHour = this.timesheetObj[0].projectSundayHour == 0 ? null : this.timesheetObj[0].projectSundayHour;
-              this.projectMondayHour = this.timesheetObj[0].projectMondayHour == 0 ? null : this.timesheetObj[0].projectMondayHour;
-              this.projectTuesdayHour = this.timesheetObj[0].projectTuesdayHour == 0 ? null : this.timesheetObj[0].projectTuesdayHour;
-              this.projectWednesdayHour = this.timesheetObj[0].projectWednesdayHour == 0 ? null : this.timesheetObj[0].projectWednesdayHour;
-              this.projectThursdayHour = this.timesheetObj[0].projectThursdayHour == 0 ? null : this.timesheetObj[0].projectThursdayHour;
-              this.projectFridayHour = this.timesheetObj[0].projectFridayHour == 0 ? null : this.timesheetObj[0].projectFridayHour;
-              this.projectSaturdayHour = this.timesheetObj[0].projectSaturdayHour == 0 ? null : this.timesheetObj[0].projectSaturdayHour;
-              //this.leaveCode = '0000';
-              this.leaveSundayHour = this.timesheetObj[0].leaveSundayHour == 0 ? null : this.timesheetObj[0].leaveSundayHour;
-              this.leaveMondayHour = this.timesheetObj[0].leaveMondayHour == 0 ? null : this.timesheetObj[0].leaveMondayHour;
-              this.leaveTuesdayHour = this.timesheetObj[0].leaveTuesdayHour == 0 ? null : this.timesheetObj[0].leaveTuesdayHour;
-              this.leaveWednesdayHour = this.timesheetObj[0].leaveWednesdayHour == 0 ? null : this.timesheetObj[0].leaveWednesdayHour;
-              this.leaveFridayHour = this.timesheetObj[0].leaveFridayHour == 0 ? null : this.timesheetObj[0].leaveFridayHour;
-              this.leaveSaturdayHour = this.timesheetObj[0].leaveSaturdayHour == 0 ? null : this.timesheetObj[0].leaveSaturdayHour;
-            }
-            else {
-              console.log("timesheet doesn't exist");
-              //check for any alllocation based on startdate
-              this.checkForValidAllocation();
+                console.log('timesheet exists');
+                console.log(this.timesheetObj);
+                this.timesheetObj.forEach(timesheet => {
+                //Populate Allocation Id and Project Code for latest allocation
+                console.log(timesheet);
+                this.timesheetMap.set(timesheet.allocationId,timesheet._id);
+                console.log('allocationIdSun' + '-' + this.allocationIdSun);
+                if (timesheet.allocationId == this.allocationIdSun) {
+                this.projectSundayHour = timesheet.projectSundayHour == 0 ? null : timesheet.projectSundayHour;
+                this.leaveSundayHour = timesheet.leaveSundayHour == 0 ? null : timesheet.leaveSundayHour;
+              }
+              if (timesheet.allocationId == this.allocationIdMon) {
+                this.projectMondayHour = timesheet.projectMondayHour == 0 ? null : timesheet.projectMondayHour;
+                this.leaveMondayHour = timesheet.leaveMondayHour == 0 ? null : timesheet.leaveMondayHour;
+              }
+              if (timesheet.allocationId == this.allocationIdTue) {
+                this.projectTuesdayHour = timesheet.projectTuesdayHour == 0 ? null : timesheet.projectTuesdayHour;
+                this.leaveTuesdayHour = timesheet.leaveTuesdayHour == 0 ? null : timesheet.leaveTuesdayHour;
+              }
+              if (timesheet.allocationId == this.allocationIdWed) {
+                this.projectWednesdayHour = timesheet.projectWednesdayHour == 0 ? null : timesheet.projectWednesdayHour;
+                this.leaveWednesdayHour = timesheet.leaveWednesdayHour == 0 ? null : timesheet.leaveWednesdayHour;
+              }
+              if (timesheet.allocationId == this.allocationIdThurs) {
+                this.projectThursdayHour = timesheet.projectThursdayHour == 0 ? null : timesheet.projectThursdayHour;
+                this.leaveThursdayHour = timesheet.leaveThursdayHour == 0 ? null : timesheet.leaveThursdayHour;
+              }
+              if (timesheet.allocationId == this.allocationIdFri) {
+                this.projectFridayHour = timesheet.projectFridayHour == 0 ? null : timesheet.projectFridayHour;
+                this.leaveFridayHour = timesheet.leaveFridayHour == 0 ? null : timesheet.leaveFridayHour;
+              }
+              if (timesheet.allocationId == this.allocationIdSat) {
+                this.projectSaturdayHour = timesheet.projectSaturdayHour == 0 ? null : timesheet.projectSaturdayHour;
+                this.leaveSaturdayHour = timesheet.leaveSaturdayHour == 0 ? null : timesheet.leaveSaturdayHour;
+              }
+            })
+              this.timesheetObj = [];
+          }
+          else {
+            console.log("timesheet doesn't exist");
+            //check for any alllocation based on startdate
+            //this.checkForValidAllocation();
             }
           }
+          this.ng4LoadingSpinnerService.hide();
         },
-        err => {
-          console.log("Error occured.")
+      err => {
+        console.log("Error occured.")
+        this.ng4LoadingSpinnerService.hide();
         }
       )
-    }
   }
 
   public checkForValidAllocation()
   {
-      this.http.get(environment.apiBaseUrl + 'api/allocation/' + this.userId +'/'+ this.datePipe.transform(this.startDate, 'yyyy-MM-dd')).subscribe(
+      this.ng4LoadingSpinnerService.show();
+      this.http.get(environment.apiBaseUrl + 'api/allocation/' + this.userId +'/'+ this.datePipe.transform(this.startDate, 'yyyy-MM-dd')
+        + '/'+ this.datePipe.transform(this.endDate, 'yyyy-MM-dd')).subscribe(
     (res: Response)=>{
       if(res.json())
       {
-        var response = JSON.parse(JSON.stringify(res.json()))
-        console.log(response);
-        if(response.length > 0 )
-        {
-          var allocation = response[0];
-          console.log('allocation exists');
-          console.log(response[0]);
-          this.allocationId = allocation._id;
-          this.projectCode = allocation.PROJECT_CODE.PROJECT_CODE;
-          console.log(this.projectCode);
-        }
-        else
-        {
-          console.log("allocation doesn't exist");
-        }
-    }
+          var response = JSON.parse(JSON.stringify(res.json()))
+          console.log(response);
+          if(response.length > 0 )
+          {
+              response.forEach(allocation => {
+              console.log('allocation exists');
+              console.log(allocation);
+              this.allocationMap.set(allocation._id, {"START_DATE": allocation.START_DATE, "END_DATE": allocation.END_DATE });
+              if(this.validateIfDateIsWithinRange(this.sundayDate,allocation.START_DATE,allocation.END_DATE)){
+                this.allocationIdSun = allocation._id;
+                this.projectCodeSun = this.getAllocationDetails(allocation);
+                console.log(this.allocationIdSun);
+              }``
+              if(this.validateIfDateIsWithinRange(this.mondayDate,allocation.START_DATE,allocation.END_DATE)) {
+                this.allocationIdMon = allocation._id;
+                this.projectCodeMon = this.getAllocationDetails(allocation);
+              }
+              if(this.validateIfDateIsWithinRange(this.tuesdayDate,allocation.START_DATE,allocation.END_DATE)) {
+                this.allocationIdTue = allocation._id;
+                this.projectCodeTue = this.getAllocationDetails(allocation);
+              }
+              if(this.validateIfDateIsWithinRange(this.wednesdayDate,allocation.START_DATE,allocation.END_DATE)) {
+                this.allocationIdWed = allocation._id;
+                this.projectCodeWed = this.getAllocationDetails(allocation);
+              }
+              if(this.validateIfDateIsWithinRange(this.thursdayDate,allocation.START_DATE,allocation.END_DATE)) {
+                this.allocationIdThurs = allocation._id;
+                this.projectCodeThurs = this.getAllocationDetails(allocation);
+              }
+              if(this.validateIfDateIsWithinRange(this.fridayDate,allocation.START_DATE,allocation.END_DATE)) {
+                this.allocationIdFri = allocation._id;
+                this.projectCodeFri = this.getAllocationDetails(allocation);
+              }
+              if(this.validateIfDateIsWithinRange(this.saturdayDate,allocation.START_DATE,allocation.END_DATE)) {
+                this.allocationIdSat = allocation._id;
+                this.projectCodeSat = this.getAllocationDetails(allocation);
+              }
+            })
+          }
+          else
+          {
+            console.log("allocation doesn't exist");
+          }
+      }
+      this.checkForValidTimesheet();
     },
     err => {
       console.log("Error occured.")
+      this.ng4LoadingSpinnerService.hide();
     }
     )
   }
 
   public clearAllfields()
   {
-    this.timesheetId = null;
-    this.allocationId = null;
-    this.projectCode = null;
+    this.timesheetMap = new Map<string,string>();
+    this.allocationMap = new Map<string,any>();
+    this.timesheetObj = [];
     this.projectSundayHour = null;
     this.projectMondayHour = null;
     this.projectTuesdayHour = null;
@@ -255,7 +334,6 @@ export class TimesheetComponent implements OnInit {
     this.projectThursdayHour = null;
     this.projectFridayHour = null;
     this.projectSaturdayHour = null;
-    //this.leaveCode = '0000';
     this.leaveSundayHour = null;
     this.leaveMondayHour = null;
     this.leaveTuesdayHour = null;
@@ -263,6 +341,30 @@ export class TimesheetComponent implements OnInit {
     this.leaveThursdayHour = null;
     this.leaveFridayHour = null;
     this.leaveSaturdayHour = null;
+
+    this.allocationIdSun = null;
+    this.allocationIdMon = null;
+    this.allocationIdTue = null;
+    this.allocationIdWed = null;
+    this.allocationIdThurs = null;
+    this.allocationIdFri = null;
+    this.allocationIdSat = null;
+
+    this.projectCodeSun = null;
+    this.projectCodeMon = null;
+    this.projectCodeTue = null;
+    this.projectCodeWed = null;
+    this.projectCodeThurs = null;
+    this.projectCodeFri = null;
+    this.projectCodeSat = null;
+  }
+
+  public getAllocationDetails(allocation)
+  {
+    return  allocation.PROJECT_CODE.PROJECT_CODE + '-'
+          + allocation.PROJECT_CODE.PROJECT_NAME + '-'
+          + allocation.WON.WON_DESC + '-'
+          + allocation.BIL_DESC_ID.DESCRIPTION + '-'
   }
 
   public showPreviousWeek()
@@ -284,60 +386,72 @@ export class TimesheetComponent implements OnInit {
   }
 
   saveTimesheet=function(event){
-
-    if(isNullOrUndefined(this.projectCode)) {
+    if(this.startDate >= this.freezeStartDate && this.endDate <= this.freezeEndDate){
+      alert('Timesheet for this week is freezed');
+    }
+    else if(this.allocationMap.size == 0) {
       alert('Resource allocation is not available');
       return;
     }
+    console.log(this.allocationMap);
+    console.log(this.timesheetObj);
+    this.ng4LoadingSpinnerService.show();
+    this.allocationMap.forEach((value: any, key: string) =>{
+      var allocId = key;
+      console.log(key);
+      var allocStartDate = value.START_DATE;
+      var allocEndDate = value.END_DATE;
+      var timesheetId = this.timesheetMap.get(allocId);
+      console.log(this.sundayDate + '-' + allocStartDate + '-' + allocEndDate);
+      console.log(this.validateIfDateIsWithinRange(this.sundayDate,allocStartDate,allocEndDate));
+      this.timesheetObj.push({
+        "userId": this.userId,
+        "startDate": this.datePipe.transform(this.startDate, 'yyyy-MM-dd'),
+        "endDate": this.datePipe.transform(this.endDate, 'yyyy-MM-dd'),
+        "timesheetId": timesheetId,
+        //"projectCode": this.projectCode,
+        "projectSundayHour": this.projectSundayHour == null ||  !this.validateIfDateIsWithinRange(this.sundayDate,allocStartDate,allocEndDate) ? 0 : this.projectSundayHour,
+        "projectMondayHour": this.projectMondayHour == null ||  !this.validateIfDateIsWithinRange(this.mondayDate,allocStartDate,allocEndDate) ? 0 : this.projectMondayHour,
+        "projectTuesdayHour": this.projectTuesdayHour == null ||  !this.validateIfDateIsWithinRange(this.tuesdayDate,allocStartDate,allocEndDate) ? 0 : this.projectTuesdayHour,
+        "projectWednesdayHour": this.projectWednesdayHour == null ||  !this.validateIfDateIsWithinRange(this.wednesdayDate,allocStartDate,allocEndDate) ? 0 : this.projectWednesdayHour,
+        "projectThursdayHour": this.projectThursdayHour == null ||  !this.validateIfDateIsWithinRange(this.thursdayDate,allocStartDate,allocEndDate) ? 0 : this.projectThursdayHour,
+        "projectFridayHour": this.projectFridayHour == null ||  !this.validateIfDateIsWithinRange(this.fridayDate,allocStartDate,allocEndDate) ? 0 : this.projectFridayHour,
+        "projectSaturdayHour": this.projectSaturdayHour == null ||  !this.validateIfDateIsWithinRange(this.saturdayDate,allocStartDate,allocEndDate) ? 0 : this.projectSaturdayHour,
+        "leaveSundayHour": this.leaveSundayHour == null ||  !this.validateIfDateIsWithinRange(this.sundayDate,allocStartDate,allocEndDate) ? 0 : this.leaveSundayHour,
+        "leaveMondayHour": this.leaveMondayHour == null ||  !this.validateIfDateIsWithinRange(this.mondayDate,allocStartDate,allocEndDate) ? 0 : this.leaveMondayHour,
+        "leaveTuesdayHour": this.leaveTuesdayHour == null ||  !this.validateIfDateIsWithinRange(this.tuesdayDate,allocStartDate,allocEndDate) ? 0 : this.leaveTuesdayHour,
+        "leaveWednesdayHour": this.leaveWednesdayHour == null ||  !this.validateIfDateIsWithinRange(this.wednesdayDate,allocStartDate,allocEndDate) ? 0 : this.leaveWednesdayHour,
+        "leaveThursdayHour": this.leaveThursdayHour == null ||  !this.validateIfDateIsWithinRange(this.thursdayDate,allocStartDate,allocEndDate) ? 0 : this.leaveThursdayHour,
+        "leaveFridayHour": this.leaveFridayHour == null ||  !this.validateIfDateIsWithinRange(this.fridayDate,allocStartDate,allocEndDate) ? 0 : this.leaveFridayHour,
+        "leaveSaturdayHour": this.leaveSaturdayHour == null ||  !this.validateIfDateIsWithinRange(this.saturdayDate,allocStartDate,allocEndDate) ? 0 : this.leaveSaturdayHour,
+        "allocationId": allocId,
+        "CREATED_BY": this.CREATED_BY,
+        "UPDATED_BY": this.UPDATED_BY,
+      });
+    });
+    console.log(this.timesheetObj);
+    this.timesheetObj.forEach((timesheet) => {
+      //alert(JSON.stringify(this.timesheetObj));
 
-    console.log(this.datePipe.transform(this.startDate, 'yyyy-MM-dd'));
-
-    this.timesheetObj={
-      "userId":this.userId,
-      "startDate":this.datePipe.transform(this.startDate, 'yyyy-MM-dd'),
-      "endDate":this.datePipe.transform(this.endDate, 'yyyy-MM-dd'),
-      "projectCode":this.projectCode,
-      "projectSundayHour":this.projectSundayHour == null ? 0 : this.projectSundayHour,
-      "projectMondayHour":this.projectMondayHour == null ? 0 : this.projectMondayHour,
-      "projectTuesdayHour":this.projectTuesdayHour == null ? 0 : this.projectTuesdayHour,
-      "projectWednesdayHour":this.projectWednesdayHour == null ? 0 : this.projectWednesdayHour,
-      "projectThursdayHour":this.projectThursdayHour == null ? 0 : this.projectThursdayHour,
-      "projectFridayHour":this.projectFridayHour == null ? 0 : this.projectFridayHour,
-      "projectSaturdayHour":this.projectSaturdayHour == null ? 0 : this.projectSaturdayHour,
-      "leaveSundayHour":this.leaveSundayHour == null ? 0 : this.leaveSundayHour,
-      "leaveMondayHour":this.leaveMondayHour == null ? 0 : this.leaveMondayHour,
-      "leaveTuesdayHour":this.leaveTuesdayHour == null ? 0 : this.leaveTuesdayHour,
-      "leaveWednesdayHour":this.leaveWednesdayHour == null ? 0 : this.leaveWednesdayHour,
-      "leaveThursdayHour":this.leaveThursdayHour == null ? 0 : this.leaveThursdayHour,
-      "leaveFridayHour":this.leaveFridayHour == null ? 0 : this.leaveFridayHour,
-      "leaveSaturdayHour":this.leaveSaturdayHour == null ? 0 : this.leaveSaturdayHour,
-      "allocationId":this.allocationId,
-      "CREATED_BY" : this.CREATED_BY,
-      "UPDATED_BY" : this.UPDATED_BY,
-    }
-    //alert(JSON.stringify(this.timesheetObj));
-
-    if(this.timesheetId != null)
-    {
-      console.log(this.timesheetId);
-      console.log('Update Called');
-      this.http.post(environment.apiBaseUrl + 'api/timesheet/'+ this.timesheetId,this.timesheetObj).subscribe((res:Response)=>
-      {
-        console.log(res);
-        this.populateTimesheet(this.startDate,false);
-        //this.isAdded=true;
-      })
-    }
-    else
-    {
-      console.log('Add New Called');
-      this.http.post(environment.apiBaseUrl + 'api/timesheet',this.timesheetObj).subscribe((res:Response)=>
-      {
-        console.log(res);
-        this.populateTimesheet(this.startDate,false);
-        //this.isAdded=true;
-      })
-    }
+      if (!isNullOrUndefined(timesheet.timesheetId)) {
+        console.log(timesheet.timesheetId);
+        console.log('Update Called');
+        this.http.post(environment.apiBaseUrl + 'api/timesheet/' + timesheet.timesheetId, timesheet).subscribe((res: Response) => {
+            console.log(res);
+          this.populateTimesheet(this.startDate, false);
+          //this.isAdded=true;
+        })
+      }
+      else {
+        console.log('Add New Called');
+        this.http.post(environment.apiBaseUrl + 'api/timesheet', timesheet).subscribe((res: Response) => {
+          console.log(res);
+          this.populateTimesheet(this.startDate, false);
+          //this.isAdded=true;
+        })
+      }
+    });
+    this.ng4LoadingSpinnerService.hide();
   }
 
   public getStartOfWeek(date) {
@@ -355,5 +469,13 @@ export class TimesheetComponent implements OnInit {
     var date = new Date(startDate);
     date.setDate(date.getDate() + day);
     return date;
+  }
+
+  private validateIfDateIsWithinRange(date, startDate, endDate)
+  {
+    if(new Date(startDate) <= new Date(date)  && new Date(endDate) >= new Date(date))
+      return true;
+    else
+      return false;
   }
 }

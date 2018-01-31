@@ -48,6 +48,14 @@
 					<input type="date" name="billing_date" id="billing_date" placeholder="Billing Date" [(ngModel)]="billing_date" required ngModel>
 				</td>
 			</tr>
+			<tr>			
+				<td><label class="required">PO Number:</label></td>
+				<td><input type="number" name="po_number" id="po_number" placeholder="PO Number" [(ngModel)]="po_number" required ngModel></td>
+			</tr>
+			<tr>			
+				<td><label class="required">SOW Number:</label></td>
+				<td><input type="number" name="sow_number" id="sow_number" placeholder="SOW Number" [(ngModel)]="sow_number" min="10000"  max="99999" required ngModel></td>
+			</tr>
 			<tr>
 				<td>
 					<input type="text" name="CREATED_BY" id="CREATED_BY" placeholder="CREATED_BY" [(ngModel)]="CREATED_BY" style="display: none;" ngModel>
